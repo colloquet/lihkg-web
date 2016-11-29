@@ -1,6 +1,6 @@
-# vue-lihkg
+# LIHKG (by Coke_Zero)
 
-> A Vue.js project
+> LIHKG Web client built with Vue.js
 
 ## Build Setup
 
