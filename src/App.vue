@@ -5,7 +5,7 @@
       <a href="#offcanvas-categories" class="sidebar-toggle" data-uk-offcanvas="{mode:'none'}"><span class="uk-icon-bars"></span> {{ activeCategory ? activeCategory.name : '轉台' }}</a>
 
       <div class="refresh" v-if="$route.name === 'Category'">
-        <a href="#" class="refresh-toggle" @click="handleRefresh"><span class="uk-icon-refresh"></span> F5</a>
+        <a class="refresh-toggle" @click.prevent="handleRefresh"><span class="uk-icon-refresh"></span> F5</a>
       </div>
 
       <div class="nav-title" v-if="$route.name === 'Thread'">
@@ -48,7 +48,25 @@
               {{ category.name }}
             </router-link>
           </li>
+          <li>
+            <a href="#modal-about" data-uk-modal>關於本站</a>
+          </li>
         </ul>
+      </div>
+    </div>
+
+    <div id="modal-about" class="uk-modal">
+      <div class="uk-modal-dialog">
+        <a class="uk-modal-close uk-close"></a>
+        嗚謝：
+        <ul>
+          <li>連尼住巴打</li>
+          <li>HKG+巴打</li>
+          <li>望遠巴打</li>
+          <li><a href="https://na.cx" target="_blank">https://na.cx</a></li>
+        </ul>
+        <p>Made in Hong Kong by <a href="http://colloquet.github.io" target="_blank">Coke_Zero</a></p>
+        <p>View source code on GitHub: <a href="https://github.com/colloquet/lihkg-web" target="_blank">https://github.com/colloquet/lihkg-web</a></a></p>
       </div>
     </div>
   </div>
@@ -227,6 +245,17 @@ blockquote {
     display: block;
     padding: 10px 15px;
     text-align: center;
+  }
+}
+
+.uk-modal {
+  .uk-modal-dialog {
+    background: #2b2b2b;
+  }
+
+  .uk-close {
+    color: #f1c40f;
+    opacity: 1;
   }
 }
 </style>
