@@ -1,4 +1,4 @@
-# LIHKG (by Coke_Zero)
+# LIHKG (by [Coke_Zero](http://colloquet.github.io/))
 
 > LIHKG Web client built with Vue.js
 
