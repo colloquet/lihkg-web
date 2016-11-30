@@ -33,8 +33,8 @@
                 </router-link>
               </div>
               <div class="uk-width-1-2">
-                <a class="theme-toggle" @click="toggleWhiteTheme">
-                  白底 {{ whiteTheme ? 'ON' : 'OFF' }}
+                <a href="#modal-setting" data-uk-modal>
+                  <span class="uk-icon-cog"></span> 設定
                 </a>
               </div>
             </div>
@@ -69,6 +69,18 @@
         <p>View source code on GitHub: <a href="https://github.com/colloquet/lihkg-web" target="_blank">https://github.com/colloquet/lihkg-web</a></a></p>
       </div>
     </div>
+
+    <div id="modal-setting" class="uk-modal">
+      <div class="uk-modal-dialog">
+        <a class="uk-modal-close uk-close"></a>
+        <a class="theme-toggle toggle" @click="toggleWhiteTheme">
+          白底 {{ whiteTheme ? 'ON' : 'OFF' }}
+        </a>
+        <a class="auto-load-image-toggle toggle" @click="toggleAutoLoadImage">
+          自動撈圖 {{ autoLoadImage ? 'ON' : 'OFF' }}
+        </a>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -97,6 +109,9 @@ export default {
     },
     whiteTheme () {
       return this.$store.state.settings.whiteTheme
+    },
+    autoLoadImage () {
+      return this.$store.state.settings.autoLoadImage
     }
   },
   methods: {
@@ -113,14 +128,21 @@ export default {
         catID: this.activeCategory.cat_id,
         page: 1
       })
+      document.body.scrollTop = document.documentElement.scrollTop = 0
     },
     toggleWhiteTheme () {
       this.$store.commit('TOGGLE_WHITE_THEME')
+    },
+    toggleAutoLoadImage () {
+      this.$store.commit('TOGGLE_AUTO_LOAD_IMAGE')
     }
   },
   watch: {
     whiteTheme (newVal, oldVal) {
       window.localStorage.whiteTheme = newVal
+    },
+    autoLoadImage (newVal, oldVal) {
+      window.localStorage.autoLoadImage = newVal
     }
   },
   mounted () {
@@ -132,6 +154,10 @@ export default {
     if (window.localStorage.whiteTheme === 'true') {
       this.$store.commit('TOGGLE_WHITE_THEME')
     }
+
+    if (window.localStorage.autoLoadImage === 'true') {
+      this.$store.commit('TOGGLE_AUTO_LOAD_IMAGE')
+    }
   }
 }
 </script>
@@ -141,7 +167,7 @@ html {
   background: #222;
 
   &.white-theme {
-    background: #fbfbfb;
+    background: #f1f1f1;
   }
 }
 
@@ -152,7 +178,7 @@ html {
 
 
   &.white-theme {
-    background: #fbfbfb;
+    background: #f1f1f1;
     color: #444;
   }
 }
@@ -226,7 +252,7 @@ blockquote {
 
 .rating {
   flex-shrink: 0;
-  height: 41px;
+  height: 40px;
   padding: 0 15px;
   line-height: 40px;
   color: #e6e6e6;
@@ -251,11 +277,29 @@ blockquote {
 .uk-modal {
   .uk-modal-dialog {
     background: #2b2b2b;
+
+    .white-theme & {
+      background: #f1f1f1;
+    }
   }
 
   .uk-close {
     color: #f1c40f;
     opacity: 1;
+  }
+}
+
+.toggle {
+  display: block;
+  padding: 15px;
+  border-bottom: 1px solid #444;
+
+  .white-theme & {
+    border-bottom: 1px solid #ddd;
+  }
+
+  &:last-child {
+    border-bottom: 0;
   }
 }
 </style>

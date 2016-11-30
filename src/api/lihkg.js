@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default {
   fetchCategories () {
-    return axios.get('https://lihkg.com/api/system/property')
+    return axios.get('https://lihkg.com/api_v1/system/property')
   },
   fetchThreadList (catID, page, count) {
     let type
@@ -19,7 +19,7 @@ export default {
       default:
         type = 'category'
     }
-    return axios.get(`https://lihkg.com/api/thread/${type}`, {
+    return axios.get(`https://lihkg.com/api_v1/thread/${type}`, {
       params: {
         cat_id: catID,
         page,
@@ -28,6 +28,6 @@ export default {
     })
   },
   fetchThread (threadID, page) {
-    return axios.get(`https://lihkg.com/api/thread/${threadID}/page/${page}`)
+    return axios.get(`https://lihkg.com/api_v1/thread/${threadID}/page/${page}`)
   }
 }

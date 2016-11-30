@@ -4,6 +4,7 @@
       <ul class="uk-grid" :class="{'is-loading': isThreadListLoading}">
         <li class="uk-width-1-1" v-for="thread in uniqueThreads" :key="thread.thread_id">
           <router-link :to="'/thread/' + thread.thread_id" class="uk-link-reset thread">
+            <span class="uk-icon-bolt hot-indicator" v-if="thread.is_hot"></span>
             {{ thread.title }}<br>
             <small class="uk-text-muted">
               <span :class="{male: thread.user.gender === 'M', female: thread.user.gender === 'F', admin: thread.user.level === '999'}">{{ thread.user.nickname }}</span> //
@@ -36,6 +37,13 @@ moment.locale('zh-hk')
 
 export default {
   name: 'Category',
+  head: {
+    title () {
+      return {
+        inner: this.activeCategory ? this.activeCategory.name : ''
+      }
+    }
+  },
   data () {
     return {
       page: 1
@@ -79,6 +87,7 @@ export default {
           catID: this.catID,
           page: this.page
         })
+        this.$emit('updateHead')
       })
     }
   },
@@ -88,6 +97,7 @@ export default {
         catID: this.catID,
         page: 1
       })
+      this.$emit('updateHead')
     }
   },
   mounted () {
@@ -97,6 +107,7 @@ export default {
         catID: this.catID,
         page: 1
       })
+      this.$emit('updateHead')
     }
 
     window.onscroll = () => {
@@ -123,9 +134,11 @@ export default {
 }
 
 .thread {
+  position: relative;
   display: block;
   border-bottom: 1px solid #444;
   padding: 15px;
+  padding-left: 30px;
 
   &:hover {
     background: #383838;
@@ -138,6 +151,13 @@ export default {
       background: #f5f5f5;
     }
   }
+}
+
+.hot-indicator {
+  color: #f1c40f;
+  position: absolute;
+  top: 18px;
+  left: 15px;
 }
 
 .like-color {

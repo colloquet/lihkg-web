@@ -1,19 +1,19 @@
 <template>
   <div v-if="activeThread">
-    
+
     <div class="uk-hidden-small uk-margin-bottom navigation-bar">
       <div class="uk-grid uk-grid-collapse">
-        <div class="uk-width-1-4">
+        <div class="uk-width-1-5">
           <router-link :to="`/category/${activeCategory.cat_id}`" v-if="activeCategory" class="return-link"><span class="uk-icon-reply"></span> {{ activeCategory.name }}</router-link>
         </div>
-        <div class="uk-width-3-4">
+        <div class="uk-width-3-5">
           <div class="uk-grid uk-grid-collapse">
             <div class="uk-width-1-3">
-              <router-link :to="`/thread/${threadID}/page/${pageNumber - 1}`" :class="{'uk-invisible': pageNumber <= 1}">上一頁</router-link>
+              <router-link :to="`/thread/${threadID}/page/${pageNumber - 1}`" :class="{'uk-invisible': !hasPrevPage}"><span class="uk-icon-angle-left"></span> 上一頁</router-link>
             </div>
             <div class="uk-width-1-3">
               <div class="uk-position-relative page-switcher" data-uk-dropdown="{pos:'bottom-center', mode: 'click'}">
-                <div>第 {{ pageNumber }} 頁</div>
+                <div>第 {{ pageNumber }} 頁 <span class="uk-icon-caret-down"></span></div>
                 <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
                   <ul class="uk-nav uk-nav-dropdown">
                     <li v-for="n in activeThread.total_page"><a class="uk-dropdown-close" @click.prevent="pageNumber = n">第 {{ n }} 頁</a></li>
@@ -22,10 +22,11 @@
               </div>
             </div>
             <div class="uk-width-1-3">
-              <router-link :to="`/thread/${threadID}/page/${pageNumber + 1}`" :class="{'uk-invisible': pageNumber >= activeThread.total_page}">下一頁</router-link>
+              <router-link :to="`/thread/${threadID}/page/${pageNumber + 1}`" :class="{'uk-invisible': !hasNextPage}">下一頁 <span class="uk-icon-angle-right"></span></router-link>
             </div>
           </div>
         </div>
+        <div class="uk-width-1-5"></div>
       </div>
     </div>
 
@@ -37,8 +38,10 @@
               <span class="uk-text-muted" :class="{'author': activeThread.user.user_id === comment.user.user_id}">#{{ getCommentIndex(index, comment.page) }}</span>
               <span :class="{male: comment.user.gender === 'M', female: comment.user.gender === 'F', admin: comment.user.level === '999'}">{{ comment.user.nickname }}</span>
               <span class="uk-text-muted">// {{ getRelativeTime(comment.reply_time) }}</span>
+              <span class="uk-icon-eye uk-float-right" @click="toggleStoryMode(comment.user.user_id)" v-if="storeyModeID === -1"></span>
+              <span class="uk-icon-eye-slash uk-float-right" @click="toggleStoryMode(comment.user.user_id)" v-else></span>
             </p>
-            <div v-html="prepareCommentMsg(comment.msg)"></div>
+            <div v-html="prepareCommentMsg(comment.msg)" v-show="comment.user.user_id === storeyModeID || storeyModeID === -1"></div>
           </div>
         </li>
       </ul>
@@ -46,17 +49,17 @@
 
     <div class="uk-hidden-small uk-margin-bottom navigation-bar">
       <div class="uk-grid uk-grid-collapse">
-        <div class="uk-width-1-4">
+        <div class="uk-width-1-5">
           <router-link :to="`/category/${activeCategory.cat_id}`" v-if="activeCategory" class="return-link"><span class="uk-icon-reply"></span> {{ activeCategory.name }}</router-link>
         </div>
-        <div class="uk-width-3-4">
+        <div class="uk-width-3-5">
           <div class="uk-grid uk-grid-collapse">
             <div class="uk-width-1-3">
-              <router-link :to="`/thread/${threadID}/page/${pageNumber - 1}`" :class="{'uk-invisible': pageNumber <= 1}">上一頁</router-link>
+              <router-link :to="`/thread/${threadID}/page/${pageNumber - 1}`" :class="{'uk-invisible': !hasPrevPage}"><span class="uk-icon-angle-left"></span> 上一頁</router-link>
             </div>
             <div class="uk-width-1-3">
               <div class="uk-position-relative page-switcher" data-uk-dropdown="{pos:'top-center', mode: 'click'}">
-                <div>第 {{ pageNumber }} 頁</div>
+                <div>第 {{ pageNumber }} 頁 <span class="uk-icon-caret-down"></span></div>
                 <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
                   <ul class="uk-nav uk-nav-dropdown">
                     <li v-for="n in activeThread.total_page"><a class="uk-dropdown-close" @click.prevent="pageNumber = n">第 {{ n }} 頁</a></li>
@@ -65,14 +68,15 @@
               </div>
             </div>
             <div class="uk-width-1-3">
-              <router-link :to="`/thread/${threadID}/page/${pageNumber + 1}`" :class="{'uk-invisible': pageNumber >= activeThread.total_page}">下一頁</router-link>
+              <router-link :to="`/thread/${threadID}/page/${pageNumber + 1}`" :class="{'uk-invisible': !hasNextPage}">下一頁 <span class="uk-icon-angle-right"></span></router-link>
             </div>
           </div>
         </div>
+        <div class="uk-width-1-5"></div>
       </div>
     </div>
 
-    <p class="uk-text-center" v-if="pageNumber >= activeThread.total_page">
+    <p class="uk-text-center" v-if="!hasNextPage">
       <button class="uk-button uk-button-large" @click="refresh">F5</button>
     </p>
 
@@ -84,11 +88,11 @@
         <div class="uk-width-3-4">
           <div class="uk-grid uk-grid-collapse">
             <div class="uk-width-1-3">
-              <router-link :to="`/thread/${threadID}/page/${pageNumber - 1}`" :class="{'uk-invisible': pageNumber <= 1}">上一頁</router-link>
+              <router-link :to="`/thread/${threadID}/page/${pageNumber - 1}`" :class="{'uk-invisible': !hasPrevPage}"><span class="uk-icon-angle-left"></span> 上一頁</router-link>
             </div>
             <div class="uk-width-1-3">
               <div class="uk-position-relative page-switcher" data-uk-dropdown="{pos:'top-center', mode: 'click'}">
-                <div>第 {{ pageNumber }} 頁</div>
+                <div>第 {{ pageNumber }} 頁 <span class="uk-icon-caret-down"></span></div>
                 <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
                   <ul class="uk-nav uk-nav-dropdown">
                     <li v-for="n in activeThread.total_page"><a class="uk-dropdown-close" @click.prevent="pageNumber = n">第 {{ n }} 頁</a></li>
@@ -97,7 +101,7 @@
               </div>
             </div>
             <div class="uk-width-1-3">
-              <router-link :to="`/thread/${threadID}/page/${pageNumber + 1}`" :class="{'uk-invisible': pageNumber >= activeThread.total_page}">下一頁</router-link>
+              <router-link :to="`/thread/${threadID}/page/${pageNumber + 1}`" :class="{'uk-invisible': !hasNextPage}">下一頁 <span class="uk-icon-angle-right"></span></router-link>
             </div>
           </div>
         </div>
@@ -107,14 +111,23 @@
 </template>
 
 <script>
+/* global $, Image */
 import moment from 'moment'
 import lihkg from '../api/lihkg'
 
 export default {
   name: 'Thread',
+  head: {
+    title () {
+      return {
+        inner: this.activeThread ? this.activeThread.title : ''
+      }
+    }
+  },
   data () {
     return {
-      isThreadLoading: false
+      isThreadLoading: false,
+      storeyModeID: -1
     }
   },
   computed: {
@@ -127,6 +140,9 @@ export default {
     threadID () {
       return this.$store.state.route.params.id
     },
+    autoLoadImage () {
+      return this.$store.state.settings.autoLoadImage
+    },
     pageNumber: {
       get () {
         return this.$store.state.route.params.page * 1 || 1
@@ -134,6 +150,12 @@ export default {
       set (page) {
         this.$router.push(`/thread/${this.threadID}/page/${page}`)
       }
+    },
+    hasNextPage () {
+      return this.pageNumber < this.activeThread.total_page
+    },
+    hasPrevPage () {
+      return this.pageNumber > 1
     }
   },
   methods: {
@@ -148,12 +170,38 @@ export default {
         }
 
         self.$store.commit('SET_ACTIVE_THREAD', response.data.response)
+        self.$emit('updateHead')
       }).catch(() => {
         window.alert('伺服器出錯，請重試。')
       })
     },
     prepareCommentMsg (msg) {
-      return msg.replace(/\/assets\/faces\//g, 'https://lihkg.com/assets/faces/')
+      const regex = /<img(.*?)src="(.*?)"(.*?)>/gi
+      const str = msg
+      let m
+      let newMsg
+
+      while ((m = regex.exec(str)) !== null) {
+        if (m.index === regex.lastIndex) {
+          regex.lastIndex++
+        }
+
+        const str = m[3]
+        if (str.indexOf('hkgmoji') === -1) {
+          const newImgTag = m[0].replace(/<img(.*?)src="(.*?)"(.*?)>/gi, '<img src="/static/placeholder.png" data-src="$2" class="image-lazy-load" />')
+          newMsg = newMsg ? newMsg.replace(m[0], newImgTag) : msg.replace(m[0], newImgTag)
+        }
+      }
+
+      const output = () => {
+        if (this.autoLoadImage) {
+          return msg
+        } else {
+          return newMsg || msg
+        }
+      }
+
+      return output().replace(/\/assets\/faces\//g, 'https://lihkg.com/assets/faces/')
     },
     getCommentIndex (index, page) {
       return (index + 1) + ((page - 1) * 25)
@@ -163,6 +211,9 @@ export default {
     },
     refresh () {
       this.fetchThread(this.pageNumber)
+    },
+    toggleStoryMode (userID) {
+      this.storeyModeID = this.storeyModeID === -1 ? userID : -1
     }
   },
   watch: {
@@ -173,6 +224,19 @@ export default {
   mounted () {
     this.fetchThread(this.pageNumber)
     this.$store.commit('SET_ACTIVE_THREAD', {})
+
+    $('body').on('click', '.image-lazy-load', (e) => {
+      const target = $(e.target)
+      const src = target.data('src')
+      let newImg = new Image()
+
+      target.attr('src', '/static/loading.png')
+
+      newImg.onload = () => {
+        target.attr('src', src)
+      }
+      newImg.src = src
+    })
   }
 }
 </script>
@@ -211,7 +275,7 @@ export default {
 
   .white-theme & {
     box-shadow: 0 1px 4px rgba(0,0,0,.15);
-    background: #fff;
+    background: #fafafa;
   }
 
   img {
@@ -238,7 +302,7 @@ export default {
 
   .white-theme & {
     box-shadow: 0 1px 4px rgba(0,0,0,.15);
-    background: #fff;
+    background: #fafafa;
   }
 }
 
