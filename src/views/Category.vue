@@ -3,8 +3,9 @@
     <div class="threads-container">
       <ul class="uk-grid" :class="{'is-loading': isThreadListLoading}">
         <li class="uk-width-1-1" v-for="thread in uniqueThreads" :key="thread.thread_id">
-          <router-link :to="'/thread/' + thread.thread_id" class="uk-link-reset thread">
+          <router-link :to="'/thread/' + thread.thread_id + '/page/1'" class="uk-link-reset thread">
             <span class="uk-icon-bolt hot-indicator" v-if="thread.is_hot"></span>
+            <span class="uk-icon-circle read-indicator" :class="{'has-new': thread.no_of_reply > threadHistory[thread.thread_id].no_of_reply}" v-if="threadHistory[thread.thread_id]"></span>
             {{ thread.title }}<br>
             <small class="uk-text-muted">
               <span :class="{male: thread.user.gender === 'M', female: thread.user.gender === 'F', admin: thread.user.level === '999'}">{{ thread.user.nickname }}</span> //
@@ -70,6 +71,9 @@ export default {
     },
     uniqueThreads () {
       return uniqBy(this.activeThreads, 'thread_id')
+    },
+    threadHistory () {
+      return this.$store.state.settings.threadHistory
     }
   },
   methods: {
@@ -158,6 +162,17 @@ export default {
   position: absolute;
   top: 18px;
   left: 15px;
+}
+
+.read-indicator {
+  position: absolute;
+  top: 40px;
+  left: 14px;
+  font-size: 10px;
+
+  &.has-new {
+    color: #e74c3c;
+  }
 }
 
 .like-color {

@@ -73,11 +73,14 @@
     <div id="modal-setting" class="uk-modal">
       <div class="uk-modal-dialog">
         <a class="uk-modal-close uk-close"></a>
-        <a class="theme-toggle toggle" @click="toggleWhiteTheme">
+        <a class="theme-toggle toggle" @click.prevent="toggleWhiteTheme">
           白底 {{ whiteTheme ? 'ON' : 'OFF' }}
         </a>
-        <a class="auto-load-image-toggle toggle" @click="toggleAutoLoadImage">
+        <a class="auto-load-image-toggle toggle" @click.prevent="toggleAutoLoadImage">
           自動撈圖 {{ autoLoadImage ? 'ON' : 'OFF' }}
+        </a>
+        <a class="toggle" @click.prevent="resetThreadHistory">
+          清除睇post記錄
         </a>
       </div>
     </div>
@@ -112,6 +115,9 @@ export default {
     },
     autoLoadImage () {
       return this.$store.state.settings.autoLoadImage
+    },
+    threadHistory () {
+      return this.$store.state.settings.threadHistory
     }
   },
   methods: {
@@ -135,6 +141,10 @@ export default {
     },
     toggleAutoLoadImage () {
       this.$store.commit('TOGGLE_AUTO_LOAD_IMAGE')
+    },
+    resetThreadHistory () {
+      this.$store.commit('RESET_THREAD_HISTORY')
+      window.alert('底已洗')
     }
   },
   watch: {
@@ -157,6 +167,10 @@ export default {
 
     if (window.localStorage.autoLoadImage === 'true') {
       this.$store.commit('TOGGLE_AUTO_LOAD_IMAGE')
+    }
+
+    if (window.localStorage.threadHistory) {
+      this.$store.commit('SET_THREAD_HISTORY', JSON.parse(window.localStorage.threadHistory))
     }
   }
 }

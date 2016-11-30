@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 const routes = [
   { path: '/', redirect: '/category/1' },
   { path: '/category/:id', component: Category, name: 'Category' },
-  { path: '/thread/:id', component: Thread, name: 'Thread' },
+  // { path: '/thread/:id', component: Thread, name: 'Thread' },
   { path: '/thread/:id/page/:page', component: Thread, name: 'Thread' }
 ]
 

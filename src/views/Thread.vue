@@ -156,6 +156,9 @@ export default {
     },
     hasPrevPage () {
       return this.pageNumber > 1
+    },
+    threadHistory () {
+      return this.$store.state.settings.threadHistory
     }
   },
   methods: {
@@ -171,6 +174,11 @@ export default {
 
         self.$store.commit('SET_ACTIVE_THREAD', response.data.response)
         self.$emit('updateHead')
+        this.$store.commit('UPDATE_HISTORY', {
+          id: response.data.response.thread_id,
+          page: page,
+          no_of_reply: response.data.response.no_of_reply
+        })
       }).catch(() => {
         window.alert('伺服器出錯，請重試。')
       })
@@ -222,8 +230,14 @@ export default {
     }
   },
   mounted () {
-    this.fetchThread(this.pageNumber)
     this.$store.commit('SET_ACTIVE_THREAD', {})
+
+    if (this.threadHistory[this.threadID] && this.threadHistory[this.threadID] !== 1) {
+      this.pageNumber = this.threadHistory[this.threadID].page || 1
+      this.fetchThread(this.pageNumber)
+    } else {
+      this.fetchThread(this.pageNumber)
+    }
 
     $('body').on('click', '.image-lazy-load', (e) => {
       const target = $(e.target)
@@ -233,6 +247,9 @@ export default {
       target.attr('src', '/static/loading.png')
 
       newImg.onload = () => {
+        target.attr('src', src)
+      }
+      newImg.onerror = () => {
         target.attr('src', src)
       }
       newImg.src = src
