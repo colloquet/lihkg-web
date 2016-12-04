@@ -3,29 +3,41 @@
     <div class="threads-container">
       <ul class="uk-grid" :class="{'is-loading': isThreadListLoading}">
         <li class="uk-width-1-1" v-for="thread in uniqueThreads" :key="thread.thread_id">
-          <router-link :to="'/thread/' + thread.thread_id + '/page/1'" class="uk-link-reset thread">
-            <span class="uk-icon-bolt hot-indicator" v-if="thread.is_hot"></span>
-            <span class="uk-icon-circle read-indicator" :class="{'has-new': thread.no_of_reply > threadHistory[thread.thread_id].no_of_reply}" v-if="threadHistory[thread.thread_id]"></span>
-            {{ thread.title }}<br>
-            <small class="uk-text-muted">
-              <span :class="{male: thread.user.gender === 'M', female: thread.user.gender === 'F', admin: thread.user.level === '999'}">{{ thread.user.nickname }}</span> //
-              {{ getRelativeTime(thread.last_reply_time) }} //
-              {{ thread.no_of_reply }}個回覆 //
-              <span :class="{'like-color': (thread.like_count - thread.dislike_count) >= 100, 'dislike-color': (thread.like_count - thread.dislike_count) <= -100}">
-                <span :class="thread.like_count - thread.dislike_count < 0 ? 'uk-icon-thumbs-down' : 'uk-icon-thumbs-up'"></span>
-              </span>
-              {{ thread.like_count - thread.dislike_count }}
-            </small>
-          </router-link>
+          <div class="thread-container">
+            <router-link :to="'/thread/' + thread.thread_id + '/page/1'" class="uk-link-reset thread">
+              <span class="uk-icon-bolt hot-indicator" v-if="thread.is_hot"></span>
+              <span class="uk-icon-circle read-indicator" :class="{'has-new': thread.no_of_reply > threadHistory[thread.thread_id].no_of_reply}" v-if="threadHistory[thread.thread_id]"></span>
+              {{ thread.title }}<br>
+              <small class="uk-text-muted">
+                <span :class="thread.user.level === '999' ? 'admin' : thread.user.gender === 'M' ? 'male' : 'female'">{{ thread.user.nickname }}</span> //
+                {{ getRelativeTime(thread.last_reply_time) }} //
+                {{ thread.no_of_reply }}個回覆 //
+                <span :class="{'like-color': (thread.like_count - thread.dislike_count) >= 100, 'dislike-color': (thread.like_count - thread.dislike_count) <= -100}">
+                  <span :class="thread.like_count - thread.dislike_count < 0 ? 'uk-icon-thumbs-down' : 'uk-icon-thumbs-up'"></span>
+                  {{ thread.like_count - thread.dislike_count }}
+                </span>
+              </small>
+            </router-link>
+            <div class="page-switcher" data-uk-dropdown="{pos:'bottom-right', mode: 'click'}">
+              <div>第 {{ thread.total_page }} 頁 <span class="uk-icon-caret-down"></span></div>
+              <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
+                <ul class="uk-nav uk-nav-dropdown">
+                  <li v-for="n in thread.total_page">
+                    <router-link :to="`/thread/${thread.thread_id}/page/${n}`">第 {{ n }} 頁</router-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="uk-width-1-1 load-more">
+          <a @click="handleLoadMore" v-if="hasMoreThreads">
+            {{ isThreadListLoading ? '載入中…' : '載入更多' }}
+          </a>
+          <span v-else>沒有更多</span>
         </li>
       </ul>
     </div>
-    <p class="uk-text-center" v-if="hasMoreThreads">
-      <button class="uk-button" @click="handleLoadMore" :disabled="isThreadListLoading">
-        {{ isThreadListLoading ? '載入中…' : '載入更多' }}
-      </button>
-    </p>
-    <p v-else>沒有更多</p>
   </div>
 </template>
 
@@ -137,20 +149,41 @@ export default {
   margin: 0 -15px;
 }
 
+.thread-container {
+  position: relative;
+  border-bottom: 1px solid #444;
+
+  .white-theme & {
+    border-bottom: 1px solid #ddd;
+  }
+
+  .page-switcher {
+    position: absolute;
+    display: inline-block;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    cursor: pointer;
+
+    &.uk-open {
+      z-index: 10;
+    }
+  }
+}
+
 .thread {
   position: relative;
   display: block;
-  border-bottom: 1px solid #444;
   padding: 15px;
   padding-left: 30px;
+  margin-right: 90px;
 
   &:hover {
     background: #383838;
   }
 
   .white-theme & {
-    border-bottom: 1px solid #ddd;
-
     &:hover {
       background: #f5f5f5;
     }
@@ -181,5 +214,13 @@ export default {
 
 .dislike-color {
   color: #e74c3c;
+}
+
+.load-more {
+  a, span {
+    display: block;
+    padding: 15px;
+    text-align: center;
+  }
 }
 </style>

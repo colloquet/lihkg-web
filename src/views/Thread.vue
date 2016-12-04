@@ -4,25 +4,27 @@
     <div class="uk-hidden-small uk-margin-bottom navigation-bar">
       <div class="uk-grid uk-grid-collapse">
         <div class="uk-width-1-5">
-          <router-link :to="`/category/${activeCategory.cat_id}`" v-if="activeCategory" class="return-link"><span class="uk-icon-reply"></span> {{ activeCategory.name }}</router-link>
+          <a class="return-link" v-if="activeCategory" @click.prevent="backToThreadList">
+            <span class="uk-icon-reply"></span> {{ activeCategory.name }}
+          </a>
         </div>
         <div class="uk-width-3-5">
           <div class="uk-grid uk-grid-collapse">
             <div class="uk-width-1-3">
-              <router-link :to="`/thread/${threadID}/page/${pageNumber - 1}`" :class="{'uk-invisible': !hasPrevPage}"><span class="uk-icon-angle-left"></span> 上一頁</router-link>
+              <a :class="{'uk-invisible': !hasPrevPage}" @click="pageNumber -= 1"><span class="uk-icon-angle-left"></span> 上一頁</a>
             </div>
             <div class="uk-width-1-3">
               <div class="uk-position-relative page-switcher" data-uk-dropdown="{pos:'bottom-center', mode: 'click'}">
                 <div>第 {{ pageNumber }} 頁 <span class="uk-icon-caret-down"></span></div>
                 <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
                   <ul class="uk-nav uk-nav-dropdown">
-                    <li v-for="n in activeThread.total_page"><a class="uk-dropdown-close" @click.prevent="pageNumber = n">第 {{ n }} 頁</a></li>
+                    <li v-for="n in activeThread.total_page"><a class="uk-dropdown-close" @click.prevent="pageNumber = n" :class="{'is-active': n === pageNumber}">第 {{ n }} 頁</a></li>
                   </ul>
                 </div>
               </div>
             </div>
             <div class="uk-width-1-3">
-              <router-link :to="`/thread/${threadID}/page/${pageNumber + 1}`" :class="{'uk-invisible': !hasNextPage}">下一頁 <span class="uk-icon-angle-right"></span></router-link>
+              <a :class="{'uk-invisible': !hasNextPage}" @click="pageNumber += 1">下一頁 <span class="uk-icon-angle-right"></span></a>
             </div>
           </div>
         </div>
@@ -38,8 +40,8 @@
               <span class="uk-text-muted" :class="{'author': activeThread.user.user_id === comment.user.user_id}">#{{ getCommentIndex(index, comment.page) }}</span>
               <span :class="{male: comment.user.gender === 'M', female: comment.user.gender === 'F', admin: comment.user.level === '999'}">{{ comment.user.nickname }}</span>
               <span class="uk-text-muted">// {{ getRelativeTime(comment.reply_time) }}</span>
-              <span class="uk-icon-eye uk-float-right" @click="toggleStoryMode(comment.user.user_id)" v-if="storeyModeID === -1"></span>
-              <span class="uk-icon-eye-slash uk-float-right" @click="toggleStoryMode(comment.user.user_id)" v-else></span>
+              <span class="uk-icon-eye uk-float-right story-mode-toggle" @click="toggleStoryMode(comment.user.user_id)" v-if="storeyModeID === -1"></span>
+              <span class="uk-icon-eye-slash uk-float-right story-mode-toggle" @click="toggleStoryMode(comment.user.user_id)" v-else></span>
             </p>
             <div v-html="prepareCommentMsg(comment.msg)" v-show="comment.user.user_id === storeyModeID || storeyModeID === -1"></div>
           </div>
@@ -50,25 +52,27 @@
     <div class="uk-hidden-small uk-margin-bottom navigation-bar">
       <div class="uk-grid uk-grid-collapse">
         <div class="uk-width-1-5">
-          <router-link :to="`/category/${activeCategory.cat_id}`" v-if="activeCategory" class="return-link"><span class="uk-icon-reply"></span> {{ activeCategory.name }}</router-link>
+          <a class="return-link" v-if="activeCategory" @click.prevent="backToThreadList">
+            <span class="uk-icon-reply"></span> {{ activeCategory.name }}
+          </a>
         </div>
         <div class="uk-width-3-5">
           <div class="uk-grid uk-grid-collapse">
             <div class="uk-width-1-3">
-              <router-link :to="`/thread/${threadID}/page/${pageNumber - 1}`" :class="{'uk-invisible': !hasPrevPage}"><span class="uk-icon-angle-left"></span> 上一頁</router-link>
+              <a :class="{'uk-invisible': !hasPrevPage}" @click="pageNumber -= 1"><span class="uk-icon-angle-left"></span> 上一頁</a>
             </div>
             <div class="uk-width-1-3">
               <div class="uk-position-relative page-switcher" data-uk-dropdown="{pos:'top-center', mode: 'click'}">
                 <div>第 {{ pageNumber }} 頁 <span class="uk-icon-caret-down"></span></div>
                 <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
                   <ul class="uk-nav uk-nav-dropdown">
-                    <li v-for="n in activeThread.total_page"><a class="uk-dropdown-close" @click.prevent="pageNumber = n">第 {{ n }} 頁</a></li>
+                    <li v-for="n in activeThread.total_page"><a class="uk-dropdown-close" @click.prevent="pageNumber = n" :class="{'is-active': n === pageNumber}">第 {{ n }} 頁</a></li>
                   </ul>
                 </div>
               </div>
             </div>
             <div class="uk-width-1-3">
-              <router-link :to="`/thread/${threadID}/page/${pageNumber + 1}`" :class="{'uk-invisible': !hasNextPage}">下一頁 <span class="uk-icon-angle-right"></span></router-link>
+              <a :class="{'uk-invisible': !hasNextPage}" @click="pageNumber += 1">下一頁 <span class="uk-icon-angle-right"></span></a>
             </div>
           </div>
         </div>
@@ -83,25 +87,27 @@
     <div class="uk-visible-small bottom-bar">
       <div class="uk-grid uk-grid-collapse">
         <div class="uk-width-1-4">
-          <router-link :to="`/category/${activeCategory.cat_id}`" v-if="activeCategory" class="return-link"><span class="uk-icon-reply"></span> {{ activeCategory.name }}</router-link>
+          <a class="return-link" v-if="activeCategory" @click.prevent="backToThreadList">
+            <span class="uk-icon-reply"></span> {{ activeCategory.name }}
+          </a>
         </div>
         <div class="uk-width-3-4">
           <div class="uk-grid uk-grid-collapse">
             <div class="uk-width-1-3">
-              <router-link :to="`/thread/${threadID}/page/${pageNumber - 1}`" :class="{'uk-invisible': !hasPrevPage}"><span class="uk-icon-angle-left"></span> 上一頁</router-link>
+              <a :class="{'uk-invisible': !hasPrevPage}" @click="pageNumber -= 1"><span class="uk-icon-angle-left"></span> 上一頁</a>
             </div>
             <div class="uk-width-1-3">
               <div class="uk-position-relative page-switcher" data-uk-dropdown="{pos:'top-center', mode: 'click'}">
                 <div>第 {{ pageNumber }} 頁 <span class="uk-icon-caret-down"></span></div>
                 <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
                   <ul class="uk-nav uk-nav-dropdown">
-                    <li v-for="n in activeThread.total_page"><a class="uk-dropdown-close" @click.prevent="pageNumber = n">第 {{ n }} 頁</a></li>
+                    <li v-for="n in activeThread.total_page"><a class="uk-dropdown-close" @click.prevent="pageNumber = n" :class="{'is-active': n === pageNumber}">第 {{ n }} 頁</a></li>
                   </ul>
                 </div>
               </div>
             </div>
             <div class="uk-width-1-3">
-              <router-link :to="`/thread/${threadID}/page/${pageNumber + 1}`" :class="{'uk-invisible': !hasNextPage}">下一頁 <span class="uk-icon-angle-right"></span></router-link>
+              <a :class="{'uk-invisible': !hasNextPage}" @click="pageNumber += 1">下一頁 <span class="uk-icon-angle-right"></span></a>
             </div>
           </div>
         </div>
@@ -127,7 +133,8 @@ export default {
   data () {
     return {
       isThreadLoading: false,
-      storeyModeID: -1
+      storeyModeID: -1,
+      fromThreadList: true
     }
   },
   computed: {
@@ -148,7 +155,7 @@ export default {
         return this.$store.state.route.params.page * 1 || 1
       },
       set (page) {
-        this.$router.push(`/thread/${this.threadID}/page/${page}`)
+        this.$router.replace(`/thread/${this.threadID}/page/${page}`)
       }
     },
     hasNextPage () {
@@ -222,6 +229,13 @@ export default {
     },
     toggleStoryMode (userID) {
       this.storeyModeID = this.storeyModeID === -1 ? userID : -1
+    },
+    backToThreadList () {
+      if (this.fromThreadList) {
+        this.$router.back()
+      } else {
+        this.$router.push(`/category/${this.activeCategory.cat_id}`)
+      }
     }
   },
   watch: {
@@ -237,6 +251,10 @@ export default {
       this.fetchThread(this.pageNumber)
     } else {
       this.fetchThread(this.pageNumber)
+    }
+
+    if (!this.activeCategory) {
+      this.fromThreadList = false
     }
 
     $('body').on('click', '.image-lazy-load', (e) => {
@@ -283,6 +301,10 @@ export default {
 
 .is-loading {
   opacity: 0.5;
+}
+
+.story-mode-toggle {
+  cursor: pointer;
 }
 
 .comment {
@@ -342,6 +364,11 @@ export default {
     padding: 0 15px;
     line-height: 50px;
     cursor: pointer;
+
+    .is-active {
+      background: #eee;
+      font-weight: bold;
+    }
 
     .uk-nav-dropdown {
       line-height: 20px;

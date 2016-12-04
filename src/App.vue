@@ -8,7 +8,7 @@
         <a class="refresh-toggle" @click.prevent="handleRefresh"><span class="uk-icon-refresh"></span> F5</a>
       </div>
 
-      <div class="nav-title" v-if="$route.name === 'Thread'">
+      <div class="nav-title" v-if="$route.name === 'Thread'" @click="goToTop">
         <span>{{ activeThread ? activeThread.title : '載入中…' }}</span>
       </div>
 
@@ -19,6 +19,10 @@
     </nav>
 
     <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">
+      <!-- <div class="uk-alert" data-uk-alert>
+        <a href="#" class="uk-alert-close uk-close"></a>
+        <p>收到巴打通知hkg.plus redirect左黎呢個網，我想係到澄清本站同hkg.plus絕無任何關係。</p>
+      </div> -->
       <router-view></router-view>
     </div>
 
@@ -145,6 +149,9 @@ export default {
     resetThreadHistory () {
       this.$store.commit('RESET_THREAD_HISTORY')
       window.alert('底已洗')
+    },
+    goToTop () {
+      UIkit.Utils.scrollToElement(UIkit.$('#app'))
     }
   },
   watch: {
@@ -172,6 +179,10 @@ export default {
     if (window.localStorage.threadHistory) {
       this.$store.commit('SET_THREAD_HISTORY', JSON.parse(window.localStorage.threadHistory))
     }
+
+    // if (document.referrer.indexOf('hkg.plus') >= 0) {
+    //   window.location.replace('http://hkgolden.com')
+    // }
   }
 }
 </script>
@@ -262,6 +273,7 @@ blockquote {
   text-overflow: ellipsis;
   line-height: 40px;
   color: #e6e6e6;
+  cursor: pointer;
 }
 
 .rating {
@@ -288,6 +300,19 @@ blockquote {
   }
 }
 
+.uk-alert {
+  background: #2d2d2d;
+  border: 1px solid #444;
+  color: #e6e6e6;
+  text-shadow: none;
+
+  .white-theme & {
+    background: #fafafa;
+    border: 1px solid #ddd;
+    color: #444;
+  }
+}
+
 .uk-modal {
   .uk-modal-dialog {
     background: #2b2b2b;
@@ -296,11 +321,11 @@ blockquote {
       background: #f1f1f1;
     }
   }
+}
 
-  .uk-close {
-    color: #f1c40f;
-    opacity: 1;
-  }
+.uk-close {
+  color: #f1c40f;
+  opacity: 1;
 }
 
 .toggle {
