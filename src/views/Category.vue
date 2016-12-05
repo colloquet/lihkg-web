@@ -23,7 +23,7 @@
               <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
                 <ul class="uk-nav uk-nav-dropdown">
                   <li v-for="n in thread.total_page">
-                    <router-link :to="`/thread/${thread.thread_id}/page/${n}`">第 {{ n }} 頁</router-link>
+                    <router-link :to="`/thread/${thread.thread_id}/page/${n}?page-switcher=true`">第 {{ n }} 頁</router-link>
                   </li>
                 </ul>
               </div>

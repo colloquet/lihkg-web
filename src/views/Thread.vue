@@ -246,7 +246,7 @@ export default {
   mounted () {
     this.$store.commit('SET_ACTIVE_THREAD', {})
 
-    if (this.threadHistory[this.threadID] && this.threadHistory[this.threadID] !== 1) {
+    if (this.threadHistory[this.threadID] && this.threadHistory[this.threadID] !== 1 && !this.$route.query['page-switcher']) {
       this.pageNumber = this.threadHistory[this.threadID].page || 1
       this.fetchThread(this.pageNumber)
     } else {
