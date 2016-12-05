@@ -1,6 +1,5 @@
 <template>
   <div v-if="activeThread">
-
     <div class="uk-hidden-small uk-margin-bottom navigation-bar">
       <div class="uk-grid uk-grid-collapse">
         <div class="uk-width-1-5">
@@ -11,7 +10,7 @@
         <div class="uk-width-3-5">
           <div class="uk-grid uk-grid-collapse">
             <div class="uk-width-1-3">
-              <a :class="{'uk-invisible': !hasPrevPage}" @click="pageNumber -= 1"><span class="uk-icon-angle-left"></span> 上一頁</a>
+              <a :class="{'uk-invisible': !hasPrevPage}" @click="handleLoadPrevPage"><span class="uk-icon-angle-left"></span> 上一頁</a>
             </div>
             <div class="uk-width-1-3">
               <div class="uk-position-relative page-switcher" data-uk-dropdown="{pos:'bottom-center', mode: 'click'}">
@@ -24,7 +23,7 @@
               </div>
             </div>
             <div class="uk-width-1-3">
-              <a :class="{'uk-invisible': !hasNextPage}" @click="pageNumber += 1">下一頁 <span class="uk-icon-angle-right"></span></a>
+              <a :class="{'uk-invisible': !hasNextPage}" @click="handleLoadNextPage">下一頁 <span class="uk-icon-angle-right"></span></a>
             </div>
           </div>
         </div>
@@ -59,7 +58,7 @@
         <div class="uk-width-3-5">
           <div class="uk-grid uk-grid-collapse">
             <div class="uk-width-1-3">
-              <a :class="{'uk-invisible': !hasPrevPage}" @click="pageNumber -= 1"><span class="uk-icon-angle-left"></span> 上一頁</a>
+              <a :class="{'uk-invisible': !hasPrevPage}" @click="handleLoadPrevPage"><span class="uk-icon-angle-left"></span> 上一頁</a>
             </div>
             <div class="uk-width-1-3">
               <div class="uk-position-relative page-switcher" data-uk-dropdown="{pos:'top-center', mode: 'click'}">
@@ -72,7 +71,7 @@
               </div>
             </div>
             <div class="uk-width-1-3">
-              <a :class="{'uk-invisible': !hasNextPage}" @click="pageNumber += 1">下一頁 <span class="uk-icon-angle-right"></span></a>
+              <a :class="{'uk-invisible': !hasNextPage}" @click="handleLoadNextPage">下一頁 <span class="uk-icon-angle-right"></span></a>
             </div>
           </div>
         </div>
@@ -94,7 +93,7 @@
         <div class="uk-width-3-4">
           <div class="uk-grid uk-grid-collapse">
             <div class="uk-width-1-3">
-              <a :class="{'uk-invisible': !hasPrevPage}" @click="pageNumber -= 1"><span class="uk-icon-angle-left"></span> 上一頁</a>
+              <a :class="{'uk-invisible': !hasPrevPage}" @click="handleLoadPrevPage"><span class="uk-icon-angle-left"></span> 上一頁</a>
             </div>
             <div class="uk-width-1-3">
               <div class="uk-position-relative page-switcher" data-uk-dropdown="{pos:'top-center', mode: 'click'}">
@@ -107,7 +106,7 @@
               </div>
             </div>
             <div class="uk-width-1-3">
-              <a :class="{'uk-invisible': !hasNextPage}" @click="pageNumber += 1">下一頁 <span class="uk-icon-angle-right"></span></a>
+              <a :class="{'uk-invisible': !hasNextPage}" @click="handleLoadNextPage">下一頁 <span class="uk-icon-angle-right"></span></a>
             </div>
           </div>
         </div>
@@ -236,6 +235,16 @@ export default {
       } else {
         this.$router.push(`/category/${this.activeCategory.cat_id}`)
       }
+    },
+    handleLoadNextPage () {
+      if (this.hasNextPage) {
+        this.pageNumber += 1
+      }
+    },
+    handleLoadPrevPage () {
+      if (this.hasPrevPage) {
+        this.pageNumber -= 1
+      }
     }
   },
   watch: {
@@ -257,6 +266,15 @@ export default {
       this.fromThreadList = false
     }
 
+    document.onkeydown = (e) => {
+      e = e || window.event
+      if (e.keyCode === 37) {
+        this.handleLoadPrevPage()
+      } else if (e.keyCode === 39) {
+        this.handleLoadNextPage()
+      }
+    }
+
     $('body').on('click', '.image-lazy-load', (e) => {
       const target = $(e.target)
       const src = target.data('src')
@@ -272,6 +290,9 @@ export default {
       }
       newImg.src = src
     })
+  },
+  beforeDestroy () {
+    document.onkeydown = null
   }
 }
 </script>
@@ -377,11 +398,6 @@ export default {
         background: #f1c40f;
       }
     }
-  }
-
-  .uk-dropdown-scrollable {
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
   }
 }
 

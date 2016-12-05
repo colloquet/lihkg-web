@@ -30,7 +30,13 @@ const mutations = {
       page: post.page,
       no_of_reply: post.no_of_reply
     }
-    window.localStorage.threadHistory = JSON.stringify(state.threadHistory)
+    try {
+      window.localStorage.setItem('threadHistory', JSON.stringify(state.threadHistory))
+    } catch (e) {
+      // localStorage.setItem does not work in Safari private mode
+      // http://stackoverflow.com/questions/21159301/quotaexceedederror-dom-exception-22-an-attempt-was-made-to-add-something-to-st
+      console.log(e)
+    }
   },
   [types.SET_THREAD_HISTORY] (state, history) {
     state.threadHistory = history

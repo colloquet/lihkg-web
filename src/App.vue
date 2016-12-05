@@ -156,10 +156,10 @@ export default {
   },
   watch: {
     whiteTheme (newVal, oldVal) {
-      window.localStorage.whiteTheme = newVal
+      window.localStorage.setItem('whiteTheme', newVal)
     },
     autoLoadImage (newVal, oldVal) {
-      window.localStorage.autoLoadImage = newVal
+      window.localStorage.setItem('autoLoadImage', newVal)
     }
   },
   mounted () {
@@ -168,16 +168,16 @@ export default {
       self.fetchCategories()
     }
 
-    if (window.localStorage.whiteTheme === 'true') {
+    if (window.localStorage.getItem('whiteTheme') === 'true') {
       this.$store.commit('TOGGLE_WHITE_THEME')
     }
 
-    if (window.localStorage.autoLoadImage === 'true') {
+    if (window.localStorage.getItem('autoLoadImage') === 'true') {
       this.$store.commit('TOGGLE_AUTO_LOAD_IMAGE')
     }
 
-    if (window.localStorage.threadHistory) {
-      this.$store.commit('SET_THREAD_HISTORY', JSON.parse(window.localStorage.threadHistory))
+    if (window.localStorage.getItem('threadHistory')) {
+      this.$store.commit('SET_THREAD_HISTORY', JSON.parse(window.localStorage.getItem('threadHistory')))
     }
 
     // if (document.referrer.indexOf('hkg.plus') >= 0) {
@@ -340,5 +340,10 @@ blockquote {
   &:last-child {
     border-bottom: 0;
   }
+}
+
+.uk-dropdown-scrollable {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 </style>
