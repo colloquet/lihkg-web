@@ -29,5 +29,8 @@ export default {
   },
   fetchThread (threadID, page) {
     return axios.get(`https://lihkg.com/api_v1/thread/${threadID}/page/${page}`)
+  },
+  fetchSearchResult (query, page) {
+    return axios.get(`https://lihkg.com/api_v1/thread/search?q=${query}&page=${page}&count=30`)
   }
 }

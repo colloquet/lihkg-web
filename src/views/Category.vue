@@ -19,7 +19,7 @@
               </small>
             </router-link>
             <div class="page-switcher" data-uk-dropdown="{pos:'bottom-right', mode: 'click'}">
-              <div>第 {{ thread.total_page }} 頁 <span class="uk-icon-caret-down"></span></div>
+              <div>{{ thread.total_page }} 頁 <span class="uk-icon-caret-down"></span></div>
               <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
                 <ul class="uk-nav uk-nav-dropdown">
                   <li v-for="n in thread.total_page">
@@ -177,7 +177,7 @@ export default {
   display: block;
   padding: 15px;
   padding-left: 30px;
-  margin-right: 90px;
+  margin-right: 80px;
 
   &:hover {
     background: #383838;
@@ -187,6 +187,10 @@ export default {
     &:hover {
       background: #f5f5f5;
     }
+  }
+
+  small {
+    font-size: 70%;
   }
 }
 

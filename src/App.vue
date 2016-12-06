@@ -1,10 +1,11 @@
 <template>
-  <div id="app" :class="{'white-theme': whiteTheme}">
+  <div id="app" :class="{'white-theme': whiteTheme, 'is-safari': isSafari}">
 
     <nav class="uk-flex uk-flex-space-between navbar">
       <a href="#offcanvas-categories" class="sidebar-toggle" data-uk-offcanvas="{mode:'none'}"><span class="uk-icon-bars"></span> {{ activeCategory ? activeCategory.name : '轉台' }}</a>
 
-      <div class="refresh" v-if="$route.name === 'Category'">
+      <div v-if="$route.name === 'Category'">
+        <router-link to="/search" class="search-toggle"><span class="uk-icon-search"></span> 搜尋</router-link>
         <a class="refresh-toggle" @click.prevent="handleRefresh"><span class="uk-icon-refresh"></span> F5</a>
       </div>
 
@@ -122,6 +123,9 @@ export default {
     },
     threadHistory () {
       return this.$store.state.settings.threadHistory
+    },
+    isSafari () {
+      return navigator.userAgent.indexOf('Safari') > -1 && navigator.userAgent.indexOf('Chrome') === -1
     }
   },
   methods: {
@@ -190,6 +194,7 @@ export default {
 <style lang="scss">
 html {
   background: #222;
+  font-size: 16px;
 
   &.white-theme {
     background: #f1f1f1;
@@ -238,7 +243,8 @@ blockquote {
   top: 0;
   left: 0;
   width: 100%;
-  background: #3c3c3c;
+  background: rgba(#222, 0.5);
+  backdrop-filter: blur(10px);
   z-index: 999;
 }
 
@@ -256,7 +262,7 @@ blockquote {
   }
 }
 
-.refresh-toggle {
+.refresh-toggle, .search-toggle {
   display: inline-block;
   border-left: 1px solid #757575;
   height: 40px;
@@ -289,6 +295,11 @@ blockquote {
 
   &:after {
     display: none;
+  }
+
+  .is-safari & {
+    background: rgba(#222, 0.7);
+    backdrop-filter: blur(10px);
   }
 }
 
