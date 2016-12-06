@@ -1,23 +1,7 @@
 <template>
   <div id="app" :class="{'white-theme': whiteTheme, 'is-safari': isSafari}">
 
-    <nav class="uk-flex uk-flex-space-between navbar">
-      <a href="#offcanvas-categories" class="sidebar-toggle" data-uk-offcanvas="{mode:'none'}"><span class="uk-icon-bars"></span> {{ activeCategory ? activeCategory.name : '轉台' }}</a>
-
-      <div v-if="$route.name === 'Category'">
-        <router-link to="/search" class="search-toggle"><span class="uk-icon-search"></span> 搜尋</router-link>
-        <a class="refresh-toggle" @click.prevent="handleRefresh"><span class="uk-icon-refresh"></span> F5</a>
-      </div>
-
-      <div class="nav-title" v-if="$route.name === 'Thread'" @click="goToTop">
-        <span>{{ activeThread ? activeThread.title : '載入中…' }}</span>
-      </div>
-
-      <div class="rating" v-if="activeThread && $route.name === 'Thread'">
-        <span class="uk-icon-thumbs-up like-color"></span> {{ activeThread.like_count }}
-        <span class="uk-icon-thumbs-down uk-margin-small-left dislike-color"></span> {{ activeThread.dislike_count }}
-      </div>
-    </nav>
+    <navbar></navbar>
 
     <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">
       <!-- <div class="uk-alert" data-uk-alert>
@@ -27,38 +11,7 @@
       <router-view></router-view>
     </div>
 
-    <div id="offcanvas-categories" class="uk-offcanvas">
-      <div class="uk-offcanvas-bar">
-        <ul class="uk-nav uk-nav-offcanvas">
-          <li>
-            <div class="uk-grid uk-grid-collapse offcanvas-header">
-              <div class="uk-width-1-2" @click="closeOffcanvas">
-                <router-link :to="'/category/1'">
-                  LIHK 討論區
-                </router-link>
-              </div>
-              <div class="uk-width-1-2">
-                <a href="#modal-setting" data-uk-modal>
-                  <span class="uk-icon-cog"></span> 設定
-                </a>
-              </div>
-            </div>
-          </li>
-          <li
-            v-for="category in allCategories"
-            :key="category.cat_id"
-            :class="{'uk-active': activeCategory ? category.cat_id === activeCategory.cat_id : false}"
-            @click="closeOffcanvas">
-            <router-link :to="'/category/' + category.cat_id">
-              {{ category.name }}
-            </router-link>
-          </li>
-          <li>
-            <a href="#modal-about" data-uk-modal>關於本站</a>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <offcanvas></offcanvas>
 
     <div id="modal-about" class="uk-modal">
       <div class="uk-modal-dialog">
@@ -93,9 +46,10 @@
 </template>
 
 <script>
-/* global UIkit */
 import FastClick from 'fastclick'
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
+import Navbar from './components/Navbar'
+import Offcanvas from './components/Offcanvas'
 
 if ('addEventListener' in document) {
   document.addEventListener('DOMContentLoaded', () => {
@@ -105,15 +59,13 @@ if ('addEventListener' in document) {
 
 export default {
   name: 'app',
+  components: {
+    Navbar,
+    Offcanvas
+  },
   computed: {
-    ...mapGetters([
-      'activeCategory'
-    ]),
     allCategories () {
       return this.$store.state.categories.categories
-    },
-    activeThread () {
-      return this.$store.state.threads.activeThread
     },
     whiteTheme () {
       return this.$store.state.settings.whiteTheme
@@ -130,20 +82,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'fetchCategories',
-      'fetchThreadList'
+      'fetchCategories'
     ]),
-    closeOffcanvas () {
-      UIkit.offcanvas.hide()
-      document.body.scrollTop = document.documentElement.scrollTop = 0
-    },
-    handleRefresh () {
-      this.fetchThreadList({
-        catID: this.activeCategory.cat_id,
-        page: 1
-      })
-      document.body.scrollTop = document.documentElement.scrollTop = 0
-    },
     toggleWhiteTheme () {
       this.$store.commit('TOGGLE_WHITE_THEME')
     },
@@ -153,9 +93,6 @@ export default {
     resetThreadHistory () {
       this.$store.commit('RESET_THREAD_HISTORY')
       window.alert('底已洗')
-    },
-    goToTop () {
-      UIkit.Utils.scrollToElement(UIkit.$('#app'))
     }
   },
   watch: {
@@ -191,7 +128,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="stylus">
 html {
   background: #222;
   font-size: 16px;
@@ -237,80 +174,6 @@ blockquote {
   padding: 0 15px;
 }
 
-.navbar {
-  position: fixed;
-  box-shadow: 1px 1px 9px 1px rgba(0,0,0,0.3);
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: rgba(#222, 0.5);
-  backdrop-filter: blur(10px);
-  z-index: 999;
-}
-
-.sidebar-toggle {
-  flex-shrink: 0;
-  border-right: 1px solid #757575;
-  // color: #e6e6e6;
-  height: 40px;
-  padding: 0 15px;
-  line-height: 40px;
-  text-decoration: none;
-
-  &:hover, &:focus, &:active {
-    text-decoration: none;
-  }
-}
-
-.refresh-toggle, .search-toggle {
-  display: inline-block;
-  border-left: 1px solid #757575;
-  height: 40px;
-  padding: 0 15px;
-  line-height: 40px;
-}
-
-.nav-title {
-  border-right: 1px solid #757575;
-  padding: 0 15px;
-  white-space: nowrap;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 40px;
-  color: #e6e6e6;
-  cursor: pointer;
-}
-
-.rating {
-  flex-shrink: 0;
-  height: 40px;
-  padding: 0 15px;
-  line-height: 40px;
-  color: #e6e6e6;
-}
-
-.uk-offcanvas-bar {
-  box-shadow: 1px 1px 4px 1px #000;
-
-  &:after {
-    display: none;
-  }
-
-  .is-safari & {
-    background: rgba(#222, 0.7);
-    backdrop-filter: blur(10px);
-  }
-}
-
-.offcanvas-header {
-  a {
-    display: block;
-    padding: 10px 15px;
-    text-align: center;
-  }
-}
-
 .uk-alert {
   background: #2d2d2d;
   border: 1px solid #444;
@@ -339,22 +202,16 @@ blockquote {
   opacity: 1;
 }
 
-.toggle {
-  display: block;
-  padding: 15px;
-  border-bottom: 1px solid #444;
-
-  .white-theme & {
-    border-bottom: 1px solid #ddd;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-}
-
 .uk-dropdown-scrollable {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+}
+
+.uk-nav-dropdown {
+  line-height: 20px;
+
+  >li>a:focus, >li>a:hover {
+    background: #f1c40f;
+  }
 }
 </style>

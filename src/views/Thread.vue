@@ -36,11 +36,13 @@
         <li class="uk-width-1-1 uk-margin-bottom" v-for="(comment, index) in activeThread.item_data">
           <div class="comment">
             <p>
-              <span class="uk-text-muted" :class="{'author': activeThread.user.user_id === comment.user.user_id}">#{{ getCommentIndex(index, comment.page) }}</span>
-              <span :class="{male: comment.user.gender === 'M', female: comment.user.gender === 'F', admin: comment.user.level === '999'}">{{ comment.user.nickname }}</span>
-              <span class="uk-text-muted">// {{ getRelativeTime(comment.reply_time) }}</span>
-              <span class="uk-icon-eye uk-float-right story-mode-toggle" @click="toggleStoryMode(comment.user.user_id)" v-if="storeyModeID === -1"></span>
-              <span class="uk-icon-eye-slash uk-float-right story-mode-toggle" @click="toggleStoryMode(comment.user.user_id)" v-else></span>
+              <small>
+                <span class="uk-text-muted" :class="{'author': activeThread.user.user_id === comment.user.user_id}">#{{ getCommentIndex(index, comment.page) }}</span>
+                <span :class="comment.user.level === '999' ? 'admin' : comment.user.gender === 'M' ? 'male' : 'female'">{{ comment.user.nickname }}</span>
+                <span class="uk-text-muted">// {{ getRelativeTime(comment.reply_time) }}</span>
+                <span class="uk-icon-eye uk-float-right story-mode-toggle" @click="toggleStoryMode(comment.user.user_id)" v-if="storeyModeID === -1"></span>
+                <span class="uk-icon-eye-slash uk-float-right story-mode-toggle" @click="toggleStoryMode(comment.user.user_id)" v-else></span>
+              </small>
             </p>
             <div v-html="prepareCommentMsg(comment.msg)" v-show="comment.user.user_id === storeyModeID || storeyModeID === -1"></div>
           </div>
@@ -341,6 +343,10 @@ export default {
   img {
     vertical-align: text-bottom;
   }
+
+  small {
+    font-size: 80%;
+  }
 }
 
 .bottom-bar {
@@ -351,6 +357,7 @@ export default {
   left: 0;
   bottom: 0;
   width: 100%;
+  font-size: 14px;
   z-index: 999;
 
   .page-switcher {
@@ -390,14 +397,6 @@ export default {
     .is-active {
       background: #eee;
       font-weight: bold;
-    }
-
-    .uk-nav-dropdown {
-      line-height: 20px;
-
-      >li>a:focus, >li>a:hover {
-        background: #f1c40f;
-      }
     }
   }
 }
