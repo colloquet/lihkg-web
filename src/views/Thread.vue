@@ -27,7 +27,22 @@
             </div>
           </div>
         </div>
-        <div class="uk-width-1-5"></div>
+        <div class="uk-width-1-5">
+          <div class="uk-position-relative" data-uk-dropdown="{pos:'bottom-right', mode: 'click'}">
+            <a class="more-link">
+              <span class="uk-icon-ellipsis-v"></span> 更多
+            </a>
+            <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
+              <ul class="uk-nav uk-nav-dropdown">
+                <li>
+                  <a class="uk-dropdown-close" @click.prevent="enablePhotoMode">
+                    <span class="uk-icon-image"></span> 圖片模式 (會使用大量數據)
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -77,7 +92,22 @@
             </div>
           </div>
         </div>
-        <div class="uk-width-1-5"></div>
+        <div class="uk-width-1-5">
+          <div class="uk-position-relative" data-uk-dropdown="{pos:'top-right', mode: 'click'}">
+            <a class="more-link">
+              <span class="uk-icon-ellipsis-v"></span> 更多
+            </a>
+            <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
+              <ul class="uk-nav uk-nav-dropdown">
+                <li>
+                  <a class="uk-dropdown-close" @click.prevent="enablePhotoMode">
+                    <span class="uk-icon-image"></span> 圖片模式 (會使用大量數據)
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -87,12 +117,12 @@
 
     <div class="uk-visible-small bottom-bar">
       <div class="uk-grid uk-grid-collapse">
-        <div class="uk-width-1-4">
+        <div class="uk-width-1-6">
           <a class="return-link" v-if="activeCategory" @click.prevent="backToThreadList">
-            <span class="uk-icon-reply"></span> {{ activeCategory.name }}
+            <span class="uk-icon-reply"></span>
           </a>
         </div>
-        <div class="uk-width-3-4">
+        <div class="uk-width-4-6">
           <div class="uk-grid uk-grid-collapse">
             <div class="uk-width-1-3">
               <a :class="{'uk-invisible': !hasPrevPage}" @click="handleLoadPrevPage"><span class="uk-icon-angle-left"></span> 上一頁</a>
@@ -112,8 +142,43 @@
             </div>
           </div>
         </div>
+        <div class="uk-width-1-6">
+          <div class="uk-position-relative" data-uk-dropdown="{pos:'top-right', mode: 'click'}">
+            <a class="more-link">
+              <span class="uk-icon-ellipsis-v"></span>
+            </a>
+            <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
+              <ul class="uk-nav uk-nav-dropdown">
+                <li>
+                  <a class="uk-dropdown-close" @click.prevent="enablePhotoMode">
+                    <span class="uk-icon-image"></span> 圖片模式 (會使用大量數據)
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+
+    <transition name="slide">
+      <div class="photo-mode-container" v-if="photoMode">
+        <div class="uk-clearfix photo-mode-header">
+          <span class="uk-icon-image"></span> 圖片模式
+          <a class="uk-float-right photo-mode-close" @click.prevent="disablePhotoMode"><span class="uk-icon-remove"></span> 關閉</a>
+        </div>
+        <div class="photo-mode-body">
+          <p class="uk-text-center" v-if="noImages">此post冇圖片</p>
+          <div class="uk-grid uk-grid-small uk-grid-width-1-3 uk-grid-width-medium-1-4 uk-grid-width-large-1-5 uk-grid-width-xlarge-1-6" v-else>
+            <div v-for="image in images">
+              <a :href="image.url" data-uk-lightbox="{group:'photo-mode'}" data-lightbox-type="image">
+                <div class="image-container" :style="{backgroundImage: `url(${image.url})`}"></div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -135,7 +200,10 @@ export default {
     return {
       isThreadLoading: false,
       storeyModeID: -1,
-      fromThreadList: true
+      fromThreadList: true,
+      photoMode: false,
+      images: [],
+      noImages: false
     }
   },
   computed: {
@@ -247,6 +315,24 @@ export default {
       if (this.hasPrevPage) {
         this.pageNumber -= 1
       }
+    },
+    enablePhotoMode () {
+      const self = this
+      self.photoMode = true
+      if (!self.images.length && !self.noImages) {
+        lihkg.fetchImages(this.threadID).then((response) => {
+          if (response.data.response.images.length) {
+            self.images = response.data.response.images
+          } else {
+            self.noImages = true
+          }
+        }).catch((e) => {
+          console.log(e)
+        })
+      }
+    },
+    disablePhotoMode () {
+      this.photoMode = false
     }
   },
   watch: {
@@ -401,5 +487,56 @@ export default {
   }
 }
 
+.more-link {
+  display: block;
+  height: 50px;
+  padding: 0 15px;
+  line-height: 50px;
+}
 
+.photo-mode-container {
+  position: fixed;
+  background: #222;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+
+  .photo-mode-header {
+    box-shadow: 1px 1px 9px 1px rgba(0,0,0,0.3);
+    background: #333;
+    padding: 0 15px;
+    line-height: 40px;
+  }
+
+  .photo-mode-body {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 15px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    .image-container {
+      background-size: cover;
+      background-color: #333;
+      width: 100%;
+      padding-bottom: 100%;
+      margin-bottom: 15px;
+    }
+  }
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all .3s ease;
+}
+
+.slide-enter,
+.slide-leave-active {
+  transform: translateY(100%);
+}
 </style>

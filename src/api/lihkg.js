@@ -32,5 +32,8 @@ export default {
   },
   fetchSearchResult (query, page) {
     return axios.get(`https://lihkg.com/api_v1/thread/search?q=${query}&page=${page}&count=30`)
+  },
+  fetchImages (threadID) {
+    return axios.get(`https://lihkg.com/api_v1/thread/${threadID}/images`)
   }
 }
