@@ -31,13 +31,13 @@
     <div id="modal-setting" class="uk-modal">
       <div class="uk-modal-dialog">
         <a class="uk-modal-close uk-close"></a>
-        <a class="theme-toggle toggle" @click.prevent="toggleWhiteTheme">
+        <a class="theme-toggle settings-toggle" @click.prevent="toggleWhiteTheme">
           白底 {{ whiteTheme ? 'ON' : 'OFF' }}
         </a>
-        <a class="auto-load-image-toggle toggle" @click.prevent="toggleAutoLoadImage">
+        <a class="auto-load-image-toggle settings-toggle" @click.prevent="toggleAutoLoadImage">
           自動撈圖 {{ autoLoadImage ? 'ON' : 'OFF' }}
         </a>
-        <a class="toggle" @click.prevent="resetThreadHistory">
+        <a class="settings-toggle" @click.prevent="resetThreadHistory">
           清除睇post記錄
         </a>
       </div>
@@ -212,6 +212,20 @@ blockquote {
 
   >li>a:focus, >li>a:hover {
     background: #f1c40f;
+  }
+}
+
+.settings-toggle {
+  display: block;
+  padding: 15px;
+  border-bottom: 1px solid #444;
+
+  .white-theme & {
+    border-bottom: 1px solid #ddd;
+  }
+
+  &:last-child {
+    border-bottom: 0;
   }
 }
 </style>

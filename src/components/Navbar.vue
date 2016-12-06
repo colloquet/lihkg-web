@@ -3,6 +3,7 @@
     <a href="#offcanvas-categories" class="sidebar-toggle" data-uk-offcanvas="{mode:'none'}"><span class="uk-icon-bars"></span> {{ activeCategory ? activeCategory.name : '轉台' }}</a>
 
     <div v-if="$route.name === 'Category'">
+      <a href="https://github.com/colloquet/lihkg-web" target="_blank" class="refresh-toggle"><span class="uk-icon-github"></span> GitHub</a>
       <router-link to="/search" class="search-toggle"><span class="uk-icon-search"></span> 搜尋</router-link>
       <a class="refresh-toggle" @click.prevent="handleRefresh"><span class="uk-icon-refresh"></span> F5</a>
     </div>
@@ -64,7 +65,7 @@ export default {
 
 .sidebar-toggle {
   flex-shrink: 0;
-  border-right: 1px solid #757575;
+  /*border-right: 1px solid #757575;*/
   // color: #e6e6e6;
   height: 40px;
   padding: 0 15px;
@@ -85,7 +86,7 @@ export default {
 }
 
 .nav-title {
-  border-right: 1px solid #757575;
+  border-left: 1px solid #757575;
   padding: 0 15px;
   white-space: nowrap;
   width: 100%;
@@ -97,24 +98,11 @@ export default {
 }
 
 .rating {
+  border-left: 1px solid #757575;
   flex-shrink: 0;
   height: 40px;
   padding: 0 15px;
   line-height: 40px;
   color: #e6e6e6;
-}
-
-.toggle {
-  display: block;
-  padding: 15px;
-  border-bottom: 1px solid #444;
-
-  .white-theme & {
-    border-bottom: 1px solid #ddd;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
 }
 </style>
