@@ -6,7 +6,7 @@
           <div class="uk-grid uk-grid-collapse offcanvas-header">
             <div class="uk-width-1-2" @click="closeOffcanvas">
               <router-link to="/category/1">
-                LIHK 討論區
+                LIHKG 討論區
               </router-link>
             </div>
             <div class="uk-width-1-2">
