@@ -168,12 +168,14 @@
           <a class="uk-float-right photo-mode-close" @click.prevent="disablePhotoMode"><span class="uk-icon-remove"></span> 關閉</a>
         </div>
         <div class="photo-mode-body">
-          <p class="uk-text-center" v-if="noImages">此post冇圖片</p>
-          <div class="uk-grid uk-grid-small uk-grid-width-1-3 uk-grid-width-medium-1-4 uk-grid-width-large-1-5 uk-grid-width-xlarge-1-6" v-else>
-            <div v-for="image in images">
-              <a :href="image.url" data-uk-lightbox="{group:'photo-mode'}" data-lightbox-type="image">
-                <div class="image-container" :style="{backgroundImage: `url(${image.url})`}"></div>
-              </a>
+          <div class="uk-container uk-container-center">
+            <p class="uk-text-center" v-if="noImages">此post冇圖片</p>
+            <div class="uk-grid uk-grid-small uk-grid-width-1-3 uk-grid-width-medium-1-4 uk-grid-width-large-1-5 uk-grid-width-xlarge-1-6" v-else>
+              <div v-for="image in images">
+                <a :href="image.url" data-uk-lightbox="{group:'photo-mode'}" data-lightbox-type="image">
+                  <div class="image-container" :style="{backgroundImage: `url(${image.url})`}"></div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -503,11 +505,19 @@ export default {
   left: 0;
   z-index: 1000;
 
+  .white-theme & {
+    background: #f1f1f1;
+  }
+
   .photo-mode-header {
     box-shadow: 1px 1px 9px 1px rgba(0,0,0,0.3);
     background: #333;
     padding: 0 15px;
     line-height: 40px;
+
+    .white-theme & {
+      color: #e6e6e6;
+    }
   }
 
   .photo-mode-body {
@@ -516,7 +526,7 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
-    padding: 15px;
+    padding: 15px 0;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
 
@@ -526,6 +536,10 @@ export default {
       width: 100%;
       padding-bottom: 100%;
       margin-bottom: 15px;
+
+      .white-theme & {
+        background: #ddd;
+      }
     }
   }
 }
