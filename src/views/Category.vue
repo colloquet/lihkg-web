@@ -140,7 +140,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="stylus">
 .is-loading {
   opacity: 0.3;
 }

@@ -297,7 +297,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="stylus">
 .male {
   color: #237afd;
 }
