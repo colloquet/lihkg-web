@@ -422,6 +422,7 @@ export default {
   background: #2d2d2d;
   padding: 15px;
   word-wrap: break-word;
+  line-height: 1.2;
 
   .white-theme & {
     box-shadow: 0 1px 4px rgba(0,0,0,.15);
@@ -473,6 +474,10 @@ export default {
       height: 50px;
       padding: 0 15px;
       line-height: 50px;
+
+      @media(max-width: 375px) {
+        padding: 0 10px;
+      }
     }
   }
 
@@ -481,6 +486,10 @@ export default {
     padding: 0 15px;
     line-height: 50px;
     cursor: pointer;
+
+    @media(max-width: 375px) {
+      padding: 0 10px;
+    }
 
     .is-active {
       background: #eee;
@@ -494,6 +503,10 @@ export default {
   height: 50px;
   padding: 0 15px;
   line-height: 50px;
+
+  @media(max-width: 375px) {
+    padding: 0 10px;
+  }
 }
 
 .photo-mode-container {
@@ -532,6 +545,7 @@ export default {
 
     .image-container {
       background-size: cover;
+      background-position: center center;
       background-color: #333;
       width: 100%;
       padding-bottom: 100%;

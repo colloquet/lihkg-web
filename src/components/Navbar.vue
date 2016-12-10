@@ -72,6 +72,10 @@ export default {
   line-height: 40px;
   text-decoration: none;
 
+  @media(max-width: 375px) {
+    padding: 0 10px;
+  }
+
   &:hover, &:focus, &:active {
     text-decoration: none;
   }
@@ -83,6 +87,10 @@ export default {
   height: 40px;
   padding: 0 15px;
   line-height: 40px;
+
+  @media(max-width: 375px) {
+    padding: 0 10px;
+  }
 }
 
 .nav-title {

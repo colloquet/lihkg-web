@@ -6,7 +6,7 @@
     <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">
       <!-- <div class="uk-alert" data-uk-alert>
         <a href="#" class="uk-alert-close uk-close"></a>
-        <p>收到巴打通知hkg.plus redirect左黎呢個網，我想係到澄清本站同hkg.plus絕無任何關係。</p>
+        <p>不妨試下重新寫過既React版，比較注重Desktop: <a href="https://lihkg-web.firebaseapp.com/" target="_blank">https://lihkg-web.firebaseapp.com/</a></p>
       </div> -->
       <router-view></router-view>
     </div>
@@ -168,6 +168,14 @@ blockquote {
   font-size: inherit;
   line-height: inherit;
   color: #888;
+
+  > blockquote {
+    > blockquote {
+      > blockquote {
+        display: none;
+      }
+    }
+  }
 }
 
 .uk-container {
