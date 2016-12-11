@@ -76,7 +76,7 @@ export default {
 .offcanvas-header {
   a {
     display: block;
-    padding: 10px 15px;
+    padding: 10px 5px;
     text-align: center;
   }
 }

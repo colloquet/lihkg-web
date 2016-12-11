@@ -16,14 +16,14 @@
       <span class="uk-icon-thumbs-up like-color"></span> {{ activeThread.like_count }}
       <span class="uk-icon-thumbs-down uk-margin-small-left dislike-color"></span> {{ activeThread.dislike_count }}
     </div>
-    <div class="rating" v-if="activeThread && $route.name === 'Thread'">
-      <a data-uk-toggle="{target:'#mobileEntryDiv', cls:'show'}"><span class="uk-icon-qrcode like-color"></span> 開APP</a>
+    <div class="rating" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}" v-if="activeThread && $route.name === 'Thread'">
+      <a><span class="uk-icon-qrcode like-color"></span><span class="uk-hidden-small"> 開APP</span></a>
+      <div class="uk-dropdown-blank mobile-entry-popup" v-if="activeThread && $route.name === 'Thread'">
+        <a :href="pageAppLink()" target="_blank"><div class="row"><span class="uk-icon-external-link"></span> 電話繼續追</div></a>
+        <div class="row" v-html="qr()"></div>
+      </div>
     </div>
 
-    <div class="mobile-entry-popup" id="mobileEntryDiv" v-if="activeThread && $route.name === 'Thread'">
-      <a :href="pageAppLink()" target="_blank"><div class="row"><span class="uk-icon-external-link"></span> 電話繼續追</div></a>
-      <div class="row" v-html="qr()"></div>
-    </div>
   </nav>
 </template>
 
@@ -56,21 +56,17 @@ export default {
     goToTop () {
       UIkit.Utils.scrollToElement(UIkit.$('#app'))
     },
-    showMobileEntry () {
-      console.log(this.pageAppLink())
-    },
     pageAppLink () {
-      var threadId = (this.$store.state.route.params.id)
-      var currentPage = (this.$store.state.route.params.page * 1 || 1)
-      return 'https://lihkg.com/thread/' + threadId + '/page/' + currentPage + '?ref=lihk-firebase'
+      const threadId = this.$store.state.route.params.id
+      const currentPage = this.$store.state.route.params.page * 1 || 1
+      return `https://lihkg.com/thread/${threadId}/page/${currentPage}?ref=lihk-firebase`
     },
     qr () {
       try {
-        var qr = qrCode.qrcode(4, 'M')
-        var refLink = this.pageAppLink()
+        const qr = qrCode.qrcode(4, 'M')
+        const refLink = this.pageAppLink()
         qr.addData(refLink)
         qr.make()
-        // return qr.createImgTag(4)
         return qr.createTableTag(4)
       } catch (e) {
         return 'QR code: 你條Link 太長.'
@@ -143,25 +139,19 @@ export default {
   color: #e6e6e6;
 }
 
-.mobile-entry-popup{
-  display: none;
-  position: fixed;
-  right: 16px;
-  top: 50px;
+.mobile-entry-popup {
+  margin-top: 10px;
   width: 200px;
 
   box-shadow: 0 1px 4px rgba(0,0,0,0.15);
   background: #fafafa;
   word-wrap: break-word;
-}
 
-.mobile-entry-popup.show{
-  display: block;
-}
-
-.mobile-entry-popup .row{
-  border-bottom: 1px solid rgba(0,0,0,.3);
-  text-align: center;
-  padding: 10px 15px;
+  .row {
+   border-bottom: 1px solid rgba(0,0,0,.3);
+   text-align: center;
+   padding: 10px 15px;
+   line-height: 1.5;
+ }
 }
 </style>
