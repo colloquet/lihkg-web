@@ -8,7 +8,7 @@
             <span class="uk-icon-circle read-indicator" :class="{'has-new': thread.no_of_reply > threadHistory[thread.thread_id].no_of_reply}" v-if="threadHistory[thread.thread_id]"></span>
             {{ thread.title }}<br>
             <small class="uk-text-muted">
-              <span :class="thread.user.level === '999' ? 'admin' : thread.user.gender === 'M' ? 'male' : 'female'">{{ thread.user.nickname }}</span> //
+              <span :class="thread.user.level === '999' ? 'admin' : thread.user.gender === 'M' ? 'male' : 'female'">{{ thread.user_nickname }}</span> //
               {{ getRelativeTime(thread.last_reply_time) }} //
               {{ thread.no_of_reply }}個回覆 //
               <span :class="{'like-color': (thread.like_count - thread.dislike_count) >= 100, 'dislike-color': (thread.like_count - thread.dislike_count) <= -100}">

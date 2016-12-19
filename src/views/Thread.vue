@@ -53,7 +53,7 @@
             <p>
               <small>
                 <span class="uk-text-muted" :class="{'author': activeThread.user.user_id === comment.user.user_id}">#{{ getCommentIndex(index, comment.page) }}</span>
-                <span :class="comment.user.level === '999' ? 'admin' : comment.user.gender === 'M' ? 'male' : 'female'">{{ comment.user.nickname }}</span>
+                <span :class="comment.user.level === '999' ? 'admin' : comment.user.gender === 'M' ? 'male' : 'female'">{{ comment.user_nickname }}</span>
                 <span class="uk-text-muted">// {{ getRelativeTime(comment.reply_time) }}</span>
                 <span class="uk-icon-eye uk-float-right story-mode-toggle" @click="toggleStoryMode(comment.user.user_id)" v-if="storeyModeID === -1"></span>
                 <span class="uk-icon-eye-slash uk-float-right story-mode-toggle" @click="toggleStoryMode(comment.user.user_id)" v-else></span>

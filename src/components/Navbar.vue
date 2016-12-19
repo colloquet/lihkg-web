@@ -4,8 +4,8 @@
 
     <div v-if="$route.name === 'Category'">
       <a href="https://github.com/colloquet/lihkg-web" target="_blank" class="refresh-toggle"><span class="uk-icon-github"></span> GitHub</a>
-      <router-link to="/search" class="search-toggle"><span class="uk-icon-search"></span> 搜尋</router-link>
-      <a class="refresh-toggle" @click.prevent="handleRefresh"><span class="uk-icon-refresh"></span> F5</a>
+      <router-link to="/search" class="uk-hidden-small search-toggle"><span class="uk-icon-search"></span> 搜尋</router-link>
+      <a class="uk-hidden-small refresh-toggle" @click.prevent="handleRefresh"><span class="uk-icon-refresh"></span> F5</a>
     </div>
 
     <div class="nav-title" v-if="$route.name === 'Thread'" @click="goToTop">

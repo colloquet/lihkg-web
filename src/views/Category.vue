@@ -6,6 +6,22 @@
       :handle-load-more="handleLoadMore"
       :has-more-threads="hasMoreThreads"
     ></thread-list>
+
+    <div class="uk-visible-small bottom-bar">
+      <div class="uk-grid uk-grid-collapse">
+        <div class="uk-width-1-3">
+          <a class="f5-link" @click.prevent="handleRefresh">
+            <span class="uk-icon-refresh"></span> F5
+          </a>
+        </div>
+        <div class="uk-width-1-3">
+          <a href="#offcanvas-categories" data-uk-offcanvas="{mode:'none'}">轉台</a>
+        </div>
+        <div class="uk-width-1-3">
+          <router-link to="/search"><span class="uk-icon-search"></span> 搜尋</router-link>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -59,6 +75,13 @@ export default {
       'fetchThreadList',
       'fetchMoreThreadList'
     ]),
+    handleRefresh () {
+      this.fetchThreadList({
+        catID: this.activeCategory.cat_id,
+        page: 1
+      })
+      document.body.scrollTop = document.documentElement.scrollTop = 0
+    },
     handleLoadMore () {
       this.page += 1
       this.$nextTick(() => {
