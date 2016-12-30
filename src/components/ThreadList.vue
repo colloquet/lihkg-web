@@ -79,9 +79,11 @@ export default {
 
 .thread-container {
   position: relative;
+  background: #2d2d2d;
   border-bottom: 1px solid #444;
 
   .white-theme & {
+    background: #fafafa;
     border-bottom: 1px solid #ddd;
   }
 

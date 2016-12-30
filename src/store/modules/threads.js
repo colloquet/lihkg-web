@@ -65,7 +65,15 @@ const mutations = {
     state.activeThread = thread
   },
   [types.APPEND_ACTIVE_THREAD] (state, thread) {
-    state.activeThread.item_data = state.activeThread.item_data.concat(thread.item_data)
+    // state.activeThread.item_data = state.activeThread.item_data.concat(thread.item_data)
+    state.activeThread = {
+      ...thread,
+      item_page: {
+        ...state.activeThread.item_page,
+        [thread.page]: thread.item_data
+      }
+    }
+    // state.activeThread.item_page[thread.page] = state.activeThread.item_data
   }
 }
 
