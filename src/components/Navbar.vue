@@ -1,8 +1,8 @@
 <template>
   <nav class="uk-flex uk-flex-space-between navbar">
-    <a href="#offcanvas-categories" class="sidebar-toggle" data-uk-offcanvas="{mode:'none'}"><span class="uk-icon-bars"></span><span class="uk-hidden-small"> {{ activeCategory ? activeCategory.name : '轉台' }}</span></a>
+    <a href="#offcanvas-categories" class="sidebar-toggle" data-uk-offcanvas="{mode:'none'}"><span class="uk-icon-bars"></span><span v-show="$route.name === 'Category'"> {{ activeCategory ? activeCategory.name : '轉台' }}</span></a>
 
-    <div v-if="$route.name === 'Category'">
+    <div v-show="$route.name === 'Category'">
       <a href="https://github.com/colloquet/lihkg-web" target="_blank" class="refresh-toggle"><span class="uk-icon-github"></span> GitHub</a>
       <router-link to="/search" class="uk-hidden-small search-toggle"><span class="uk-icon-search"></span> 搜尋</router-link>
       <a class="uk-hidden-small refresh-toggle" @click.prevent="handleRefresh"><span class="uk-icon-refresh"></span> F5</a>
@@ -12,15 +12,15 @@
       <span>{{ activeThread ? activeThread.title : '載入中…' }}</span>
     </div>
 
-    <div class="uk-hidden-small rating" v-if="activeThread && $route.name === 'Thread'">
+    <div class="uk-hidden-small rating" v-show="activeThread && $route.name === 'Thread'">
       <span class="uk-icon-thumbs-up like-color"></span> {{ activeThread.like_count }}
       <span class="uk-icon-thumbs-down uk-margin-small-left dislike-color"></span> {{ activeThread.dislike_count }}
     </div>
-    <div class="uk-hidden-small rating" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}" v-if="activeThread && $route.name === 'Thread'">
+    <div class="uk-hidden-small rating" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}" v-show="activeThread && $route.name === 'Thread'">
       <a>
         <span class="uk-icon-qrcode like-color"></span><span class="uk-hidden-small"> 開APP</span>
       </a>
-      <div class="uk-dropdown-blank mobile-entry-popup" v-if="activeThread && $route.name === 'Thread'">
+      <div class="uk-dropdown-blank mobile-entry-popup" v-show="activeThread && $route.name === 'Thread'">
         <a :href="pageAppLink()" target="_blank"><div class="row"><span class="uk-icon-external-link"></span> 電話繼續追</div></a>
         <div class="row" v-html="qr()"></div>
       </div>

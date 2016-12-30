@@ -112,31 +112,31 @@
         </div>
       </div>
 
+      <p class="uk-text-center" v-if="page >= activeThread.total_page">
+        <button class="uk-button uk-button-large" @click="handleRefresh">F5</button>
+      </p>
     </div>
 
-    <p class="uk-text-center" v-if="!globalHasNextPage">
-      <button class="uk-button uk-button-large" @click="handleRefresh">F5</button>
-    </p>
 
     <div class="uk-visible-small bottom-bar">
       <div class="uk-grid uk-grid-collapse">
-        <div class="uk-width-1-5">
+        <div class="uk-width-1-6">
           <a class="return-link" v-if="activeCategory" @click.prevent="backToThreadList">
             <span class="uk-icon-reply"></span>
           </a>
         </div>
-        <div class="uk-width-1-5 uk-flex uk-flex-column uk-flex-center uk-flex-middle admin">
+        <div class="uk-width-1-6 uk-flex uk-flex-column uk-flex-center uk-flex-middle admin">
           <span class="uk-icon-thumbs-up"></span><span class="rating-number">{{ activeThread.like_count }}</span>
         </div>
-        <div class="uk-width-1-5 uk-flex uk-flex-column uk-flex-center uk-flex-middle admin">
+        <div class="uk-width-1-6 uk-flex uk-flex-column uk-flex-center uk-flex-middle admin">
           <span class="uk-icon-thumbs-down"></span><span class="rating-number">{{ activeThread.dislike_count }}</span>
         </div>
-        <div class="uk-width-1-5">
+        <div class="uk-width-1-6">
           <a class="action-link" @click.prevent="enablePhotoMode">
             <span class="uk-icon-image"></span>
           </a>
         </div>
-        <div class="uk-width-1-5" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}">
+        <div class="uk-width-1-6" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}">
           <a>
             <span class="uk-icon-qrcode like-color"></span>
           </a>
@@ -144,6 +144,11 @@
             <a :href="pageAppLink()" target="_blank"><div class="row"><span class="uk-icon-external-link"></span> 電話繼續追</div></a>
             <div class="row" v-html="qr()"></div>
           </div>
+        </div>
+        <div class="uk-width-1-6">
+          <a class="action-link" @click.prevent="handleScrollBottom">
+            <span class="uk-icon-arrow-down"></span>
+          </a>
         </div>
       </div>
     </div>
@@ -221,7 +226,7 @@ export default {
       return this.$store.state.settings.threadHistory
     },
     globalHasNextPage () {
-      return this.pageNumber < this.activeThread.total_page
+      return +$('.page-container:last').data('page') < this.activeThread.total_page
     }
   },
   methods: {
@@ -343,6 +348,9 @@ export default {
       const page = +$('.page-container:last').data('page')
       this.fetchThread(page, true, false, true)
     },
+    handleScrollBottom () {
+      $('html, body').animate({ scrollTop: $(document).height() }, 1000)
+    },
     enablePhotoMode () {
       const self = this
       self.photoMode = true
@@ -396,8 +404,9 @@ export default {
 
     window.onscroll = () => {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        if (!self.isThreadLoading && self.globalHasNextPage && !$('body').hasClass('uk-offcanvas-page')) {
-          self.handleLoadMore(+$('.page-container:last').data('page') + 1)
+        const page = +$('.page-container:last').data('page')
+        if (!self.isThreadLoading && page < self.activeThread.total_page && !$('body').hasClass('uk-offcanvas-page')) {
+          self.handleLoadMore(page + 1)
         }
       }
     }
