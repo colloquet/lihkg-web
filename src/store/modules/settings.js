@@ -5,6 +5,7 @@ import * as types from '../mutation-types'
 const state = {
   whiteTheme: false,
   autoLoadImage: false,
+  threadInfiniteScroll: false,
   threadHistory: {}
 }
 
@@ -24,6 +25,9 @@ const mutations = {
   },
   [types.TOGGLE_AUTO_LOAD_IMAGE] (state, status) {
     state.autoLoadImage = !state.autoLoadImage
+  },
+  [types.TOGGLE_THREAD_INFINITE_SCROLL] (state, status) {
+    state.threadInfiniteScroll = !state.threadInfiniteScroll
   },
   [types.UPDATE_HISTORY] (state, post) {
     state.threadHistory[post.id] = {

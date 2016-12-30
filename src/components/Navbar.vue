@@ -86,6 +86,10 @@ export default {
   background: rgba(#222, 0.5);
   backdrop-filter: blur(10px);
   z-index: 999;
+
+  .white-theme & {
+    background: rgba(#222, 0.7);
+  }
 }
 
 .sidebar-toggle {
@@ -108,7 +112,7 @@ export default {
 
 .refresh-toggle, .search-toggle {
   display: inline-block;
-  border-left: 1px solid #757575;
+  /*border-left: 1px solid #757575;*/
   height: 40px;
   padding: 0 15px;
   line-height: 40px;

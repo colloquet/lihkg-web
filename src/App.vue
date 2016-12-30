@@ -4,10 +4,14 @@
     <navbar></navbar>
 
     <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">
-      <!-- <div class="uk-alert" data-uk-alert>
+      <div class="uk-alert" data-uk-alert>
         <a href="#" class="uk-alert-close uk-close"></a>
-        <p>不妨試下重新寫過既React版，比較注重Desktop: <a href="https://lihkg-web.firebaseapp.com/" target="_blank">https://lihkg-web.firebaseapp.com/</a></p>
-      </div> -->
+        <p>LIHKG測試版網站現已推出: <a href="https://lihkg.com/" target="_blank">https://lihkg.com/</a></p>
+      </div>
+      <div class="uk-alert" data-uk-alert>
+        <a href="#" class="uk-alert-close uk-close"></a>
+        <p>加入自動load下一頁功能，在<a href="#modal-setting" data-uk-modal>設定</a>中開啟。</p>
+      </div>
       <router-view></router-view>
     </div>
 
@@ -36,6 +40,9 @@
         </a>
         <a class="auto-load-image-toggle settings-toggle" @click.prevent="toggleAutoLoadImage">
           自動撈圖 {{ autoLoadImage ? 'ON' : 'OFF' }}
+        </a>
+        <a class="auto-load-image-toggle settings-toggle" @click.prevent="toggleThreadInfiniteScroll">
+          自動Load下一頁 {{ threadInfiniteScroll ? 'ON' : 'OFF' }}
         </a>
         <a class="settings-toggle" @click.prevent="resetThreadHistory">
           清除睇post記錄
@@ -73,6 +80,9 @@ export default {
     autoLoadImage () {
       return this.$store.state.settings.autoLoadImage
     },
+    threadInfiniteScroll () {
+      return this.$store.state.settings.threadInfiniteScroll
+    },
     threadHistory () {
       return this.$store.state.settings.threadHistory
     },
@@ -90,6 +100,9 @@ export default {
     toggleAutoLoadImage () {
       this.$store.commit('TOGGLE_AUTO_LOAD_IMAGE')
     },
+    toggleThreadInfiniteScroll () {
+      this.$store.commit('TOGGLE_THREAD_INFINITE_SCROLL')
+    },
     resetThreadHistory () {
       this.$store.commit('RESET_THREAD_HISTORY')
       window.alert('底已洗')
@@ -101,6 +114,9 @@ export default {
     },
     autoLoadImage (newVal, oldVal) {
       window.localStorage.setItem('autoLoadImage', newVal)
+    },
+    threadInfiniteScroll (newVal, oldVal) {
+      window.localStorage.setItem('threadInfiniteScroll', newVal)
     }
   },
   mounted () {
@@ -117,13 +133,13 @@ export default {
       this.$store.commit('TOGGLE_AUTO_LOAD_IMAGE')
     }
 
+    if (window.localStorage.getItem('threadInfiniteScroll') === 'true') {
+      this.$store.commit('TOGGLE_THREAD_INFINITE_SCROLL')
+    }
+
     if (window.localStorage.getItem('threadHistory')) {
       this.$store.commit('SET_THREAD_HISTORY', JSON.parse(window.localStorage.getItem('threadHistory')))
     }
-
-    // if (document.referrer.indexOf('hkg.plus') >= 0) {
-    //   window.location.replace('http://hkgolden.com')
-    // }
   }
 }
 </script>
@@ -132,6 +148,7 @@ export default {
 html {
   background: #222;
   font-size: 16px;
+  font-family: "Helvetica Neue", "Helvetica", Arial, Microsoft JhengHei, sans-serif;
 
   &.white-theme {
     background: #f1f1f1;

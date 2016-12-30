@@ -63,6 +63,9 @@ const mutations = {
   },
   [types.SET_ACTIVE_THREAD] (state, thread) {
     state.activeThread = thread
+  },
+  [types.APPEND_ACTIVE_THREAD] (state, thread) {
+    state.activeThread.item_data = state.activeThread.item_data.concat(thread.item_data)
   }
 }
 

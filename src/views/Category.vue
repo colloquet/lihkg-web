@@ -26,6 +26,7 @@
 </template>
 
 <script>
+/* global $ */
 import uniqBy from 'lodash.uniqby'
 import { mapGetters, mapActions } from 'vuex'
 import ThreadList from '../components/ThreadList'
@@ -115,7 +116,7 @@ export default {
 
     window.onscroll = () => {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        if (!self.isThreadListLoading && self.hasMoreThreads) {
+        if (!self.isThreadListLoading && self.hasMoreThreads && !$('body').hasClass('uk-offcanvas-page')) {
           self.handleLoadMore()
         }
       }

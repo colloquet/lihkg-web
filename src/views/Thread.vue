@@ -48,7 +48,7 @@
 
     <div class="comments-container" :class="{'is-loading': isThreadLoading}">
       <ul class="uk-grid">
-        <li class="uk-width-1-1 uk-margin-bottom" v-for="(comment, index) in activeThread.item_data">
+        <li class="uk-width-1-1 uk-margin-bottom" v-for="(comment, index) in activeThread.item_data" :id="index % 25 == 0 ? `page-${comment.page}` : ''">
           <div class="comment">
             <p>
               <small>
@@ -138,7 +138,8 @@
               </div>
             </div>
             <div class="uk-width-1-3">
-              <a :class="{'uk-invisible': !hasNextPage}" @click="handleLoadNextPage">下一頁 <span class="uk-icon-angle-right"></span></a>
+              <a :class="{'uk-hidden': !hasNextPage}" @click="handleLoadNextPage">下一頁 <span class="uk-icon-angle-right"></span></a>
+              <a :class="{'uk-hidden': hasNextPage}" @click="refresh"><span class="uk-icon-refresh"></span> F5</a>
             </div>
           </div>
         </div>
@@ -221,6 +222,9 @@ export default {
     autoLoadImage () {
       return this.$store.state.settings.autoLoadImage
     },
+    threadInfiniteScroll () {
+      return this.$store.state.settings.threadInfiniteScroll
+    },
     pageNumber: {
       get () {
         return this.$store.state.route.params.page * 1 || 1
@@ -240,7 +244,7 @@ export default {
     }
   },
   methods: {
-    fetchThread (page) {
+    fetchThread (page, append = false) {
       const self = this
       self.isThreadLoading = true
       lihkg.fetchThread(self.threadID, page).then(response => {
@@ -250,7 +254,17 @@ export default {
           self.$store.commit('SET_ACTIVE_CATEGORY', response.data.response.cat_id)
         }
 
-        self.$store.commit('SET_ACTIVE_THREAD', response.data.response)
+        if (append) {
+          self.$store.commit('APPEND_ACTIVE_THREAD', response.data.response)
+          // setTimeout(() => {
+          //   $('html, body').animate({
+          //     scrollTop: $(`#page-${page}`).offset().top
+          //   }, 0)
+          // }, 500)
+        } else {
+          self.$store.commit('SET_ACTIVE_THREAD', response.data.response)
+          document.body.scrollTop = document.documentElement.scrollTop = 0
+        }
         self.$emit('updateHead')
         this.$store.commit('UPDATE_HISTORY', {
           id: response.data.response.thread_id,
@@ -290,7 +304,10 @@ export default {
       return output().replace(/\/assets\/faces\//g, 'https://lihkg.com/assets/faces/')
     },
     getCommentIndex (index, page) {
-      return (index + 1) + ((page - 1) * 25)
+      if (this.threadInfiniteScroll) {
+        return index
+      }
+      return (index) + ((page - 1) * 25)
     },
     getRelativeTime (timestamp) {
       return moment.unix(timestamp).fromNow()
@@ -339,10 +356,16 @@ export default {
   },
   watch: {
     pageNumber (newVal, oldVal) {
-      this.fetchThread(newVal)
+      if (newVal === oldVal + 1 && this.threadInfiniteScroll) {
+        this.fetchThread(newVal, true)
+      } else {
+        this.fetchThread(newVal)
+      }
     }
   },
   mounted () {
+    const self = this
+
     this.$store.commit('SET_ACTIVE_THREAD', {})
 
     if (this.threadHistory[this.threadID] && this.threadHistory[this.threadID] !== 1 && !this.$route.query['page-switcher']) {
@@ -380,9 +403,18 @@ export default {
       }
       newImg.src = src
     })
+
+    window.onscroll = () => {
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        if (!self.isThreadLoading && self.hasNextPage && self.threadInfiniteScroll && !$('body').hasClass('uk-offcanvas-page')) {
+          self.handleLoadNextPage()
+        }
+      }
+    }
   },
   beforeDestroy () {
     document.onkeydown = null
+    window.onscroll = null
   }
 }
 </script>
@@ -425,7 +457,8 @@ export default {
   line-height: 1.2;
 
   .white-theme & {
-    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    /*box-shadow: 0 1px 4px rgba(0,0,0,.15);*/
+    border: 1px solid #ddd;
     background: #fafafa;
   }
 
@@ -449,6 +482,10 @@ export default {
   font-size: 14px;
   z-index: 999;
 
+  .white-theme & {
+    background: rgba(#222, 0.7);
+  }
+
   .page-switcher {
     color: #e6e6e6;
   }
@@ -458,7 +495,8 @@ export default {
   background: #2d2d2d;
 
   .white-theme & {
-    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    /*box-shadow: 0 1px 4px rgba(0,0,0,.15);*/
+    border: 1px solid #ddd;
     background: #fafafa;
   }
 }

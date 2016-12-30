@@ -67,6 +67,14 @@ export default {
 
 .threads-container {
   margin: 0 -15px;
+
+  @media(min-width: 768px) {
+    border: 1px solid #444;
+
+    .white-theme & {
+      border: 1px solid #ddd;
+    }
+  }
 }
 
 .thread-container {
@@ -95,6 +103,7 @@ export default {
 .thread {
   position: relative;
   display: block;
+  border-right: 1px solid #444;
   padding: 15px;
   padding-left: 30px;
   margin-right: 80px;
@@ -104,8 +113,10 @@ export default {
   }
 
   .white-theme & {
+    border-right: 1px solid #ddd;
+
     &:hover {
-      background: #f5f5f5;
+      background: #eaeaea;
     }
   }
 
