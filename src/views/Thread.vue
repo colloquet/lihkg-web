@@ -1,51 +1,16 @@
 <template>
   <div v-if="activeThread">
     <div class="page-container" v-for="(comments, page) in activeThread.item_page" :id="`page-${page}`" data-uk-scrollspy :data-page="page">
-      <div class="uk-margin-bottom navigation-bar">
-        <div class="uk-grid uk-grid-collapse">
-          <div class="uk-width-1-5 uk-width-1-5 uk-hidden-small">
-            <a class="return-link" v-if="activeCategory" @click.prevent="backToThreadList">
-              <span class="uk-icon-reply"></span> {{ activeCategory.name }}
-            </a>
-          </div>
-          <div class="uk-width-1-1 uk-width-medium-3-5">
-            <div class="uk-grid uk-grid-collapse">
-              <div class="uk-width-1-3">
-                <a :class="{'uk-invisible': !hasPrevPage(page)}" @click="handlePageSwitch(+page - 1)"><span class="uk-icon-angle-left"></span> 上一頁</a>
-              </div>
-              <div class="uk-width-1-3">
-                <div class="uk-position-relative page-switcher" data-uk-dropdown="{pos:'bottom-center', mode: 'click'}">
-                  <div>第 {{ page }} 頁 <span class="uk-icon-caret-down"></span></div>
-                  <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
-                    <ul class="uk-nav uk-nav-dropdown">
-                      <li v-for="n in activeThread.total_page"><a class="uk-dropdown-close" @click.prevent="handlePageSwitch(n)" :class="{'is-active': n == page}">第 {{ n }} 頁</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="uk-width-1-3">
-                <a :class="{'uk-invisible': !hasNextPage(page)}" @click="handlePageSwitch(+page + 1)">下一頁 <span class="uk-icon-angle-right"></span></a>
-              </div>
-            </div>
-          </div>
-          <div class="uk-width-1-5 uk-hidden-small">
-            <div class="uk-position-relative" data-uk-dropdown="{pos:'bottom-right', mode: 'click'}">
-              <a class="more-link">
-                <span class="uk-icon-ellipsis-v"></span> 更多
-              </a>
-              <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
-                <ul class="uk-nav uk-nav-dropdown">
-                  <li>
-                    <a class="uk-dropdown-close" @click.prevent="enablePhotoMode">
-                      <span class="uk-icon-image"></span> 圖片模式
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <thread-navbar
+        :page="page"
+        :category="activeCategory"
+        :back="backToThreadList"
+        :totalPage="activeThread.total_page"
+        :hasPrevPage="hasPrevPage(page)"
+        :hasNextPage="hasNextPage(page)"
+        :handlePageSwitch="handlePageSwitch"
+        :photoMode="enablePhotoMode"
+      />
 
       <div class="comments-container" :class="{'is-loading': isThreadLoading}">
         <ul class="uk-grid">
@@ -56,64 +21,29 @@
                   <span class="uk-text-muted" :class="{'author': activeThread.user.user_id === comment.user.user_id}">#{{ getCommentIndex(index, page) }}</span>
                   <span :class="comment.user.level === '999' ? 'admin' : comment.user.gender === 'M' ? 'male' : 'female'">{{ comment.user_nickname }}</span>
                   <span class="uk-text-muted">// {{ getRelativeTime(comment.reply_time) }}</span>
-                  <span class="uk-icon-eye uk-float-right story-mode-toggle" @click="toggleStoryMode(comment.user.user_id)" v-if="storeyModeID === -1"></span>
+                  <span class="uk-icon-eye uk-float-right story-mode-toggle" @click="toggleStoryMode(comment.user.user_id)" v-if="storeyModeId === -1"></span>
                   <span class="uk-icon-eye-slash uk-float-right story-mode-toggle" @click="toggleStoryMode(comment.user.user_id)" v-else></span>
                 </small>
               </p>
-              <div v-html="prepareCommentMsg(comment.msg)" v-show="comment.user.user_id === storeyModeID || storeyModeID === -1"></div>
+              <div v-html="prepareCommentMsg(comment.msg)" v-show="comment.user.user_id === storeyModeId || storeyModeId === -1"></div>
             </div>
           </li>
         </ul>
       </div>
 
-      <div class="uk-margin-bottom navigation-bar">
-        <div class="uk-grid uk-grid-collapse">
-          <div class="uk-width-1-5 uk-width-1-5 uk-hidden-small">
-            <a class="return-link" v-if="activeCategory" @click.prevent="backToThreadList">
-              <span class="uk-icon-reply"></span> {{ activeCategory.name }}
-            </a>
-          </div>
-          <div class="uk-width-1-1 uk-width-medium-3-5">
-            <div class="uk-grid uk-grid-collapse">
-              <div class="uk-width-1-3">
-                <a :class="{'uk-invisible': !hasPrevPage(page)}" @click="handlePageSwitch(+page - 1)"><span class="uk-icon-angle-left"></span> 上一頁</a>
-              </div>
-              <div class="uk-width-1-3">
-                <div class="uk-position-relative page-switcher" data-uk-dropdown="{pos:'bottom-center', mode: 'click'}">
-                  <div>第 {{ page }} 頁 <span class="uk-icon-caret-down"></span></div>
-                  <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
-                    <ul class="uk-nav uk-nav-dropdown">
-                      <li v-for="n in activeThread.total_page"><a class="uk-dropdown-close" @click.prevent="handlePageSwitch(n)" :class="{'is-active': n == page}">第 {{ n }} 頁</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="uk-width-1-3">
-                <a :class="{'uk-invisible': !hasNextPage(page)}" @click="handlePageSwitch(+page + 1)">下一頁 <span class="uk-icon-angle-right"></span></a>
-              </div>
-            </div>
-          </div>
-          <div class="uk-width-1-5 uk-hidden-small">
-            <div class="uk-position-relative" data-uk-dropdown="{pos:'bottom-right', mode: 'click'}">
-              <a class="more-link">
-                <span class="uk-icon-ellipsis-v"></span> 更多
-              </a>
-              <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
-                <ul class="uk-nav uk-nav-dropdown">
-                  <li>
-                    <a class="uk-dropdown-close" @click.prevent="enablePhotoMode">
-                      <span class="uk-icon-image"></span> 圖片模式
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <thread-navbar
+        :page="page"
+        :category="activeCategory"
+        :back="backToThreadList"
+        :totalPage="activeThread.total_page"
+        :hasPrevPage="hasPrevPage(page)"
+        :hasNextPage="hasNextPage(page)"
+        :handlePageSwitch="handlePageSwitch"
+        :photoMode="enablePhotoMode"
+      />
 
       <p class="uk-text-center" v-if="page >= activeThread.total_page">
-        <button class="uk-button uk-button-large" @click="handleRefresh">F5</button>
+        <button class="uk-button uk-button-large refresh-button" @click="handleRefresh">F5</button>
       </p>
     </div>
 
@@ -125,10 +55,10 @@
             <span class="uk-icon-reply"></span>
           </a>
         </div>
-        <div class="uk-width-1-6 uk-flex uk-flex-column uk-flex-center uk-flex-middle admin">
+        <div class="uk-width-1-6 uk-flex uk-flex-column uk-flex-center uk-flex-middle">
           <span class="uk-icon-thumbs-up"></span><span class="rating-number">{{ activeThread.like_count }}</span>
         </div>
-        <div class="uk-width-1-6 uk-flex uk-flex-column uk-flex-center uk-flex-middle admin">
+        <div class="uk-width-1-6 uk-flex uk-flex-column uk-flex-center uk-flex-middle">
           <span class="uk-icon-thumbs-down"></span><span class="rating-number">{{ activeThread.dislike_count }}</span>
         </div>
         <div class="uk-width-1-6">
@@ -138,7 +68,7 @@
         </div>
         <div class="uk-width-1-6" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}">
           <a>
-            <span class="uk-icon-qrcode like-color"></span>
+            <span class="uk-icon-qrcode"></span>
           </a>
           <div class="uk-dropdown-blank mobile-entry-popup">
             <a :href="pageAppLink()" target="_blank"><div class="row"><span class="uk-icon-external-link"></span> 電話繼續追</div></a>
@@ -157,7 +87,7 @@
       <div class="photo-mode-container" v-if="photoMode">
         <div class="uk-clearfix photo-mode-header">
           <span class="uk-icon-image"></span> 圖片模式
-          <a class="uk-float-right photo-mode-close" @click.prevent="disablePhotoMode"><span class="uk-icon-remove"></span> 關閉</a>
+          <a class="uk-float-right photo-mode-close" @click.prevent="photoMode = false"><span class="uk-icon-remove"></span> 關閉</a>
         </div>
         <div class="photo-mode-body">
           <div class="uk-container uk-container-center">
@@ -179,23 +109,27 @@
 <script>
 /* global $, UIkit, Image */
 import qrCode from 'qrcode-npm'
-import moment from 'moment'
+import ThreadNavbar from '../components/ThreadNavbar'
 import lihkg from '../api/lihkg'
+import helper from '../helper'
 
 export default {
   name: 'Thread',
+  components: {
+    ThreadNavbar
+  },
   head: {
     title () {
       return {
-        inner: this.activeThread ? this.activeThread.title : ''
+        inner: this.activeThread.title || '內文'
       }
     }
   },
   data () {
     return {
       isThreadLoading: false,
-      storeyModeID: -1,
-      fromThreadList: true,
+      fromThreadList: false,
+      storeyModeId: -1,
       photoMode: false,
       images: [],
       noImages: false
@@ -208,7 +142,7 @@ export default {
     activeThread () {
       return this.$store.state.threads.activeThread
     },
-    threadID () {
+    threadId () {
       return this.$store.state.route.params.id
     },
     autoLoadImage () {
@@ -216,53 +150,28 @@ export default {
     },
     pageNumber: {
       get () {
-        return this.$store.state.route.params.page * 1 || 1
+        return +this.$store.state.route.params.page || 1
       },
       set (page) {
-        this.$router.replace(`/thread/${this.threadID}/page/${page}`)
+        this.$router.replace(`/thread/${this.threadId}/page/${page}`)
       }
-    },
-    threadHistory () {
-      return this.$store.state.settings.threadHistory
-    },
-    globalHasNextPage () {
-      return +$('.page-container:last').data('page') < this.activeThread.total_page
     }
   },
   methods: {
-    pageAppLink () {
-      const threadId = this.$store.state.route.params.id
-      const currentPage = this.$store.state.route.params.page * 1 || 1
-      return `https://lihkg.com/thread/${threadId}/page/${currentPage}?ref=lihk-firebase`
-    },
-    qr () {
-      try {
-        const qr = qrCode.qrcode(4, 'M')
-        const refLink = this.pageAppLink()
-        qr.addData(refLink)
-        qr.make()
-        return qr.createTableTag(4)
-      } catch (e) {
-        return 'QR code: 你條Link 太長.'
-      }
-    },
-    hasNextPage (page) {
-      return page < this.activeThread.total_page
-    },
-    hasPrevPage (page) {
-      return page > 1
-    },
     fetchThread (page, append = true, scroll = false, refresh = false) {
       const self = this
+
+      // if page already loaded, scroll to page
       if (!refresh && self.activeThread.item_page && typeof self.activeThread.item_page[page] !== 'undefined') {
         UIkit.Utils.scrollToElement(UIkit.$(`#page-${page}`), {
-          offset: 40
+          offset: 50 + 10
         })
         self.pageNumber = page
         return false
       }
+
       self.isThreadLoading = true
-      lihkg.fetchThread(self.threadID, page).then(response => {
+      lihkg.fetchThread(self.threadId, page).then(response => {
         self.isThreadLoading = false
 
         if (!self.activeCategory) {
@@ -273,15 +182,16 @@ export default {
           self.$store.commit('APPEND_ACTIVE_THREAD', response.data.response)
         } else {
           self.$store.commit('SET_ACTIVE_THREAD', response.data.response)
-          document.body.scrollTop = document.documentElement.scrollTop = 0
         }
+
         if (scroll) {
           setTimeout(() => {
             UIkit.Utils.scrollToElement(UIkit.$(`#page-${page}`), {
-              offset: 40
+              offset: 50 + 10
             })
           }, 100)
         }
+
         self.$emit('updateHead')
         self.$store.commit('UPDATE_HISTORY', {
           id: response.data.response.thread_id,
@@ -322,14 +232,36 @@ export default {
 
       return output().replace(/\/assets\/faces\//g, 'https://lihkg.com/assets/faces/')
     },
+    pageAppLink () {
+      const threadId = this.$store.state.route.params.id
+      const currentPage = +this.$store.state.route.params.page || 1
+      return `https://lihkg.com/thread/${threadId}/page/${currentPage}?ref=lihk-firebase`
+    },
+    qr () {
+      try {
+        const qr = qrCode.qrcode(4, 'M')
+        const refLink = this.pageAppLink()
+        qr.addData(refLink)
+        qr.make()
+        return qr.createTableTag(4)
+      } catch (e) {
+        return 'QR code: 你條Link 太長.'
+      }
+    },
+    hasNextPage (page) {
+      return page < this.activeThread.total_page
+    },
+    hasPrevPage (page) {
+      return page > 1
+    },
     getCommentIndex (index, page) {
-      return (index) + ((page - 1) * 25)
+      return index + ((page - 1) * 25)
     },
     getRelativeTime (timestamp) {
-      return moment.unix(timestamp).fromNow()
+      return helper.getRelativeTime(timestamp)
     },
-    toggleStoryMode (userID) {
-      this.storeyModeID = this.storeyModeID === -1 ? userID : -1
+    toggleStoryMode (userId) {
+      this.storeyModeId = this.storeyModeId === -1 ? userId : -1
     },
     backToThreadList () {
       if (this.fromThreadList) {
@@ -355,7 +287,7 @@ export default {
       const self = this
       self.photoMode = true
       if (!self.images.length && !self.noImages) {
-        lihkg.fetchImages(this.threadID).then((response) => {
+        lihkg.fetchImages(self.threadId).then((response) => {
           if (response.data.response.images.length) {
             self.images = response.data.response.images
           } else {
@@ -365,26 +297,19 @@ export default {
           console.log(e)
         })
       }
-    },
-    disablePhotoMode () {
-      this.photoMode = false
     }
   },
   mounted () {
+    console.log(this.activeCategory)
     const self = this
 
     this.$store.commit('SET_ACTIVE_THREAD', {})
 
-    if (this.threadHistory[this.threadID] && this.threadHistory[this.threadID] !== 1 && !this.$route.query['page-switcher']) {
-      this.pageNumber = this.threadHistory[this.threadID].page || 1
-      this.fetchThread(this.pageNumber)
-    } else {
-      this.fetchThread(this.pageNumber)
+    if (this.activeCategory) {
+      this.fromThreadList = true
     }
 
-    if (!this.activeCategory) {
-      this.fromThreadList = false
-    }
+    this.fetchThread(this.pageNumber)
 
     $('body').on('click', '.image-lazy-load', (e) => {
       const target = $(e.target)
@@ -479,13 +404,15 @@ export default {
   width: 100%;
   font-size: 14px;
   z-index: 999;
+  color: #f1c40f;
 
   .white-theme & {
-    background: rgba(#222, 0.7);
-  }
+    background: rgba(#fff, 0.8);
+    color: #222;
 
-  .page-switcher {
-    color: #e6e6e6;
+    a {
+      color: #222;
+    }
   }
 }
 
@@ -549,6 +476,13 @@ export default {
   }
 }
 
+.refresh-button {
+  .white-theme & {
+    background: #fff;
+    border: 1px solid #ddd;
+  }
+}
+
 .photo-mode-container {
   position: fixed;
   background: #222;
@@ -599,7 +533,9 @@ export default {
 }
 
 .rating-number {
+  margin-top: 5px;
   font-size: 10px;
+  line-height: 1;
 }
 
 .slide-enter-active,

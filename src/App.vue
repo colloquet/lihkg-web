@@ -13,35 +13,30 @@
 
     <offcanvas></offcanvas>
 
-    <div id="modal-about" class="uk-modal">
-      <div class="uk-modal-dialog">
-        <a class="uk-modal-close uk-close"></a>
-        嗚謝：
-        <ul>
-          <li>連尼住巴打</li>
-          <li>HKG+巴打</li>
-          <li>望遠巴打</li>
-          <li><a href="https://na.cx" target="_blank">https://na.cx</a></li>
-        </ul>
-        <p>Made in Hong Kong by <a href="http://colloquet.github.io" target="_blank">Coke_Zero</a></p>
-        <p>View source code on GitHub: <a href="https://github.com/colloquet/lihkg-web" target="_blank">https://github.com/colloquet/lihkg-web</a></a></p>
-      </div>
-    </div>
+    <modal id="modal-about">
+      嗚謝：
+      <ul>
+        <li>連尼住巴打</li>
+        <li>HKG+巴打</li>
+        <li>望遠巴打</li>
+        <li><a href="https://na.cx" target="_blank">https://na.cx</a></li>
+      </ul>
+      <p>Made in Hong Kong by <a href="http://colloquet.github.io" target="_blank">Coke_Zero</a></p>
+      <p>View source code on GitHub: <a href="https://github.com/colloquet/lihkg-web" target="_blank">https://github.com/colloquet/lihkg-web</a></a></p>
+    </modal>
 
-    <div id="modal-setting" class="uk-modal">
-      <div class="uk-modal-dialog">
-        <a class="uk-modal-close uk-close"></a>
-        <a class="theme-toggle settings-toggle" @click.prevent="toggleWhiteTheme">
-          白底 {{ whiteTheme ? 'ON' : 'OFF' }}
-        </a>
-        <a class="auto-load-image-toggle settings-toggle" @click.prevent="toggleAutoLoadImage">
-          自動撈圖 {{ autoLoadImage ? 'ON' : 'OFF' }}
-        </a>
-        <a class="settings-toggle" @click.prevent="resetThreadHistory">
-          清除睇post記錄
-        </a>
-      </div>
-    </div>
+    <modal id="modal-setting">
+      <a class="theme-toggle settings-toggle" @click.prevent="toggleWhiteTheme">
+        白底 {{ whiteTheme ? 'ON' : 'OFF' }}
+      </a>
+      <a class="auto-load-image-toggle settings-toggle" @click.prevent="toggleAutoLoadImage">
+        自動撈圖 {{ autoLoadImage ? 'ON' : 'OFF' }}
+      </a>
+      <a class="settings-toggle" @click.prevent="resetThreadHistory">
+        清除睇post記錄
+      </a>
+    </modal>
+
   </div>
 </template>
 
@@ -50,6 +45,7 @@ import FastClick from 'fastclick'
 import { mapActions } from 'vuex'
 import Navbar from './components/Navbar'
 import Offcanvas from './components/Offcanvas'
+import Modal from './components/Modal'
 
 if ('addEventListener' in document) {
   document.addEventListener('DOMContentLoaded', () => {
@@ -61,7 +57,8 @@ export default {
   name: 'app',
   components: {
     Navbar,
-    Offcanvas
+    Offcanvas,
+    Modal
   },
   computed: {
     allCategories () {
@@ -138,7 +135,7 @@ html {
 #app {
   background: #222;
   color: #e6e6e6;
-  padding: 40px 0 50px;
+  padding: 50px 0;
 
 
   &.white-theme {
@@ -176,6 +173,7 @@ blockquote {
 }
 
 .uk-container {
+  max-width: 980px;
   padding: 0 15px;
 }
 
@@ -189,16 +187,6 @@ blockquote {
     background: #fafafa;
     border: 1px solid #ddd;
     color: #444;
-  }
-}
-
-.uk-modal {
-  .uk-modal-dialog {
-    background: #2b2b2b;
-
-    .white-theme & {
-      background: #f1f1f1;
-    }
   }
 }
 
@@ -227,6 +215,7 @@ blockquote {
 
   .white-theme & {
     border-bottom: 1px solid #ddd;
+    color: #222;
   }
 
   &:last-child {

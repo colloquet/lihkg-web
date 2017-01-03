@@ -8,15 +8,16 @@
       <a class="uk-hidden-small refresh-toggle" @click.prevent="handleRefresh"><span class="uk-icon-refresh"></span> F5</a>
     </div>
 
-    <div class="nav-title" v-if="$route.name === 'Thread'" @click="goToTop">
+    <div class="nav-title" v-show="$route.name === 'Thread'" @click="goToTop">
       <span>{{ activeThread ? activeThread.title : '載入中…' }}</span>
     </div>
 
-    <div class="uk-hidden-small rating" v-show="activeThread && $route.name === 'Thread'">
+    <div class="uk-hidden-small nav-item" v-show="activeThread && $route.name === 'Thread'">
       <span class="uk-icon-thumbs-up like-color"></span> {{ activeThread.like_count }}
       <span class="uk-icon-thumbs-down uk-margin-small-left dislike-color"></span> {{ activeThread.dislike_count }}
     </div>
-    <div class="uk-hidden-small rating" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}" v-show="activeThread && $route.name === 'Thread'">
+    
+    <div class="uk-hidden-small nav-item" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}" v-show="activeThread && $route.name === 'Thread'">
       <a>
         <span class="uk-icon-qrcode like-color"></span><span class="uk-hidden-small"> 開APP</span>
       </a>
@@ -90,17 +91,19 @@ export default {
   z-index: 999;
 
   .white-theme & {
-    background: rgba(#222, 0.7);
+    background: rgba(#fff, 0.8);
+
+    a {
+      color: #222;
+    }
   }
 }
 
 .sidebar-toggle {
   flex-shrink: 0;
-  /*border-right: 1px solid #757575;*/
-  // color: #e6e6e6;
-  height: 40px;
+  height: 50px;
   padding: 0 15px;
-  line-height: 40px;
+  line-height: 50px;
   text-decoration: none;
 
   @media(max-width: 375px) {
@@ -115,9 +118,9 @@ export default {
 .refresh-toggle, .search-toggle {
   display: inline-block;
   /*border-left: 1px solid #757575;*/
-  height: 40px;
+  height: 50px;
   padding: 0 15px;
-  line-height: 40px;
+  line-height: 50px;
 
   @media(max-width: 375px) {
     padding: 0 10px;
@@ -131,18 +134,28 @@ export default {
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 40px;
+  line-height: 50px;
   color: #e6e6e6;
   cursor: pointer;
+
+  .white-theme & {
+    border-left: 1px solid #ddd;
+    color: #222;
+  }
 }
 
-.rating {
+.nav-item {
   border-left: 1px solid #757575;
   flex-shrink: 0;
-  height: 40px;
+  height: 50px;
   padding: 0 15px;
-  line-height: 40px;
+  line-height: 50px;
   color: #e6e6e6;
+
+  .white-theme & {
+    border-left: 1px solid #ddd;
+    color: #222;
+  }
 }
 
 .mobile-entry-popup {

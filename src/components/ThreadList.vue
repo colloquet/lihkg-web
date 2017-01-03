@@ -1,34 +1,14 @@
 <template>
   <div class="threads-container">
     <ul class="uk-grid" :class="{'is-loading': isLoading}">
-      <li class="uk-width-1-1" v-for="thread in threads" :key="thread.thread_id">
-        <div class="thread-container">
-          <router-link :to="'/thread/' + thread.thread_id + '/page/1'" class="uk-link-reset thread">
-            <span class="uk-icon-bolt hot-indicator" v-if="thread.is_hot"></span>
-            <span class="uk-icon-circle read-indicator" :class="{'has-new': thread.no_of_reply > threadHistory[thread.thread_id].no_of_reply}" v-if="threadHistory[thread.thread_id]"></span>
-            {{ thread.title }}<br>
-            <small class="uk-text-muted">
-              <span :class="thread.user.level === '999' ? 'admin' : thread.user.gender === 'M' ? 'male' : 'female'">{{ thread.user_nickname }}</span> //
-              {{ getRelativeTime(thread.last_reply_time) }} //
-              {{ thread.no_of_reply }}個回覆 //
-              <span :class="{'like-color': (thread.like_count - thread.dislike_count) >= 100, 'dislike-color': (thread.like_count - thread.dislike_count) <= -100}">
-                <span :class="thread.like_count - thread.dislike_count < 0 ? 'uk-icon-thumbs-down' : 'uk-icon-thumbs-up'"></span>
-                {{ thread.like_count - thread.dislike_count }}
-              </span>
-            </small>
-          </router-link>
-          <div class="page-switcher" data-uk-dropdown="{pos:'bottom-right', mode: 'click'}">
-            <div>{{ thread.total_page }} 頁 <span class="uk-icon-caret-down"></span></div>
-            <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
-              <ul class="uk-nav uk-nav-dropdown">
-                <li v-for="n in thread.total_page">
-                  <router-link :to="`/thread/${thread.thread_id}/page/${n}?page-switcher=true`">第 {{ n }} 頁</router-link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </li>
+      <thread-list-item
+        v-for="thread in threads"
+        :key="thread.thread_id"
+        :thread="thread"
+        :history="threadHistory[thread.thread_id]"
+        :replyTime="getRelativeTime(thread.last_reply_time)"
+        :score="thread.like_count - thread.dislike_count"
+      />
       <li class="uk-width-1-1 load-more">
         <a @click="handleLoadMore" v-if="hasMoreThreads">
           {{ isLoading ? '載入中…' : '載入更多' }}
@@ -40,12 +20,14 @@
 </template>
 
 <script>
-import moment from 'moment'
-
-moment.locale('zh-hk')
+import ThreadListItem from './ThreadListItem'
+import helper from '../helper'
 
 export default {
-  name: 'threadlist',
+  name: 'threadList',
+  components: {
+    ThreadListItem
+  },
   props: ['is-loading', 'threads', 'handle-load-more', 'has-more-threads'],
   computed: {
     threadHistory () {
@@ -54,7 +36,7 @@ export default {
   },
   methods: {
     getRelativeTime (timestamp) {
-      return moment.unix(timestamp).fromNow()
+      return helper.getRelativeTime(timestamp)
     }
   }
 }
@@ -70,87 +52,12 @@ export default {
 
   @media(min-width: 768px) {
     border: 1px solid #444;
+    margin: 0;
 
     .white-theme & {
       border: 1px solid #ddd;
     }
   }
-}
-
-.thread-container {
-  position: relative;
-  background: #2d2d2d;
-  border-bottom: 1px solid #444;
-
-  .white-theme & {
-    background: #fafafa;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .page-switcher {
-    position: absolute;
-    display: inline-block;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    text-align: center;
-    cursor: pointer;
-
-    &.uk-open {
-      z-index: 10;
-    }
-  }
-}
-
-.thread {
-  position: relative;
-  display: block;
-  border-right: 1px solid #444;
-  padding: 15px;
-  padding-left: 30px;
-  margin-right: 80px;
-
-  &:hover {
-    background: #383838;
-  }
-
-  .white-theme & {
-    border-right: 1px solid #ddd;
-
-    &:hover {
-      background: #eaeaea;
-    }
-  }
-
-  small {
-    font-size: 70%;
-  }
-}
-
-.hot-indicator {
-  color: #f1c40f;
-  position: absolute;
-  top: 18px;
-  left: 15px;
-}
-
-.read-indicator {
-  position: absolute;
-  top: 40px;
-  left: 14px;
-  font-size: 10px;
-
-  &.has-new {
-    color: #e74c3c;
-  }
-}
-
-.like-color {
-  color: #f1c40f;
-}
-
-.dislike-color {
-  color: #e74c3c;
 }
 
 .load-more {

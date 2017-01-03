@@ -28,7 +28,7 @@
 <script>
 /* global $ */
 import uniqBy from 'lodash.uniqby'
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import ThreadList from '../components/ThreadList'
 
 export default {
@@ -39,7 +39,7 @@ export default {
   head: {
     title () {
       return {
-        inner: this.activeCategory ? this.activeCategory.name : ''
+        inner: this.activeCategory ? this.activeCategory.name : '主頁'
       }
     }
   },
@@ -49,10 +49,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'activeCategory'
-    ]),
-    catID () {
+    activeCategory () {
+      return this.$store.getters.activeCategory
+    },
+    catId () {
       return this.$store.state.route.params.id
     },
     activeThreads () {
@@ -61,8 +61,8 @@ export default {
     isThreadListLoading () {
       return this.$store.state.threads.isThreadListLoading
     },
-    activeCategoryID () {
-      return this.$store.state.categories.activeCategoryID
+    activeCategoryId () {
+      return this.$store.state.categories.activeCategoryId
     },
     hasMoreThreads () {
       return this.$store.state.threads.hasMoreThreads
@@ -78,7 +78,7 @@ export default {
     ]),
     handleRefresh () {
       this.fetchThreadList({
-        catID: this.activeCategory.cat_id,
+        catId: this.activeCategory.cat_id,
         page: 1
       })
       document.body.scrollTop = document.documentElement.scrollTop = 0
@@ -87,16 +87,16 @@ export default {
       this.page += 1
       this.$nextTick(() => {
         this.fetchMoreThreadList({
-          catID: this.catID,
+          catId: this.catId,
           page: this.page
         })
       })
     }
   },
   watch: {
-    catID () {
+    catId () {
       this.fetchThreadList({
-        catID: this.catID,
+        catId: this.catId,
         page: 1
       })
       this.$emit('updateHead')
@@ -107,9 +107,9 @@ export default {
   },
   mounted () {
     const self = this
-    if (this.catID * 1 !== this.activeCategoryID * 1 || !this.activeThreads.length) {
+    if (+this.catId !== +this.activeCategoryId || !this.activeThreads.length) {
       this.fetchThreadList({
-        catID: this.catID,
+        catId: this.catId,
         page: 1
       })
     }

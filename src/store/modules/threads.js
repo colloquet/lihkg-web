@@ -17,20 +17,21 @@ const getters = {
 
 // actions
 const actions = {
-  fetchThreadList ({ state, commit }, { catID, page }) {
-    commit('SET_ACTIVE_CATEGORY', catID)
+  fetchThreadList ({ state, commit }, { catId, page }) {
+    commit('SET_ACTIVE_CATEGORY', catId)
     commit('SET_LOADING_THRED_LIST', true)
-    lihkg.fetchThreadList(catID, page, state.count).then(response => {
+    lihkg.fetchThreadList(catId, page, state.count).then(response => {
       commit('RECEIVE_THREAD_LIST', response.data.response.items)
       commit('SET_LOADING_THRED_LIST', false)
       commit('SET_HAS_MORE_THREADS', true)
-    }).catch(() => {
+    }).catch((e) => {
+      console.log(e)
       window.alert('伺服器出錯，請重試。')
     })
   },
-  fetchMoreThreadList ({ state, commit }, { catID, page }) {
+  fetchMoreThreadList ({ state, commit }, { catId, page }) {
     commit('SET_LOADING_THRED_LIST', true)
-    lihkg.fetchThreadList(catID, page, state.count).then(response => {
+    lihkg.fetchThreadList(catId, page, state.count).then(response => {
       if (response.data.response) {
         commit('RECEIVE_MORE_THREAD_LIST', response.data.response.items)
         commit('SET_HAS_MORE_THREADS', true)
@@ -38,7 +39,8 @@ const actions = {
         commit('SET_HAS_MORE_THREADS', false)
       }
       commit('SET_LOADING_THRED_LIST', false)
-    }).catch(() => {
+    }).catch((e) => {
+      console.log(e)
       window.alert('伺服器出錯，請重試。')
     })
   }
