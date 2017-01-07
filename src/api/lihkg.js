@@ -4,16 +4,16 @@ export default {
   fetchCategories () {
     return axios.get('https://lihkg.com/api_v1/system/property')
   },
-  fetchThreadList (catID, page, count) {
+  fetchThreadList (catId, page, count) {
     let type
-    switch (catID) {
-      case '1':
+    switch (+catId) {
+      case 1:
         type = 'latest'
         break
-      case '2':
+      case 2:
         type = 'hot'
         break
-      case '3':
+      case 3:
         type = 'news'
         break
       default:
@@ -21,7 +21,7 @@ export default {
     }
     return axios.get(`https://lihkg.com/api_v1/thread/${type}`, {
       params: {
-        cat_id: catID,
+        cat_id: catId,
         page,
         count
       }

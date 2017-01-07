@@ -16,7 +16,7 @@
       <span class="uk-icon-thumbs-up like-color"></span> {{ activeThread.like_count }}
       <span class="uk-icon-thumbs-down uk-margin-small-left dislike-color"></span> {{ activeThread.dislike_count }}
     </div>
-    
+
     <div class="uk-hidden-small nav-item" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}" v-show="activeThread && $route.name === 'Thread'">
       <a>
         <span class="uk-icon-qrcode like-color"></span><span class="uk-hidden-small"> 開APP</span>
@@ -51,7 +51,7 @@ export default {
     ]),
     handleRefresh () {
       this.fetchThreadList({
-        catID: this.activeCategory.cat_id,
+        catId: this.activeCategory.cat_id,
         page: 1
       })
       document.body.scrollTop = document.documentElement.scrollTop = 0
