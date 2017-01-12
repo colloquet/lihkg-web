@@ -158,7 +158,7 @@ export default {
     }
   },
   methods: {
-    fetchThread (page, append = true, scroll = false, refresh = false) {
+    fetchThread (page, scroll = false, refresh = false) {
       const self = this
 
       // if page already loaded, scroll to page
@@ -178,11 +178,7 @@ export default {
           self.$store.commit('SET_ACTIVE_CATEGORY', response.data.response.cat_id)
         }
 
-        if (append) {
-          self.$store.commit('APPEND_ACTIVE_THREAD', response.data.response)
-        } else {
-          self.$store.commit('SET_ACTIVE_THREAD', response.data.response)
-        }
+        self.$store.commit('APPEND_ACTIVE_THREAD', response.data.response)
 
         if (scroll) {
           setTimeout(() => {
@@ -205,32 +201,52 @@ export default {
       })
     },
     prepareCommentMsg (msg) {
-      const regex = /<img(.*?)src="(.*?)"(.*?)>/gi
-      const str = msg
-      let m
-      let newMsg
-
-      while ((m = regex.exec(str)) !== null) {
-        if (m.index === regex.lastIndex) {
-          regex.lastIndex++
-        }
-
-        const str = m[3]
-        if (str.indexOf('hkgmoji') === -1) {
-          const newImgTag = m[0].replace(/<img(.*?)src="(.*?)"(.*?)>/gi, '<img src="/static/placeholder.png" data-src="$2" class="image-lazy-load" />')
-          newMsg = newMsg ? newMsg.replace(m[0], newImgTag) : msg.replace(m[0], newImgTag)
-        }
+      while (msg.indexOf('src="/assets') > 0) {
+        msg = msg.replace('src="/assets', 'src="https://lihkg.com/assets')
       }
 
-      const output = () => {
-        if (this.autoLoadImage) {
-          return msg
-        } else {
-          return newMsg || msg
+      const dom = document.createElement('div')
+      const qsa = selector => {
+        const nodeList = dom.querySelectorAll(selector)
+        const array = []
+        for (let i = 0; i < nodeList.length; i++) {
+          array[i] = nodeList[i]
         }
+        return array
+      }
+      dom.innerHTML = msg
+
+      if (!this.autoLoadImage) {
+        const images = qsa('img:not(.hkgmoji)')
+        images.forEach(i => {
+          i.setAttribute('data-src', i.src)
+          i.src = '/static/placeholder.png'
+          i.className = 'image-lazy-load'
+        })
       }
 
-      return output().replace(/\/assets\/faces\//g, 'https://lihkg.com/assets/faces/')
+      const youtubeLinks = qsa('a[href*="youtu"]')
+      youtubeLinks.forEach(link => {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/
+        const match = link.href.match(regExp)
+        if (match && match[2].length === 11) {
+          const iframe = document.createElement('iframe')
+          const embedContainer = document.createElement('div')
+          const responsiveContainer = document.createElement('div')
+          embedContainer.className = 'embed-container'
+          responsiveContainer.className = 'responsive-container'
+          iframe.width = 560
+          iframe.height = 315
+          iframe.src = 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0&enablejsapi=1'
+          iframe.frameBorder = 0
+          iframe.allowFullscreen = true
+          embedContainer.appendChild(iframe)
+          responsiveContainer.appendChild(embedContainer)
+          link.parentNode.insertBefore(responsiveContainer, link.nextSibling)
+        }
+      })
+
+      return dom.innerHTML
     },
     pageAppLink () {
       const threadId = this.$store.state.route.params.id
@@ -271,14 +287,14 @@ export default {
       }
     },
     handlePageSwitch (page) {
-      this.fetchThread(page, true, true)
+      this.fetchThread(page, true)
     },
     handleLoadMore (page) {
-      this.fetchThread(page, true, false)
+      this.fetchThread(page, false)
     },
     handleRefresh () {
       const page = +$('.page-container:last').data('page')
-      this.fetchThread(page, true, false, true)
+      this.fetchThread(page, false, true)
     },
     handleScrollBottom () {
       $('html, body').animate({ scrollTop: $(document).height() }, 1000)
@@ -300,7 +316,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.activeCategory)
     const self = this
 
     this.$store.commit('SET_ACTIVE_THREAD', {})
@@ -531,6 +546,28 @@ export default {
     }
   }
 }
+
+.responsive-container {
+  max-width: 560px;
+}
+.embed-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+
+  iframe,
+  object,
+  embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
 
 .rating-number {
   margin-top: 5px;

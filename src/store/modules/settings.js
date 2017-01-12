@@ -1,11 +1,11 @@
-/* global $ */
 import * as types from '../mutation-types'
 
 // initial state
 const state = {
-  whiteTheme: false,
-  autoLoadImage: false,
-  threadHistory: {}
+  whiteTheme: JSON.parse(window.localStorage.getItem('whiteTheme')) || false,
+  officeMode: JSON.parse(window.localStorage.getItem('officeMode')) || false,
+  autoLoadImage: JSON.parse(window.localStorage.getItem('autoLoadImage')) || false,
+  threadHistory: JSON.parse(window.localStorage.getItem('threadHistory')) || {}
 }
 
 // getters
@@ -19,11 +19,19 @@ const actions = {
 // mutations
 const mutations = {
   [types.TOGGLE_WHITE_THEME] (state, status) {
-    state.whiteTheme = !state.whiteTheme
-    $('html').toggleClass('white-theme')
+    const whiteTheme = !state.whiteTheme
+    state.whiteTheme = whiteTheme
+    window.localStorage.setItem('whiteTheme', whiteTheme)
+  },
+  [types.TOGGLE_OFFICE_MODE] (state, status) {
+    const officeMode = !state.officeMode
+    state.officeMode = officeMode
+    window.localStorage.setItem('officeMode', officeMode)
   },
   [types.TOGGLE_AUTO_LOAD_IMAGE] (state, status) {
-    state.autoLoadImage = !state.autoLoadImage
+    const autoLoadImage = !state.autoLoadImage
+    state.autoLoadImage = autoLoadImage
+    window.localStorage.setItem('autoLoadImage', autoLoadImage)
   },
   [types.UPDATE_HISTORY] (state, post) {
     state.threadHistory[post.id] = {

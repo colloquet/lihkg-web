@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{'white-theme': whiteTheme, 'is-safari': isSafari}">
+  <div id="app" :class="{'is-safari': isSafari}">
 
     <navbar></navbar>
 
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+/* global $ */
 import FastClick from 'fastclick'
 import { mapActions } from 'vuex'
 import Navbar from './components/Navbar'
@@ -70,9 +71,6 @@ export default {
     autoLoadImage () {
       return this.$store.state.settings.autoLoadImage
     },
-    threadHistory () {
-      return this.$store.state.settings.threadHistory
-    },
     isSafari () {
       return navigator.userAgent.indexOf('Safari') > -1 && navigator.userAgent.indexOf('Chrome') === -1
     }
@@ -81,12 +79,6 @@ export default {
     ...mapActions([
       'fetchCategories'
     ]),
-    toggleWhiteTheme () {
-      this.$store.commit('TOGGLE_WHITE_THEME')
-    },
-    toggleAutoLoadImage () {
-      this.$store.commit('TOGGLE_AUTO_LOAD_IMAGE')
-    },
     resetThreadHistory () {
       this.$store.commit('RESET_THREAD_HISTORY')
       window.alert('底已洗')
@@ -94,10 +86,11 @@ export default {
   },
   watch: {
     whiteTheme (newVal, oldVal) {
-      window.localStorage.setItem('whiteTheme', newVal)
-    },
-    autoLoadImage (newVal, oldVal) {
-      window.localStorage.setItem('autoLoadImage', newVal)
+      if (newVal) {
+        $('html').addClass('white-theme')
+      } else {
+        $('html').removeClass('white-theme')
+      }
     }
   },
   mounted () {
@@ -106,16 +99,10 @@ export default {
       self.fetchCategories()
     }
 
-    if (window.localStorage.getItem('whiteTheme') === 'true') {
-      this.$store.commit('TOGGLE_WHITE_THEME')
-    }
-
-    if (window.localStorage.getItem('autoLoadImage') === 'true') {
-      this.$store.commit('TOGGLE_AUTO_LOAD_IMAGE')
-    }
-
-    if (window.localStorage.getItem('threadHistory')) {
-      this.$store.commit('SET_THREAD_HISTORY', JSON.parse(window.localStorage.getItem('threadHistory')))
+    if (this.whiteTheme) {
+      $('html').addClass('white-theme')
+    } else {
+      $('html').removeClass('white-theme')
     }
   }
 }
@@ -138,7 +125,7 @@ html {
   padding: 50px 0;
 
 
-  &.white-theme {
+  .white-theme & {
     background: #f1f1f1;
     color: #444;
   }
