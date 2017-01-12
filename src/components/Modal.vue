@@ -23,5 +23,11 @@ export default {
       background: #f1f1f1;
     }
   }
+
+  .uk-close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+  }
 }
 </style>

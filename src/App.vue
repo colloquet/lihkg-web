@@ -215,9 +215,6 @@ blockquote {
 }
 
 .uk-close {
-  position: absolute;
-  right: 20px;
-  top: 20px;
   color: #f1c40f;
   opacity: 1;
 }
