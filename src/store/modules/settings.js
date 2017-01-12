@@ -4,8 +4,8 @@ import * as types from '../mutation-types'
 const state = {
   whiteTheme: JSON.parse(window.localStorage.getItem('whiteTheme')) || false,
   officeMode: JSON.parse(window.localStorage.getItem('officeMode')) || false,
-  autoLoadImage: JSON.parse(window.localStorage.getItem('autoLoadImage')) || false,
-  threadHistory: JSON.parse(window.localStorage.getItem('threadHistory')) || {}
+  threadHistory: JSON.parse(window.localStorage.getItem('threadHistory')) || {},
+  iconMap: {}
 }
 
 // getters
@@ -28,11 +28,6 @@ const mutations = {
     state.officeMode = officeMode
     window.localStorage.setItem('officeMode', officeMode)
   },
-  [types.TOGGLE_AUTO_LOAD_IMAGE] (state, status) {
-    const autoLoadImage = !state.autoLoadImage
-    state.autoLoadImage = autoLoadImage
-    window.localStorage.setItem('autoLoadImage', autoLoadImage)
-  },
   [types.UPDATE_HISTORY] (state, post) {
     state.threadHistory[post.id] = {
       page: post.page,
@@ -45,6 +40,9 @@ const mutations = {
       // http://stackoverflow.com/questions/21159301/quotaexceedederror-dom-exception-22-an-attempt-was-made-to-add-something-to-st
       console.log(e)
     }
+  },
+  [types.SET_ICON_MAP] (state, iconMap) {
+    state.iconMap = iconMap
   },
   [types.SET_THREAD_HISTORY] (state, history) {
     state.threadHistory = history

@@ -61,7 +61,8 @@ export default {
 
 <style lang="stylus">
 .uk-offcanvas-bar {
-  box-shadow: 1px 1px 4px 1px #000;
+  background: #222;
+  box-shadow: 1px 1px 4px 1px rgba(#000, 0.5);
 
   &:after {
     display: none;
@@ -79,5 +80,10 @@ export default {
     padding: 10px 5px;
     text-align: center;
   }
+}
+
+.uk-nav-offcanvas > li > a {
+  box-shadow: none;
+  border-top: 1px solid #333;
 }
 </style>

@@ -118,13 +118,6 @@ export default {
   components: {
     ThreadNavbar
   },
-  head: {
-    title () {
-      return {
-        inner: this.activeThread.title || '內文'
-      }
-    }
-  },
   data () {
     return {
       isThreadLoading: false,
@@ -137,7 +130,7 @@ export default {
   },
   computed: {
     activeCategory () {
-      return this.$store.getters.activeCategory
+      return this.$store.state.categories.category
     },
     activeThread () {
       return this.$store.state.threads.activeThread
@@ -145,8 +138,11 @@ export default {
     threadId () {
       return this.$store.state.route.params.id
     },
-    autoLoadImage () {
-      return this.$store.state.settings.autoLoadImage
+    officeMode () {
+      return this.$store.state.settings.officeMode
+    },
+    iconMap () {
+      return this.$store.state.settings.iconMap
     },
     pageNumber: {
       get () {
@@ -155,18 +151,20 @@ export default {
       set (page) {
         this.$router.replace(`/thread/${this.threadId}/page/${page}`)
       }
+    },
+    lastLoadedPage () {
+      return +Object.keys(this.activeThread.item_page)[Object.keys(this.activeThread.item_page).length - 1]
     }
   },
   methods: {
     fetchThread (page, scroll = false, refresh = false) {
       const self = this
 
+      self.pageNumber = page
+
       // if page already loaded, scroll to page
       if (!refresh && self.activeThread.item_page && typeof self.activeThread.item_page[page] !== 'undefined') {
-        UIkit.Utils.scrollToElement(UIkit.$(`#page-${page}`), {
-          offset: 50 + 10
-        })
-        self.pageNumber = page
+        UIkit.Utils.scrollToElement($(`#page-${page}`), { offset: 50 + 10 })
         return false
       }
 
@@ -175,32 +173,30 @@ export default {
         self.isThreadLoading = false
 
         if (!self.activeCategory) {
-          self.$store.commit('SET_ACTIVE_CATEGORY', response.data.response.cat_id)
+          self.$store.commit('SET_ACTIVE_CATEGORY', response.data.response.category)
         }
 
         self.$store.commit('APPEND_ACTIVE_THREAD', response.data.response)
 
         if (scroll) {
           setTimeout(() => {
-            UIkit.Utils.scrollToElement(UIkit.$(`#page-${page}`), {
-              offset: 50 + 10
-            })
+            UIkit.Utils.scrollToElement($(`#page-${page}`), { offset: 50 + 10 })
           }, 100)
         }
 
-        self.$emit('updateHead')
         self.$store.commit('UPDATE_HISTORY', {
           id: response.data.response.thread_id,
           page: page,
           no_of_reply: response.data.response.no_of_reply
         })
-        self.pageNumber = page
       }).catch((e) => {
         console.log(e)
         window.alert('伺服器出錯，請重試。')
       })
     },
     prepareCommentMsg (msg) {
+      const self = this
+
       while (msg.indexOf('src="/assets') > 0) {
         msg = msg.replace('src="/assets', 'src="https://lihkg.com/assets')
       }
@@ -216,7 +212,16 @@ export default {
       }
       dom.innerHTML = msg
 
-      if (!this.autoLoadImage) {
+      if (self.officeMode) {
+        const icons = qsa('img.hkgmoji')
+        icons.forEach(i => {
+          const code = i.src.match(/faces\/(.*)\//)[1]
+          const uri = i.src.split('lihkg.com/')[1]
+          i.outerHTML = self.iconMap[code][uri]
+        })
+      }
+
+      if (self.officeMode) {
         const images = qsa('img:not(.hkgmoji)')
         images.forEach(i => {
           i.setAttribute('data-src', i.src)
@@ -225,26 +230,30 @@ export default {
         })
       }
 
-      const youtubeLinks = qsa('a[href*="youtu"]')
-      youtubeLinks.forEach(link => {
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/
-        const match = link.href.match(regExp)
-        if (match && match[2].length === 11) {
-          const iframe = document.createElement('iframe')
-          const embedContainer = document.createElement('div')
-          const responsiveContainer = document.createElement('div')
-          embedContainer.className = 'embed-container'
-          responsiveContainer.className = 'responsive-container'
-          iframe.width = 560
-          iframe.height = 315
-          iframe.src = 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0&enablejsapi=1'
-          iframe.frameBorder = 0
-          iframe.allowFullscreen = true
-          embedContainer.appendChild(iframe)
-          responsiveContainer.appendChild(embedContainer)
-          link.parentNode.insertBefore(responsiveContainer, link.nextSibling)
-        }
-      })
+      if (!self.officeMode) {
+        const youtubeLinks = qsa('a[href*="youtu"]')
+        youtubeLinks.forEach(link => {
+          const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/
+          const match = link.href.match(regExp)
+          if (match && match[2].length === 11) {
+            const iframe = document.createElement('iframe')
+            const embedContainer = document.createElement('div')
+            const responsiveContainer = document.createElement('div')
+            const lineBreak = document.createElement('br')
+            embedContainer.className = 'embed-container'
+            responsiveContainer.className = 'responsive-container'
+            iframe.width = 560
+            iframe.height = 315
+            iframe.src = 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0&enablejsapi=1'
+            iframe.frameBorder = 0
+            iframe.allowFullscreen = true
+            embedContainer.appendChild(iframe)
+            responsiveContainer.appendChild(embedContainer)
+            link.parentNode.insertBefore(responsiveContainer, link.nextSibling)
+            link.parentNode.insertBefore(lineBreak, link.nextSibling)
+          }
+        })
+      }
 
       return dom.innerHTML
     },
@@ -293,8 +302,7 @@ export default {
       this.fetchThread(page, false)
     },
     handleRefresh () {
-      const page = +$('.page-container:last').data('page')
-      this.fetchThread(page, false, true)
+      this.fetchThread(this.lastLoadedPage, false, true)
     },
     handleScrollBottom () {
       $('html, body').animate({ scrollTop: $(document).height() }, 1000)
@@ -344,9 +352,8 @@ export default {
 
     window.onscroll = () => {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        const page = +$('.page-container:last').data('page')
-        if (!self.isThreadLoading && page < self.activeThread.total_page && !$('body').hasClass('uk-offcanvas-page')) {
-          self.handleLoadMore(page + 1)
+        if (!self.isThreadLoading && self.lastLoadedPage < self.activeThread.total_page && !$('body').hasClass('uk-offcanvas-page')) {
+          self.handleLoadMore(self.lastLoadedPage + 1)
         }
       }
     }
@@ -548,7 +555,9 @@ export default {
 }
 
 .responsive-container {
+  display: inline-block;
   max-width: 560px;
+  width: 100%;
 }
 .embed-container {
   position: relative;

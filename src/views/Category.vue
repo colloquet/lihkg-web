@@ -36,36 +36,26 @@ export default {
   components: {
     ThreadList
   },
-  head: {
-    title () {
-      return {
-        inner: this.activeCategory ? this.activeCategory.name : '主頁'
-      }
-    }
-  },
   data () {
     return {
       page: 1
     }
   },
   computed: {
+    activeThreads () {
+      return this.$store.state.categories.threads
+    },
     activeCategory () {
-      return this.$store.getters.activeCategory
+      return this.$store.state.categories.category
     },
     catId () {
       return this.$store.state.route.params.id
     },
-    activeThreads () {
-      return this.$store.state.threads.threads
-    },
     isThreadListLoading () {
-      return this.$store.state.threads.isThreadListLoading
-    },
-    activeCategoryId () {
-      return this.$store.state.categories.activeCategoryId
+      return this.$store.state.categories.isThreadListLoading
     },
     hasMoreThreads () {
-      return this.$store.state.threads.hasMoreThreads
+      return this.$store.state.categories.hasMoreThreads
     },
     uniqueThreads () {
       return uniqBy(this.activeThreads, 'thread_id')
@@ -99,15 +89,11 @@ export default {
         catId: this.catId,
         page: 1
       })
-      this.$emit('updateHead')
-    },
-    activeCategory () {
-      this.$emit('updateHead')
     }
   },
   mounted () {
     const self = this
-    if (+this.catId !== +this.activeCategoryId || !this.activeThreads.length) {
+    if (+this.catId !== +this.activeCategory.cat_id || !this.activeThreads.length) {
       this.fetchThreadList({
         catId: this.catId,
         page: 1

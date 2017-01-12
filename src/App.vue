@@ -6,7 +6,7 @@
     <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">
       <div class="uk-alert" data-uk-alert>
         <a href="#" class="uk-alert-close uk-close"></a>
-        <p>LIHKG測試版網站現已推出: <a href="https://lihkg.com/" target="_blank">https://lihkg.com/</a></p>
+        <p>LIHKG網站現已推出 (已有回覆功能): <a href="https://lihkg.com/" target="_blank">https://lihkg.com/</a></p>
       </div>
       <router-view></router-view>
     </div>
@@ -29,8 +29,8 @@
       <a class="theme-toggle settings-toggle" @click.prevent="toggleWhiteTheme">
         白底 {{ whiteTheme ? 'ON' : 'OFF' }}
       </a>
-      <a class="auto-load-image-toggle settings-toggle" @click.prevent="toggleAutoLoadImage">
-        自動撈圖 {{ autoLoadImage ? 'ON' : 'OFF' }}
+      <a class="auto-load-image-toggle settings-toggle" @click.prevent="toggleOfficeMode">
+        公司模式 {{ officeMode ? 'ON' : 'OFF' }}
       </a>
       <a class="settings-toggle" @click.prevent="resetThreadHistory">
         清除睇post記錄
@@ -61,24 +61,58 @@ export default {
     Offcanvas,
     Modal
   },
+  metaInfo () {
+    return {
+      title: this.title || '載入中',
+      titleTemplate: this.officeMode ? null : '%s | LIHKG 討論區',
+      link: this.officeMode ? [
+        { rel: 'shortcut icon', href: 'https://www.google.com.hk/images/branding/product/ico/googleg_lodp.ico' }
+      ] : null
+    }
+  },
   computed: {
+    activeCategory () {
+      return this.$store.state.categories.category
+    },
+    activeThread () {
+      return this.$store.state.threads.activeThread
+    },
     allCategories () {
       return this.$store.state.categories.categories
     },
     whiteTheme () {
       return this.$store.state.settings.whiteTheme
     },
-    autoLoadImage () {
-      return this.$store.state.settings.autoLoadImage
+    officeMode () {
+      return this.$store.state.settings.officeMode
     },
     isSafari () {
       return navigator.userAgent.indexOf('Safari') > -1 && navigator.userAgent.indexOf('Chrome') === -1
+    },
+    title () {
+      if (this.officeMode) {
+        return 'Google'
+      } else {
+        if (this.$route.name === 'Category') {
+          return this.activeCategory.name
+        } else if (this.$route.name === 'Thread') {
+          return this.activeThread.title
+        } else {
+          return '主頁'
+        }
+      }
     }
   },
   methods: {
     ...mapActions([
       'fetchCategories'
     ]),
+    toggleWhiteTheme () {
+      this.$store.commit('TOGGLE_WHITE_THEME')
+    },
+    toggleOfficeMode () {
+      this.$store.commit('TOGGLE_OFFICE_MODE')
+    },
     resetThreadHistory () {
       this.$store.commit('RESET_THREAD_HISTORY')
       window.alert('底已洗')
@@ -94,9 +128,8 @@ export default {
     }
   },
   mounted () {
-    const self = this
-    if (!self.allCategories.length) {
-      self.fetchCategories()
+    if (!this.allCategories.length) {
+      this.fetchCategories()
     }
 
     if (this.whiteTheme) {
