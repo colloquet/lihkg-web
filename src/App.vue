@@ -26,13 +26,17 @@
     </modal>
 
     <modal id="modal-setting">
-      <a class="theme-toggle settings-toggle" @click.prevent="toggleWhiteTheme">
-        白底 {{ whiteTheme ? 'ON' : 'OFF' }}
-      </a>
-      <a class="auto-load-image-toggle settings-toggle" @click.prevent="toggleOfficeMode">
-        公司模式 {{ officeMode ? 'ON' : 'OFF' }}
-      </a>
-      <a class="settings-toggle" @click.prevent="resetThreadHistory">
+      <div class="uk-flex uk-flex-middle uk-flex-space-between settings-toggle">
+        白底
+        <input class="tgl tgl-light" id="white-mode" type="checkbox" :checked="whiteTheme" @change="toggleWhiteTheme" />
+        <label class="tgl-btn" for="white-mode"></label>
+      </div>
+      <div class="uk-flex uk-flex-middle uk-flex-space-between settings-toggle">
+        公司模式
+        <input class="tgl tgl-light" id="office-mode" type="checkbox" :checked="officeMode" @change="toggleOfficeMode" />
+        <label class="tgl-btn" for="office-mode"></label>
+      </div>
+      <a class="uk-flex settings-toggle" @click.prevent="resetThreadHistory">
         清除睇post記錄
       </a>
     </modal>
@@ -211,6 +215,9 @@ blockquote {
 }
 
 .uk-close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
   color: #f1c40f;
   opacity: 1;
 }
@@ -229,7 +236,7 @@ blockquote {
 }
 
 .settings-toggle {
-  display: block;
+  /*display: block;*/
   padding: 15px;
   border-bottom: 1px solid #444;
 
@@ -240,6 +247,75 @@ blockquote {
 
   &:last-child {
     border-bottom: 0;
+  }
+}
+
+.tgl {
+	display: none;
+
+	+ .tgl-btn {
+		outline: 0;
+		display: block;
+		width: 3em;
+		height: 1.5em;
+		position: relative;
+		cursor: pointer;
+    user-select: none;
+		&:after,
+    &:before {
+			position: relative;
+			display: block;
+			content: "";
+			width: 50%;
+			height: 100%;
+		}
+
+		&:after {
+			left: 0;
+		}
+
+		&:before {
+			display: none;
+		}
+	}
+
+	&:checked + .tgl-btn:after {
+		left: 50%;
+	}
+}
+
+.tgl-light {
+	+ .tgl-btn {
+		background: #444;
+		border-radius: 1.5em;
+		padding: 2px;
+		transition: all .4s ease;
+		&:after {
+			border-radius: 50%;
+			background: #888;
+			transition: all .2s ease;
+
+      .white-theme & {
+        background: #fff;
+      }
+		}
+
+    .white-theme & {
+      background: #ddd;
+    }
+	}
+
+	&:checked {
+  	+ .tgl-btn {
+  		background: #f1c40f;
+      &:after {
+        background: #fff;
+      }
+
+      .white-theme & {
+        background: #86d993;
+      }
+  	}
   }
 }
 </style>
