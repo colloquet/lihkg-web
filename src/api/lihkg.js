@@ -27,13 +27,13 @@ export default {
       }
     })
   },
-  fetchThread (threadID, page) {
-    return axios.get(`https://lihkg.com/api_v1/thread/${threadID}/page/${page}`)
+  fetchThread (threadId, page) {
+    return axios.get(`https://lihkg.com/api_v1/thread/${threadId}/page/${page}`)
   },
   fetchSearchResult (query, page) {
     return axios.get(`https://lihkg.com/api_v1/thread/search?q=${query}&page=${page}&count=30`)
   },
-  fetchImages (threadID) {
-    return axios.get(`https://lihkg.com/api_v1/thread/${threadID}/images`)
+  fetchImages (threadId) {
+    return axios.get(`https://lihkg.com/api_v1/thread/${threadId}/images`)
   }
 }
