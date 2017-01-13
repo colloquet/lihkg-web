@@ -21,9 +21,12 @@
           :key="category.cat_id"
           :class="{'uk-active': activeCategory ? category.cat_id === activeCategory.cat_id : false}"
           @click="closeOffcanvas">
-          <router-link :to="'/category/' + category.cat_id">
+          <a @click.prevent="handleSwitchCategory(category.cat_id)">
             {{ category.name }}
-          </router-link>
+          </a>
+          <!-- <router-link :to="'/category/' + category.cat_id">
+            {{ category.name }}
+          </router-link> -->
         </li>
         <li>
           <a href="#modal-about" data-uk-modal>關於本站</a>
@@ -41,7 +44,7 @@ export default {
   name: 'offcanvas',
   computed: {
     activeCategory () {
-      return this.$store.getters.activeCategory
+      return this.$store.state.categories.category
     },
     allCategories () {
       return this.$store.state.categories.categories
@@ -54,6 +57,11 @@ export default {
     closeOffcanvas () {
       UIkit.offcanvas.hide()
       document.body.scrollTop = document.documentElement.scrollTop = 0
+    },
+    handleSwitchCategory (catId) {
+      setTimeout(() => {
+        this.$router.push(`/category/${catId}`)
+      }, 400)
     }
   }
 }

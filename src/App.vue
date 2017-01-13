@@ -26,17 +26,27 @@
     </modal>
 
     <modal id="modal-setting">
-      <div class="uk-flex uk-flex-middle uk-flex-space-between settings-toggle">
-        白底
+      <div class="settings-toggle">
+        <label for="white-mode">白底</label>
         <input class="tgl tgl-light" id="white-mode" type="checkbox" :checked="whiteTheme" @change="toggleWhiteTheme" />
         <label class="tgl-btn" for="white-mode"></label>
       </div>
-      <div class="uk-flex uk-flex-middle uk-flex-space-between settings-toggle">
-        公司模式
+      <div class="settings-toggle">
+        <label for="office-mode">公司模式</label>
         <input class="tgl tgl-light" id="office-mode" type="checkbox" :checked="officeMode" @change="toggleOfficeMode" />
         <label class="tgl-btn" for="office-mode"></label>
       </div>
-      <a class="uk-flex settings-toggle" @click.prevent="resetThreadHistory">
+      <div class="settings-toggle">
+        <label for="autoload-image">自動撈圖</label>
+        <input class="tgl tgl-light" id="autoload-image" type="checkbox" :checked="autoLoadImage" @change="toggleAutoLoadImage" />
+        <label class="tgl-btn" for="autoload-image"></label>
+      </div>
+      <div class="settings-toggle">
+        <label for="youtube-preview">YouTube預覽</label>
+        <input class="tgl tgl-light" id="youtube-preview" type="checkbox" :checked="youtubePreview" @change="toggleYoutubePreview" />
+        <label class="tgl-btn" for="youtube-preview"></label>
+      </div>
+      <a class="settings-toggle" @click.prevent="resetThreadHistory">
         清除睇post記錄
       </a>
     </modal>
@@ -90,6 +100,12 @@ export default {
     officeMode () {
       return this.$store.state.settings.officeMode
     },
+    autoLoadImage () {
+      return this.$store.state.settings.autoLoadImage
+    },
+    youtubePreview () {
+      return this.$store.state.settings.youtubePreview
+    },
     isSafari () {
       return navigator.userAgent.indexOf('Safari') > -1 && navigator.userAgent.indexOf('Chrome') === -1
     },
@@ -116,6 +132,12 @@ export default {
     },
     toggleOfficeMode () {
       this.$store.commit('TOGGLE_OFFICE_MODE')
+    },
+    toggleAutoLoadImage () {
+      this.$store.commit('TOGGLE_AUTO_LOAD_IMAGE')
+    },
+    toggleYoutubePreview () {
+      this.$store.commit('TOGGLE_YOUTUBE_PREVIEW')
     },
     resetThreadHistory () {
       this.$store.commit('RESET_THREAD_HISTORY')
@@ -233,9 +255,12 @@ blockquote {
 }
 
 .settings-toggle {
-  /*display: block;*/
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 15px;
   border-bottom: 1px solid #444;
+  color: #f1c40f;
 
   .white-theme & {
     border-bottom: 1px solid #ddd;

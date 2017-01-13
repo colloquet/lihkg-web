@@ -1,6 +1,6 @@
 <template>
   <nav class="uk-flex uk-flex-space-between navbar">
-    <a href="#offcanvas-categories" class="sidebar-toggle" data-uk-offcanvas="{mode:'none'}"><span class="uk-icon-bars"></span><span v-show="$route.name === 'Category'"> {{ activeCategory.name || '轉台' }}</span></a>
+    <a href="#offcanvas-categories" class="sidebar-toggle" data-uk-offcanvas="{mode:'slide'}"><span class="uk-icon-bars"></span><span v-show="$route.name === 'Category'"> {{ activeCategory.name || '轉台' }}</span></a>
 
     <div v-show="$route.name === 'Category'">
       <a href="https://github.com/colloquet/lihkg-web" target="_blank" class="refresh-toggle"><span class="uk-icon-github"></span> GitHub</a>

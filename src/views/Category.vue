@@ -38,7 +38,8 @@ export default {
   },
   data () {
     return {
-      page: 1
+      page: 1,
+      canLoadMore: false
     }
   },
   computed: {
@@ -93,6 +94,11 @@ export default {
   },
   mounted () {
     const self = this
+
+    setTimeout(() => {
+      self.canLoadMore = true
+    }, 500)
+
     if (+this.catId !== +this.activeCategory.cat_id || !this.activeThreads.length) {
       this.fetchThreadList({
         catId: this.catId,
@@ -102,7 +108,8 @@ export default {
 
     window.onscroll = () => {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        if (!self.isThreadListLoading && self.hasMoreThreads && !$('body').hasClass('uk-offcanvas-page')) {
+        const canLoadMore = !self.isThreadListLoading && self.hasMoreThreads && self.canLoadMore && !$('body').hasClass('uk-offcanvas-page')
+        if (canLoadMore) {
           self.handleLoadMore()
         }
       }

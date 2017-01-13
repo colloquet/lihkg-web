@@ -1,5 +1,9 @@
 <template>
-  <div v-if="activeThread">
+  <div class="uk-text-center comment" v-if="!activeThread.thread_id">
+    <span class="uk-icon-spin uk-icon-spinner"></span>
+    載入中
+  </div>
+  <div v-else>
     <div class="page-container" v-for="(comments, page) in activeThread.item_page" :id="`page-${page}`" data-uk-scrollspy :data-page="page">
       <thread-navbar
         :page="page"
@@ -9,6 +13,7 @@
         :hasPrevPage="hasPrevPage(page)"
         :hasNextPage="hasNextPage(page)"
         :handlePageSwitch="handlePageSwitch"
+        :handlePageSwitchFromSelect="handlePageSwitchFromSelect"
         :photoMode="enablePhotoMode"
       />
 
@@ -39,6 +44,7 @@
         :hasPrevPage="hasPrevPage(page)"
         :hasNextPage="hasNextPage(page)"
         :handlePageSwitch="handlePageSwitch"
+        :handlePageSwitchFromSelect="handlePageSwitchFromSelect"
         :photoMode="enablePhotoMode"
       />
 
@@ -141,6 +147,12 @@ export default {
     officeMode () {
       return this.$store.state.settings.officeMode
     },
+    autoLoadImage () {
+      return this.$store.state.settings.autoLoadImage
+    },
+    youtubePreview () {
+      return this.$store.state.settings.youtubePreview
+    },
     iconMap () {
       return this.$store.state.settings.iconMap
     },
@@ -200,6 +212,7 @@ export default {
       while (msg.indexOf('src="/assets') > 0) {
         msg = msg.replace('src="/assets', 'src="https://lihkg.com/assets')
       }
+      msg = msg.replace(/<\/blockquote><br\s?\/>/g, '</blockquote>')
 
       const dom = document.createElement('div')
       const qsa = selector => {
@@ -221,7 +234,7 @@ export default {
         })
       }
 
-      if (self.officeMode) {
+      if (!self.autoLoadImage) {
         const images = qsa('img:not(.hkgmoji)')
         images.forEach(i => {
           i.setAttribute('data-src', i.src)
@@ -230,7 +243,7 @@ export default {
         })
       }
 
-      if (!self.officeMode) {
+      if (self.youtubePreview) {
         const youtubeLinks = qsa('a[href*="youtu"]')
         youtubeLinks.forEach(link => {
           const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/
@@ -298,6 +311,9 @@ export default {
     handlePageSwitch (page) {
       this.fetchThread(page, true)
     },
+    handlePageSwitchFromSelect (event) {
+      this.fetchThread(event.target.value, true)
+    },
     handleLoadMore (page) {
       this.fetchThread(page, false)
     },
@@ -352,8 +368,10 @@ export default {
 
     window.onscroll = () => {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        if (!self.isThreadLoading && self.lastLoadedPage < self.activeThread.total_page && !$('body').hasClass('uk-offcanvas-page')) {
-          self.handleLoadMore(self.lastLoadedPage + 1)
+        if (!self.isThreadLoading && !$('body').hasClass('uk-offcanvas-page')) {
+          if (self.lastLoadedPage < self.activeThread.total_page) {
+            self.handleLoadMore(self.lastLoadedPage + 1)
+          }
         }
       }
     }
@@ -483,6 +501,21 @@ export default {
     .is-active {
       background: #eee;
       font-weight: bold;
+    }
+
+    select {
+      bottom: 0;
+      left: 0;
+      opacity: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 100%!important;
+      height: 100%!important;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      cursor: pointer;
     }
   }
 }

@@ -32,6 +32,7 @@ const actions = {
       commit('SET_ACTIVE_CATEGORY', response.data.response.category)
       commit('SET_LOADING_THRED_LIST', false)
       commit('SET_HAS_MORE_THREADS', true)
+      window.scrollTo(0, 0)
     }).catch((e) => {
       console.log(e)
       window.alert('伺服器出錯，請重試。')

@@ -15,15 +15,12 @@
           </span>
         </small>
       </router-link>
-      <div class="page-switcher" data-uk-dropdown="{pos:'bottom-right', mode: 'click'}">
+      <div class="page-switcher">
         <div>{{ thread.total_page }} 頁 <span class="uk-icon-caret-down"></span></div>
-        <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
-          <ul class="uk-nav uk-nav-dropdown">
-            <li v-for="n in thread.total_page">
-              <router-link :to="`/thread/${thread.thread_id}/page/${n}`">第 {{ n }} 頁</router-link>
-            </li>
-          </ul>
-        </div>
+        <select @change="handlePageSwitch">
+          <option value="" selected>選擇頁數</option>
+          <option :value="n" v-for="n in thread.total_page">第 {{ n }} 頁</option>
+        </select>
       </div>
     </div>
   </li>
@@ -32,7 +29,12 @@
 <script>
 export default {
   name: 'threadlistItem',
-  props: ['thread', 'history', 'reply-time', 'score']
+  props: ['thread', 'history', 'reply-time', 'score'],
+  methods: {
+    handlePageSwitch (event) {
+      this.$router.push(`/thread/${this.thread.thread_id}/page/${event.target.value}`)
+    }
+  }
 }
 </script>
 
@@ -58,6 +60,21 @@ export default {
 
     &.uk-open {
       z-index: 10;
+    }
+
+    select {
+      bottom: 0;
+      left: 0;
+      opacity: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 100%!important;
+      height: 100%!important;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      cursor: pointer;
     }
   }
 }
