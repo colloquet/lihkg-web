@@ -7,6 +7,7 @@
         {{ thread.title }}<br>
         <small class="uk-text-muted">
           <span :class="thread.user.level === '999' ? 'admin' : thread.user.gender === 'M' ? 'male' : 'female'">{{ thread.user_nickname }}</span> //
+          <span>{{ thread.category.name }}</span> //
           {{ replyTime }} //
           {{ thread.no_of_reply }}個回覆 //
           <span :class="{'like-color': score >= 100, 'dislike-color': score <= -100}">
@@ -16,7 +17,7 @@
         </small>
       </router-link>
       <div class="page-switcher">
-        <div>{{ thread.total_page }} 頁 <span class="uk-icon-caret-down"></span></div>
+        {{ thread.total_page }} 頁&nbsp;<span class="uk-icon-caret-down"></span>
         <select @change="handlePageSwitch">
           <option value="" selected>選擇頁數</option>
           <option :value="n" v-for="n in thread.total_page">第 {{ n }} 頁</option>
@@ -40,6 +41,7 @@ export default {
 
 <style lang="stylus">
 .thread-container {
+  display: flex;
   position: relative;
   background: #2d2d2d;
   border-bottom: 1px solid #444;
@@ -50,16 +52,26 @@ export default {
   }
 
   .page-switcher {
-    position: absolute;
-    display: inline-block;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    text-align: center;
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 15px;
+    min-width: 82px;
     cursor: pointer;
 
-    &.uk-open {
-      z-index: 10;
+    @media(max-width: 767px) {
+      min-width: 70px;
+      font-size: 12px;
+    }
+
+    &:hover {
+      background: #383838;
+
+      .white-theme & {
+        background: #eaeaea;
+      }
     }
 
     select {
@@ -82,10 +94,10 @@ export default {
 .thread {
   position: relative;
   display: block;
+  flex-grow: 1;
   border-right: 1px solid #444;
   padding: 15px;
   padding-left: 30px;
-  margin-right: 80px;
 
   &:hover {
     background: #383838;

@@ -170,12 +170,17 @@ export default {
 <style lang="stylus">
 html {
   background: #222;
+  box-sizing: border-box;
   font-size: 16px;
   font-family: "Helvetica Neue", "Helvetica", Arial, Microsoft JhengHei, sans-serif;
 
   &.white-theme {
     background: #f1f1f1;
   }
+}
+
+*, *:after, *:before {
+  box-sizing: inherit;
 }
 
 #app {

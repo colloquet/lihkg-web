@@ -107,7 +107,7 @@ export default {
     }
 
     window.onscroll = () => {
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
         const canLoadMore = !self.isThreadListLoading && self.hasMoreThreads && self.canLoadMore && !$('body').hasClass('uk-offcanvas-page')
         if (canLoadMore) {
           self.handleLoadMore()

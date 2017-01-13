@@ -17,6 +17,12 @@
       <span class="uk-icon-thumbs-down uk-margin-small-left dislike-color"></span> {{ activeThread.dislike_count }}
     </div>
 
+    <div class="uk-hidden-small nav-item" v-show="$route.name === 'Thread'">
+      <a @click.prevent="enablePhotoMode">
+        <span class="uk-icon-image"></span> 圖片模式
+      </a>
+    </div>
+
     <div class="uk-hidden-small nav-item" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}" v-show="activeThread && $route.name === 'Thread'">
       <a>
         <span class="uk-icon-qrcode like-color"></span><span class="uk-hidden-small"> 開APP</span>
@@ -74,6 +80,9 @@ export default {
       } catch (e) {
         return 'QR code: 你條Link 太長.'
       }
+    },
+    enablePhotoMode () {
+      this.$store.commit('SET_PHOTO_MODE', true)
     }
   }
 }
@@ -117,7 +126,6 @@ export default {
 
 .refresh-toggle, .search-toggle {
   display: inline-block;
-  /*border-left: 1px solid #757575;*/
   height: 50px;
   padding: 0 15px;
   line-height: 50px;
@@ -128,7 +136,6 @@ export default {
 }
 
 .nav-title {
-  border-left: 1px solid #757575;
   padding: 0 15px;
   white-space: nowrap;
   width: 100%;
@@ -139,13 +146,11 @@ export default {
   cursor: pointer;
 
   .white-theme & {
-    border-left: 1px solid #ddd;
     color: #222;
   }
 }
 
 .nav-item {
-  border-left: 1px solid #757575;
   flex-shrink: 0;
   height: 50px;
   padding: 0 15px;
@@ -153,7 +158,6 @@ export default {
   color: #e6e6e6;
 
   .white-theme & {
-    border-left: 1px solid #ddd;
     color: #222;
   }
 }

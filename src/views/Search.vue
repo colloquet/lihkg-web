@@ -74,7 +74,7 @@ export default {
     document.getElementById('search').focus()
 
     window.onscroll = () => {
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
         if (!self.isLoading && self.hasMoreThreads) {
           self.handleLoadMore()
         }

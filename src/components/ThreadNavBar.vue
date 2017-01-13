@@ -2,8 +2,8 @@
   <div class="uk-margin-bottom navigation-bar">
     <div class="uk-grid uk-grid-collapse">
       <div class="uk-width-1-5 uk-width-1-5 uk-hidden-small">
-        <a class="return-link" v-if="category" @click.prevent="back">
-          <span class="uk-icon-reply"></span> {{ category.name }}
+        <a class="return-link" v-if="categoryName" @click.prevent="back">
+          <span class="uk-icon-reply"></span> {{ categoryName }}
         </a>
       </div>
       <div class="uk-width-1-1 uk-width-medium-3-5">
@@ -24,22 +24,6 @@
           </div>
         </div>
       </div>
-      <div class="uk-width-1-5 uk-hidden-small">
-        <div class="uk-position-relative" data-uk-dropdown="{pos:'bottom-right', mode: 'click'}">
-          <a class="more-link">
-            <span class="uk-icon-ellipsis-v"></span> 更多
-          </a>
-          <div class="uk-dropdown uk-dropdown-small uk-dropdown-scrollable">
-            <ul class="uk-nav uk-nav-dropdown">
-              <li>
-                <a class="uk-dropdown-close" @click.prevent="photoMode">
-                  <span class="uk-icon-image"></span> 圖片模式
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -47,7 +31,7 @@
 <script>
 export default {
   name: 'threadNavBar',
-  props: ['page', 'category', 'back', 'total-page', 'has-prev-page', 'has-next-page', 'handle-page-switch', 'handle-page-switch-from-select', 'photo-mode']
+  props: ['page', 'category-name', 'back', 'total-page', 'has-prev-page', 'has-next-page', 'handle-page-switch', 'handle-page-switch-from-select']
 }
 </script>
 

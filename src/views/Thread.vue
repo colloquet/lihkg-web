@@ -7,14 +7,13 @@
     <div class="page-container" v-for="(comments, page) in activeThread.item_page" :id="`page-${page}`" data-uk-scrollspy :data-page="page">
       <thread-navbar
         :page="page"
-        :category="activeCategory"
+        :categoryName="activeCategory.name || activeThread.category.name"
         :back="backToThreadList"
         :totalPage="activeThread.total_page"
         :hasPrevPage="hasPrevPage(page)"
         :hasNextPage="hasNextPage(page)"
         :handlePageSwitch="handlePageSwitch"
         :handlePageSwitchFromSelect="handlePageSwitchFromSelect"
-        :photoMode="enablePhotoMode"
       />
 
       <div class="comments-container" :class="{'is-loading': isThreadLoading}">
@@ -38,14 +37,13 @@
 
       <thread-navbar
         :page="page"
-        :category="activeCategory"
+        :categoryName="activeCategory.name || activeThread.category.name"
         :back="backToThreadList"
         :totalPage="activeThread.total_page"
         :hasPrevPage="hasPrevPage(page)"
         :hasNextPage="hasNextPage(page)"
         :handlePageSwitch="handlePageSwitch"
         :handlePageSwitchFromSelect="handlePageSwitchFromSelect"
-        :photoMode="enablePhotoMode"
       />
 
       <p class="uk-text-center" v-if="page >= activeThread.total_page">
@@ -92,7 +90,7 @@
     <transition name="slide">
       <photo-gallery
         v-if="photoMode"
-        @onClose="photoMode = false"
+        @onClose="disablePhotoMode"
         :noImages="noImages"
         :images="images"
       />
@@ -118,10 +116,9 @@ export default {
     return {
       isThreadLoading: false,
       fromThreadList: false,
-      storeyModeId: -1,
-      photoMode: false,
       images: [],
-      noImages: false
+      noImages: false,
+      storeyModeId: -1
     }
   },
   computed: {
@@ -145,6 +142,9 @@ export default {
     },
     iconMap () {
       return this.$store.state.settings.iconMap
+    },
+    photoMode () {
+      return this.$store.state.threads.photoMode
     },
     pageNumber: {
       get () {
@@ -314,12 +314,20 @@ export default {
       $('html, body').animate({ scrollTop: $(document).height() }, 1000)
     },
     enablePhotoMode () {
+      this.$store.commit('SET_PHOTO_MODE', true)
+    },
+    disablePhotoMode () {
+      this.$store.commit('SET_PHOTO_MODE', false)
+    }
+  },
+  watch: {
+    photoMode (newVal, oldVal) {
       const self = this
-      self.photoMode = true
-      if (!self.images.length && !self.noImages) {
+      if (newVal && !self.images.length && !self.noImages) {
         lihkg.fetchImages(self.threadId).then((response) => {
           if (response.data.response.images.length) {
             self.images = response.data.response.images
+            self.noImages = false
           } else {
             self.noImages = true
           }
@@ -357,7 +365,7 @@ export default {
     })
 
     window.onscroll = () => {
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
         if (!self.isThreadLoading && !$('body').hasClass('uk-offcanvas-page')) {
           if (self.lastLoadedPage < self.activeThread.total_page) {
             self.handleLoadMore(self.lastLoadedPage + 1)

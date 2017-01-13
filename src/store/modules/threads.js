@@ -2,7 +2,8 @@ import * as types from '../mutation-types'
 
 // initial state
 const state = {
-  activeThread: {}
+  activeThread: {},
+  photoMode: false
 }
 
 // getters
@@ -15,6 +16,9 @@ const actions = {
 
 // mutations
 const mutations = {
+  [types.SET_PHOTO_MODE] (state, status) {
+    state.photoMode = status
+  },
   [types.SET_ACTIVE_THREAD] (state, thread) {
     state.activeThread = thread
   },
