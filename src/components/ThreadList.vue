@@ -1,6 +1,6 @@
 <template>
   <div class="threads-container">
-    <ul class="uk-grid" :class="{'is-loading': isLoading}">
+    <ul class="uk-grid">
       <thread-list-item
         v-for="thread in threads"
         :key="thread.thread_id"
@@ -43,10 +43,6 @@ export default {
 </script>
 
 <style lang="stylus">
-.is-loading {
-  opacity: 0.3;
-}
-
 .threads-container {
   margin: 0 -15px;
 

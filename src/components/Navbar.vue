@@ -25,7 +25,7 @@
 
     <div class="uk-hidden-small nav-item" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}" v-show="activeThread && $route.name === 'Thread'">
       <a>
-        <span class="uk-icon-qrcode like-color"></span><span class="uk-hidden-small"> 開APP</span>
+        <span class="uk-icon-qrcode"></span><span class="uk-hidden-small"> 開APP</span>
       </a>
       <div class="uk-dropdown-blank mobile-entry-popup" v-show="activeThread && $route.name === 'Thread'">
         <a :href="pageAppLink()" target="_blank"><div class="row"><span class="uk-icon-external-link"></span> 電話繼續追</div></a>

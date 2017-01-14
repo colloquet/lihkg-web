@@ -404,7 +404,7 @@ export default {
 }
 
 .is-loading {
-  opacity: 0.5;
+  opacity: 0.7;
 }
 
 .story-mode-toggle {
