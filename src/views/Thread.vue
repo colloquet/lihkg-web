@@ -159,42 +159,39 @@ export default {
     }
   },
   methods: {
-    fetchThread (page, scroll = false, refresh = false) {
+    async fetchThread (page, scroll = false, refresh = false) {
       const self = this
-
+      const isPageLoaded = self.activeThread.item_page && typeof self.activeThread.item_page[page] !== 'undefined'
       self.pageNumber = page
 
       // if page already loaded, scroll to page
-      if (!refresh && self.activeThread.item_page && typeof self.activeThread.item_page[page] !== 'undefined') {
+      if (isPageLoaded && !refresh) {
         UIkit.Utils.scrollToElement($(`#page-${page}`), { offset: 50 + 10 })
-        return false
+        return
       }
 
       self.isThreadLoading = true
-      lihkg.fetchThread(self.threadId, page).then(response => {
+      try {
+        const { data } = await lihkg.fetchThread(self.threadId, page)
         self.isThreadLoading = false
-
         if (!self.activeCategory) {
-          self.$store.commit('SET_ACTIVE_CATEGORY', response.data.response.category)
+          self.$store.commit('SET_ACTIVE_CATEGORY', data.response.category)
         }
-
-        self.$store.commit('APPEND_ACTIVE_THREAD', response.data.response)
-
-        if (scroll) {
-          setTimeout(() => {
-            UIkit.Utils.scrollToElement($(`#page-${page}`), { offset: 50 + 10 })
-          }, 100)
-        }
-
+        self.$store.commit('SET_ACTIVE_THREAD', data.response)
         self.$store.commit('UPDATE_HISTORY', {
-          id: response.data.response.thread_id,
+          id: data.response.thread_id,
           page: page,
-          no_of_reply: response.data.response.no_of_reply
+          no_of_reply: data.response.no_of_reply
         })
-      }).catch((e) => {
+        if (scroll) {
+          self.$nextTick(() => {
+            UIkit.Utils.scrollToElement($(`#page-${page}`), { offset: 50 + 10 })
+          })
+        }
+      } catch (e) {
         console.log(e)
         window.alert('伺服器出錯，請重試。')
-      })
+      }
     },
     prepareCommentMsg (msg) {
       const self = this
@@ -321,26 +318,28 @@ export default {
     }
   },
   watch: {
-    photoMode (newVal, oldVal) {
+    async photoMode (newVal, oldVal) {
       const self = this
-      if (newVal && !self.images.length && !self.noImages) {
-        lihkg.fetchImages(self.threadId).then((response) => {
-          if (response.data.response.images.length) {
-            self.images = response.data.response.images
+      if (newVal) {
+        try {
+          const { data } = await lihkg.fetchImages(self.threadId)
+          if (data.response.images.length) {
+            self.images = data.response.images
             self.noImages = false
           } else {
             self.noImages = true
           }
-        }).catch((e) => {
+        } catch (e) {
           console.log(e)
-        })
+        }
       }
     }
   },
   mounted () {
     const self = this
 
-    this.$store.commit('SET_ACTIVE_THREAD', {})
+    this.$store.commit('RESET_THREAD')
+    this.$store.commit('SET_PHOTO_MODE', false)
 
     if (this.activeCategory) {
       this.fromThreadList = true

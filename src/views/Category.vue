@@ -15,7 +15,7 @@
           </a>
         </div>
         <div class="uk-width-1-3">
-          <a href="#offcanvas-categories" data-uk-offcanvas="{mode:'none'}">轉台</a>
+          <a href="#offcanvas-categories" data-uk-offcanvas="{mode:'slide'}">轉台</a>
         </div>
         <div class="uk-width-1-3">
           <router-link to="/search"><span class="uk-icon-search"></span> 搜尋</router-link>

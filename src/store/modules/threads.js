@@ -19,10 +19,10 @@ const mutations = {
   [types.SET_PHOTO_MODE] (state, status) {
     state.photoMode = status
   },
-  [types.SET_ACTIVE_THREAD] (state, thread) {
-    state.activeThread = thread
+  [types.RESET_THREAD] (state) {
+    state.activeThread = {}
   },
-  [types.APPEND_ACTIVE_THREAD] (state, thread) {
+  [types.SET_ACTIVE_THREAD] (state, thread) {
     state.activeThread = {
       ...thread,
       item_page: {

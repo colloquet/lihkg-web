@@ -259,6 +259,20 @@ blockquote {
   }
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(128, 128, 128, .4);
+  background-clip: padding-box;
+
+  &:hover {
+    background-color: rgba(128, 128, 128, .6);
+  }
+}
+
+
 .settings-toggle {
   display: flex;
   align-items: center;

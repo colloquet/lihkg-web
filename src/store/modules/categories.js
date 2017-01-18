@@ -17,41 +17,44 @@ const getters = {
 
 // actions
 const actions = {
-  fetchCategories ({ commit }) {
-    lihkg.fetchCategories().then(response => {
-      commit('RECEIVE_CATEGORIES', response.data.response.category_list)
-    }).catch((e) => {
+  async fetchCategories ({ commit }) {
+    try {
+      const { data } = await lihkg.fetchCategories()
+      commit('RECEIVE_CATEGORIES', data.response.category_list)
+    } catch (e) {
       console.log(e)
       window.alert('伺服器出錯，請重試。')
-    })
+    }
   },
-  fetchThreadList ({ state, commit }, { catId, page }) {
+  async fetchThreadList ({ commit }, { catId, page }) {
     commit('SET_LOADING_THRED_LIST', true)
-    lihkg.fetchThreadList(catId, page, 50).then(response => {
-      commit('RECEIVE_THREAD_LIST', response.data.response.items)
-      commit('SET_ACTIVE_CATEGORY', response.data.response.category)
-      commit('SET_LOADING_THRED_LIST', false)
+    try {
+      const { data } = await lihkg.fetchThreadList(catId, page)
+      commit('RECEIVE_THREAD_LIST', data.response.items)
+      commit('SET_ACTIVE_CATEGORY', data.response.category)
       commit('SET_HAS_MORE_THREADS', true)
       window.scrollTo(0, 0)
-    }).catch((e) => {
+    } catch (e) {
       console.log(e)
       window.alert('伺服器出錯，請重試。')
-    })
+    }
+    commit('SET_LOADING_THRED_LIST', false)
   },
-  fetchMoreThreadList ({ state, commit }, { catId, page }) {
+  async fetchMoreThreadList ({ commit }, { catId, page }) {
     commit('SET_LOADING_THRED_LIST', true)
-    lihkg.fetchThreadList(catId, page, state.count).then(response => {
-      if (response.data.response) {
-        commit('RECEIVE_MORE_THREAD_LIST', response.data.response.items)
+    try {
+      const { data } = await lihkg.fetchThreadList(catId, page)
+      if (data.response) {
+        commit('RECEIVE_MORE_THREAD_LIST', data.response.items)
         commit('SET_HAS_MORE_THREADS', true)
       } else {
         commit('SET_HAS_MORE_THREADS', false)
       }
-      commit('SET_LOADING_THRED_LIST', false)
-    }).catch((e) => {
+    } catch (e) {
       console.log(e)
       window.alert('伺服器出錯，請重試。')
-    })
+    }
+    commit('SET_LOADING_THRED_LIST', false)
   }
 }
 
