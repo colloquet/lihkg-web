@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import ThreadListItem from './ThreadListItem'
 import helper from '../helper'
 
@@ -30,9 +31,9 @@ export default {
   },
   props: ['is-loading', 'threads', 'handle-load-more', 'has-more-threads'],
   computed: {
-    threadHistory () {
-      return this.$store.state.settings.threadHistory
-    }
+    ...mapState({
+      threadHistory: state => state.settings.threadHistory
+    })
   },
   methods: {
     getRelativeTime (timestamp) {

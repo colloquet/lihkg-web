@@ -36,4 +36,62 @@ export default {
 </script>
 
 <style lang="stylus">
+.navigation-bar {
+  background: #2d2d2d;
+  
+  [class*=uk-width-1-] {
+    text-align: center;
+
+    > a {
+      display: block;
+      height: 50px;
+      padding: 0 15px;
+      line-height: 50px;
+
+      @media(max-width: 375px) {
+        padding: 0 10px;
+      }
+    }
+  }
+
+  .page-switcher {
+    height: 50px;
+    padding: 0 15px;
+    line-height: 50px;
+    cursor: pointer;
+
+    @media(max-width: 375px) {
+      padding: 0 10px;
+    }
+
+    .is-active {
+      background: #eee;
+      font-weight: bold;
+    }
+
+    select {
+      bottom: 0;
+      left: 0;
+      opacity: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 100%!important;
+      height: 100%!important;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+  }
+
+  @media(max-width: 767px) {
+    margin: 0 -15px;
+  }
+
+  .white-theme & {
+    border: 1px solid #ddd;
+    background: #fafafa;
+  }
+}
 </style>

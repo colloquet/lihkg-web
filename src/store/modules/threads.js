@@ -8,6 +8,9 @@ const state = {
 
 // getters
 const getters = {
+  lastLoadedPage (state) {
+    return +Object.keys(state.activeThread.item_page)[Object.keys(state.activeThread.item_page).length - 1]
+  }
 }
 
 // actions

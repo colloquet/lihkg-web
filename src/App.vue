@@ -57,7 +57,7 @@
 <script>
 /* global $ */
 import FastClick from 'fastclick'
-import { mapActions } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import Navbar from './components/Navbar'
 import Offcanvas from './components/Offcanvas'
 import Modal from './components/Modal'
@@ -85,27 +85,16 @@ export default {
     }
   },
   computed: {
-    activeCategory () {
-      return this.$store.state.categories.category
-    },
-    activeThread () {
-      return this.$store.state.threads.activeThread
-    },
-    allCategories () {
-      return this.$store.state.categories.categories
-    },
-    whiteTheme () {
-      return this.$store.state.settings.whiteTheme
-    },
-    officeMode () {
-      return this.$store.state.settings.officeMode
-    },
-    autoLoadImage () {
-      return this.$store.state.settings.autoLoadImage
-    },
-    youtubePreview () {
-      return this.$store.state.settings.youtubePreview
-    },
+    ...mapState({
+      activeCategory: state => state.categories.category,
+      activeThread: state => state.threads.activeThread,
+      allCategories: state => state.categories.categories,
+      officeMode: state => state.settings.officeMode,
+      whiteTheme: state => state.settings.whiteTheme,
+      autoLoadImage: state => state.settings.autoLoadImage,
+      youtubePreview: state => state.settings.youtubePreview,
+      iconMap: state => state.settings.iconMap
+    }),
     isSafari () {
       return navigator.userAgent.indexOf('Safari') > -1 && navigator.userAgent.indexOf('Chrome') === -1
     },
@@ -127,22 +116,13 @@ export default {
     ...mapActions([
       'fetchCategories'
     ]),
-    toggleWhiteTheme () {
-      this.$store.commit('TOGGLE_WHITE_THEME')
-    },
-    toggleOfficeMode () {
-      this.$store.commit('TOGGLE_OFFICE_MODE')
-    },
-    toggleAutoLoadImage () {
-      this.$store.commit('TOGGLE_AUTO_LOAD_IMAGE')
-    },
-    toggleYoutubePreview () {
-      this.$store.commit('TOGGLE_YOUTUBE_PREVIEW')
-    },
-    resetThreadHistory () {
-      this.$store.commit('RESET_THREAD_HISTORY')
-      window.alert('底已洗')
-    }
+    ...mapMutations({
+      toggleWhiteTheme: 'TOGGLE_WHITE_THEME',
+      toggleOfficeMode: 'TOGGLE_OFFICE_MODE',
+      toggleAutoLoadImage: 'TOGGLE_AUTO_LOAD_IMAGE',
+      toggleYoutubePreview: 'TOGGLE_YOUTUBE_PREVIEW',
+      resetThreadHistory: 'RESET_THREAD_HISTORY'
+    })
   },
   watch: {
     whiteTheme (newVal, oldVal) {

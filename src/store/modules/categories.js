@@ -1,3 +1,4 @@
+import uniqBy from 'lodash.uniqby'
 import lihkg from '../../api/lihkg'
 import * as types from '../mutation-types'
 
@@ -13,6 +14,9 @@ const state = {
 
 // getters
 const getters = {
+  uniqueThreads (state) {
+    return uniqBy(state.threads, 'thread_id')
+  }
 }
 
 // actions

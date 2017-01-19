@@ -66,7 +66,7 @@
           <span class="uk-icon-thumbs-down"></span><span class="rating-number">{{ activeThread.dislike_count }}</span>
         </div>
         <div class="uk-width-1-6">
-          <a class="action-link" @click.prevent="enablePhotoMode">
+          <a class="action-link" @click.prevent="setPhotoMode(true)">
             <span class="uk-icon-image"></span>
           </a>
         </div>
@@ -75,7 +75,7 @@
             <span class="uk-icon-qrcode"></span>
           </a>
           <div class="uk-dropdown-blank mobile-entry-popup">
-            <a :href="pageAppLink()" target="_blank"><div class="row"><span class="uk-icon-external-link"></span> 電話繼續追</div></a>
+            <a :href="currentThreadLink" target="_blank"><div class="row"><span class="uk-icon-external-link"></span> 電話繼續追</div></a>
             <div class="row" v-html="qr()"></div>
           </div>
         </div>
@@ -90,9 +90,9 @@
     <transition name="slide">
       <photo-gallery
         v-if="photoMode"
-        @onClose="disablePhotoMode"
         :noImages="noImages"
         :images="images"
+        @onClose="setPhotoMode(false)"
       />
     </transition>
   </div>
@@ -100,6 +100,7 @@
 
 <script>
 /* global $, UIkit, Image */
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import qrCode from 'qrcode-npm'
 import ThreadNavbar from '../components/ThreadNavbar'
 import PhotoGallery from '../components/PhotoGallery'
@@ -122,30 +123,19 @@ export default {
     }
   },
   computed: {
-    activeCategory () {
-      return this.$store.state.categories.category
-    },
-    activeThread () {
-      return this.$store.state.threads.activeThread
-    },
-    threadId () {
-      return this.$store.state.route.params.id
-    },
-    officeMode () {
-      return this.$store.state.settings.officeMode
-    },
-    autoLoadImage () {
-      return this.$store.state.settings.autoLoadImage
-    },
-    youtubePreview () {
-      return this.$store.state.settings.youtubePreview
-    },
-    iconMap () {
-      return this.$store.state.settings.iconMap
-    },
-    photoMode () {
-      return this.$store.state.threads.photoMode
-    },
+    ...mapState({
+      activeCategory: state => state.categories.category,
+      activeThread: state => state.threads.activeThread,
+      photoMode: state => state.threads.photoMode,
+      threadId: state => state.route.params.id,
+      officeMode: state => state.settings.officeMode,
+      autoLoadImage: state => state.settings.autoLoadImage,
+      youtubePreview: state => state.settings.youtubePreview,
+      iconMap: state => state.settings.iconMap
+    }),
+    ...mapGetters([
+      'lastLoadedPage'
+    ]),
     pageNumber: {
       get () {
         return +this.$store.state.route.params.page || 1
@@ -154,11 +144,14 @@ export default {
         this.$router.replace(`/thread/${this.threadId}/page/${page}`)
       }
     },
-    lastLoadedPage () {
-      return +Object.keys(this.activeThread.item_page)[Object.keys(this.activeThread.item_page).length - 1]
+    currentThreadLink () {
+      return `https://lihkg.com/thread/${this.threadId}/page/${this.pageNumber}?ref=lihk-firebase`
     }
   },
   methods: {
+    ...mapMutations({
+      setPhotoMode: 'SET_PHOTO_MODE'
+    }),
     async fetchThread (page, scroll = false, refresh = false) {
       const self = this
       const isPageLoaded = self.activeThread.item_page && typeof self.activeThread.item_page[page] !== 'undefined'
@@ -257,16 +250,10 @@ export default {
 
       return dom.innerHTML
     },
-    pageAppLink () {
-      const threadId = this.$store.state.route.params.id
-      const currentPage = +this.$store.state.route.params.page || 1
-      return `https://lihkg.com/thread/${threadId}/page/${currentPage}?ref=lihk-firebase`
-    },
     qr () {
       try {
         const qr = qrCode.qrcode(4, 'M')
-        const refLink = this.pageAppLink()
-        qr.addData(refLink)
+        qr.addData(this.currentThreadLink)
         qr.make()
         return qr.createTableTag(4)
       } catch (e) {
@@ -309,12 +296,6 @@ export default {
     },
     handleScrollBottom () {
       $('html, body').animate({ scrollTop: $(document).height() }, 1000)
-    },
-    enablePhotoMode () {
-      this.$store.commit('SET_PHOTO_MODE', true)
-    },
-    disablePhotoMode () {
-      this.$store.commit('SET_PHOTO_MODE', false)
     }
   },
   watch: {
@@ -443,34 +424,7 @@ export default {
   z-index: 999;
   color: #f1c40f;
 
-  .white-theme & {
-    background: rgba(#fff, 0.8);
-    color: #222;
-
-    a {
-      color: #222;
-    }
-  }
-}
-
-.navigation-bar {
-  background: #2d2d2d;
-
-  @media(max-width: 767px) {
-    margin: 0 -15px;
-  }
-
-  .white-theme & {
-    /*box-shadow: 0 1px 4px rgba(0,0,0,.15);*/
-    border: 1px solid #ddd;
-    background: #fafafa;
-  }
-}
-
-.bottom-bar, .navigation-bar {
-
   [class*=uk-width-1-] {
-    border-color: #757575 !important;
     text-align: center;
 
     > a {
@@ -485,46 +439,13 @@ export default {
     }
   }
 
-  .page-switcher {
-    height: 50px;
-    padding: 0 15px;
-    line-height: 50px;
-    cursor: pointer;
+  .white-theme & {
+    background: rgba(#fff, 0.8);
+    color: #222;
 
-    @media(max-width: 375px) {
-      padding: 0 10px;
+    a {
+      color: #222;
     }
-
-    .is-active {
-      background: #eee;
-      font-weight: bold;
-    }
-
-    select {
-      bottom: 0;
-      left: 0;
-      opacity: 0;
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 100%!important;
-      height: 100%!important;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      cursor: pointer;
-    }
-  }
-}
-
-.more-link {
-  display: block;
-  height: 50px;
-  padding: 0 15px;
-  line-height: 50px;
-
-  @media(max-width: 375px) {
-    padding: 0 10px;
   }
 }
 
@@ -532,55 +453,6 @@ export default {
   .white-theme & {
     background: #fff;
     border: 1px solid #ddd;
-  }
-}
-
-.photo-mode-container {
-  position: fixed;
-  background: #222;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1000;
-
-  .white-theme & {
-    background: #f1f1f1;
-  }
-
-  .photo-mode-header {
-    box-shadow: 1px 1px 9px 1px rgba(0,0,0,0.3);
-    background: #333;
-    padding: 0 15px;
-    line-height: 40px;
-
-    .white-theme & {
-      color: #e6e6e6;
-    }
-  }
-
-  .photo-mode-body {
-    position: absolute;
-    top: 40px;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding: 15px 0;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-
-    .image-container {
-      background-size: cover;
-      background-position: center center;
-      background-color: #333;
-      width: 100%;
-      padding-bottom: 100%;
-      margin-bottom: 15px;
-
-      .white-theme & {
-        background: #ddd;
-      }
-    }
   }
 }
 
@@ -606,7 +478,6 @@ export default {
     height: 100%;
   }
 }
-
 
 .rating-number {
   margin-top: 5px;

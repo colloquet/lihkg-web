@@ -38,18 +38,16 @@
 
 <script>
 /* global UIkit */
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import qrCode from 'qrcode-npm'
 
 export default {
   name: 'navbar',
   computed: {
-    activeCategory () {
-      return this.$store.state.categories.category
-    },
-    activeThread () {
-      return this.$store.state.threads.activeThread
-    }
+    ...mapState({
+      activeCategory: state => state.categories.category,
+      activeThread: state => state.threads.activeThread
+    })
   },
   methods: {
     ...mapActions([

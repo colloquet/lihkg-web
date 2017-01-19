@@ -4,8 +4,8 @@
       <ul class="uk-nav uk-nav-offcanvas">
         <li>
           <div class="uk-grid uk-grid-collapse offcanvas-header">
-            <div class="uk-width-1-2" @click="closeOffcanvas">
-              <router-link to="/category/1">
+            <div class="uk-width-1-2">
+              <router-link to="/category/1" class="uk-offcanvas-close">
                 LIHKG 討論區
               </router-link>
             </div>
@@ -20,13 +20,10 @@
           v-for="category in allCategories"
           :key="category.cat_id"
           :class="{'uk-active': activeCategory ? category.cat_id === activeCategory.cat_id : false}"
-          @click="closeOffcanvas">
-          <a @click.prevent="handleSwitchCategory(category.cat_id)">
+        >
+          <a class="uk-offcanvas-close" @click.prevent="handleSwitchCategory(category.cat_id)">
             {{ category.name }}
           </a>
-          <!-- <router-link :to="'/category/' + category.cat_id">
-            {{ category.name }}
-          </router-link> -->
         </li>
         <li>
           <a href="#modal-about" data-uk-modal>關於本站</a>
@@ -37,27 +34,20 @@
 </template>
 
 <script>
-/* global UIkit */
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'offcanvas',
   computed: {
-    activeCategory () {
-      return this.$store.state.categories.category
-    },
-    allCategories () {
-      return this.$store.state.categories.categories
-    }
+    ...mapState({
+      activeCategory: state => state.categories.category,
+      allCategories: state => state.categories.categories
+    })
   },
   methods: {
     ...mapActions([
       'fetchCategories'
     ]),
-    closeOffcanvas () {
-      UIkit.offcanvas.hide()
-      document.body.scrollTop = document.documentElement.scrollTop = 0
-    },
     handleSwitchCategory (catId) {
       setTimeout(() => {
         this.$router.push(`/category/${catId}`)

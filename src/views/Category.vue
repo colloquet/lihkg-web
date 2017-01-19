@@ -27,8 +27,7 @@
 
 <script>
 /* global $ */
-import uniqBy from 'lodash.uniqby'
-import { mapActions } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 import ThreadList from '../components/ThreadList'
 
 export default {
@@ -43,24 +42,15 @@ export default {
     }
   },
   computed: {
-    activeThreads () {
-      return this.$store.state.categories.threads
-    },
-    activeCategory () {
-      return this.$store.state.categories.category
-    },
-    catId () {
-      return this.$store.state.route.params.id
-    },
-    isThreadListLoading () {
-      return this.$store.state.categories.isThreadListLoading
-    },
-    hasMoreThreads () {
-      return this.$store.state.categories.hasMoreThreads
-    },
-    uniqueThreads () {
-      return uniqBy(this.activeThreads, 'thread_id')
-    }
+    ...mapState({
+      activeCategory: state => state.categories.category,
+      isThreadListLoading: state => state.categories.isThreadListLoading,
+      hasMoreThreads: state => state.categories.hasMoreThreads,
+      catId: state => state.route.params.id
+    }),
+    ...mapGetters([
+      'uniqueThreads'
+    ])
   },
   methods: {
     ...mapActions([
@@ -97,9 +87,9 @@ export default {
 
     setTimeout(() => {
       self.canLoadMore = true
-    }, 500)
+    }, 100)
 
-    if (+this.catId !== +this.activeCategory.cat_id || !this.activeThreads.length) {
+    if (+this.catId !== +this.activeCategory.cat_id || !this.uniqueThreads.length) {
       this.fetchThreadList({
         catId: this.catId,
         page: 1
@@ -120,7 +110,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus">
-
-</style>

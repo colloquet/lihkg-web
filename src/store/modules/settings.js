@@ -62,6 +62,7 @@ const mutations = {
   [types.RESET_THREAD_HISTORY] (state) {
     state.threadHistory = {}
     window.localStorage.removeItem('threadHistory')
+    window.alert('底已洗')
   }
 }
 

@@ -37,31 +37,28 @@ export default {
     }
   },
   methods: {
-    fetchSearchResult: debounce(function (page, replace = false) {
+    fetchSearchResult: debounce(async function (page, replace = false) {
       const self = this
       self.isLoading = true
-      lihkg.fetchSearchResult(self.searchQuery, page).then(response => {
+      try {
+        const { data } = await lihkg.fetchSearchResult(self.searchQuery, page)
         if (replace) {
           self.results = []
         }
-        if (response.data.error_message) {
-          self.errorMessage = response.data.error_message
+        if (data.error_message) {
+          self.errorMessage = data.error_message
           self.hasMoreThreads = false
         } else {
-          const threads = response.data.response.items
+          const threads = data.response.items
           self.errorMessage = null
           self.results = self.results.concat(threads)
-          if (threads.length < 30) {
-            self.hasMoreThreads = false
-          } else {
-            self.hasMoreThreads = true
-          }
+          self.hasMoreThreads = threads.length >= 30
         }
         self.isLoading = false
-      }).catch((e) => {
+      } catch (e) {
         console.log(e)
         window.alert('伺服器出錯，請重試。')
-      })
+      }
     }, 500),
     handleLoadMore () {
       this.page += 1

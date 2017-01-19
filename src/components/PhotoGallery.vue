@@ -27,5 +27,52 @@ export default {
 </script>
 
 <style lang="stylus">
+.photo-mode-container {
+  position: fixed;
+  background: #222;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
 
+  .white-theme & {
+    background: #f1f1f1;
+  }
+
+  .photo-mode-header {
+    box-shadow: 1px 1px 9px 1px rgba(0,0,0,0.3);
+    background: #333;
+    padding: 0 15px;
+    line-height: 40px;
+
+    .white-theme & {
+      color: #e6e6e6;
+    }
+  }
+
+  .photo-mode-body {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 15px 0;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    .image-container {
+      background-size: cover;
+      background-position: center center;
+      background-color: #333;
+      width: 100%;
+      padding-bottom: 100%;
+      margin-bottom: 15px;
+
+      .white-theme & {
+        background: #ddd;
+      }
+    }
+  }
+}
 </style>
