@@ -88,6 +88,9 @@ const mutations = {
   },
   [types.SET_HAS_MORE_THREADS] (state, status) {
     state.hasMoreThreads = status
+  },
+  [types.SET_CATEGORY_PAGE] (state, page) {
+    state.page = page
   }
 }
 

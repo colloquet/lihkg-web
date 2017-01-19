@@ -28,7 +28,7 @@
 
 <script>
 /* global $ */
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
 import ThreadList from '../components/ThreadList'
 
 export default {
@@ -38,7 +38,6 @@ export default {
   },
   data () {
     return {
-      page: 1,
       canLoadMore: false
     }
   },
@@ -52,9 +51,20 @@ export default {
     }),
     ...mapGetters([
       'uniqueThreads'
-    ])
+    ]),
+    page: {
+      get () {
+        return this.$store.state.categories.page
+      },
+      set (page) {
+        this.setCategoryPage(page)
+      }
+    }
   },
   methods: {
+    ...mapMutations({
+      setCategoryPage: 'SET_CATEGORY_PAGE'
+    }),
     ...mapActions([
       'fetchThreadList',
       'fetchMoreThreadList'
