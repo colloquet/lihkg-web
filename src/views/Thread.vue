@@ -372,7 +372,7 @@ export default {
 }
 
 .is-loading {
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 .story-mode-toggle {

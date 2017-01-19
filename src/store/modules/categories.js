@@ -9,6 +9,7 @@ const state = {
   threads: [],
   page: 1,
   isThreadListLoading: false,
+  isReplacing: false,
   hasMoreThreads: true
 }
 
@@ -31,7 +32,7 @@ const actions = {
     }
   },
   async fetchThreadList ({ commit }, { catId, page }) {
-    commit('SET_LOADING_THRED_LIST', true)
+    commit('SET_REPLACING_THRED_LIST', true)
     try {
       const { data } = await lihkg.fetchThreadList(catId, page)
       commit('RECEIVE_THREAD_LIST', data.response.items)
@@ -42,7 +43,7 @@ const actions = {
       console.log(e)
       window.alert('伺服器出錯，請重試。')
     }
-    commit('SET_LOADING_THRED_LIST', false)
+    commit('SET_REPLACING_THRED_LIST', false)
   },
   async fetchMoreThreadList ({ commit }, { catId, page }) {
     commit('SET_LOADING_THRED_LIST', true)
@@ -72,6 +73,9 @@ const mutations = {
   },
   [types.SET_LOADING_THRED_LIST] (state, status) {
     state.isThreadListLoading = status
+  },
+  [types.SET_REPLACING_THRED_LIST] (state, status) {
+    state.isReplacing = status
   },
   [types.RESET_THREADS] (state) {
     state.threads = []

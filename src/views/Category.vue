@@ -3,6 +3,7 @@
     <thread-list
       :threads="uniqueThreads"
       :is-loading="isThreadListLoading"
+      :is-replacing="isReplacing"
       :handle-load-more="handleLoadMore"
       :has-more-threads="hasMoreThreads"
     ></thread-list>
@@ -45,6 +46,7 @@ export default {
     ...mapState({
       activeCategory: state => state.categories.category,
       isThreadListLoading: state => state.categories.isThreadListLoading,
+      isReplacing: state => state.categories.isReplacing,
       hasMoreThreads: state => state.categories.hasMoreThreads,
       catId: state => state.route.params.id
     }),

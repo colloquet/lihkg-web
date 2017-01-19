@@ -1,5 +1,5 @@
 <template>
-  <div class="threads-container">
+  <div class="threads-container" :class="{'is-loading': isReplacing}">
     <ul class="uk-grid">
       <thread-list-item
         v-for="thread in threads"
@@ -29,7 +29,7 @@ export default {
   components: {
     ThreadListItem
   },
-  props: ['is-loading', 'threads', 'handle-load-more', 'has-more-threads'],
+  props: ['is-loading', 'is-replacing', 'threads', 'handle-load-more', 'has-more-threads'],
   computed: {
     ...mapState({
       threadHistory: state => state.settings.threadHistory
