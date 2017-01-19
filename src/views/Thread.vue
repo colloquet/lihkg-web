@@ -4,7 +4,7 @@
     載入中
   </div>
   <div v-else>
-    <div class="page-container" v-for="(comments, page) in activeThread.item_page" :id="`page-${page}`" data-uk-scrollspy :data-page="page">
+    <div class="page-container" v-for="(comments, page) in activeThread.item_page" :id="`page-${page}`" :data-page="page">
       <thread-navbar
         :page="page"
         :categoryName="activeCategory.name || activeThread.category.name"
@@ -55,7 +55,7 @@
     <div class="uk-visible-small bottom-bar">
       <div class="uk-grid uk-grid-collapse">
         <div class="uk-width-1-6">
-          <a class="return-link" v-if="activeCategory" @click.prevent="backToThreadList">
+          <a class="return-link" @click.prevent="backToThreadList">
             <span class="uk-icon-reply"></span>
           </a>
         </div>
@@ -292,7 +292,7 @@ export default {
       if (this.fromThreadList) {
         this.$router.back()
       } else {
-        this.$router.push(`/category/${this.activeCategory.cat_id}`)
+        this.$router.push(`/category/${this.activeThread.category.cat_id}`)
       }
     },
     handlePageSwitch (page) {
@@ -341,13 +341,13 @@ export default {
     this.$store.commit('RESET_THREAD')
     this.$store.commit('SET_PHOTO_MODE', false)
 
-    if (this.activeCategory) {
+    if (this.activeCategory.name) {
       this.fromThreadList = true
     }
 
     this.fetchThread(this.pageNumber)
 
-    $('body').on('click', '.image-lazy-load', (e) => {
+    $('body').on('click', '.image-lazy-load', e => {
       const target = $(e.target)
       const src = target.data('src')
       let newImg = new Image()
