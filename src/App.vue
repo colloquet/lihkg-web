@@ -203,6 +203,22 @@ blockquote {
   }
 }
 
+.male {
+  color: #237afd;
+}
+
+.female {
+  color: #e60d64;
+}
+
+.admin {
+  color: #f1c40f !important;
+}
+
+.author {
+  color: #f1c40f !important;
+}
+
 .uk-container {
   max-width: 980px;
   padding: 0 15px;

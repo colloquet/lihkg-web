@@ -150,7 +150,11 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setPhotoMode: 'SET_PHOTO_MODE'
+      resetThread: 'RESET_THREAD',
+      setPhotoMode: 'SET_PHOTO_MODE',
+      setActiveCategory: 'SET_ACTIVE_CATEGORY',
+      setActiveThread: 'SET_ACTIVE_THREAD',
+      updateHistory: 'UPDATE_HISTORY'
     }),
     async fetchThread (page, scroll = false, refresh = false) {
       const self = this
@@ -168,13 +172,13 @@ export default {
         const { data } = await lihkg.fetchThread(self.threadId, page)
         self.isThreadLoading = false
         if (!self.activeCategory) {
-          self.$store.commit('SET_ACTIVE_CATEGORY', data.response.category)
+          self.setActiveCategory(data.response.category)
         }
-        self.$store.commit('SET_ACTIVE_THREAD', data.response)
-        self.$store.commit('UPDATE_HISTORY', {
+        self.setActiveThread(data.response)
+        self.updateHistory({
           id: data.response.thread_id,
-          page: page,
-          no_of_reply: data.response.no_of_reply
+          no_of_reply: data.response.no_of_reply,
+          page
         })
         if (scroll) {
           self.$nextTick(() => {
@@ -319,8 +323,8 @@ export default {
   mounted () {
     const self = this
 
-    this.$store.commit('RESET_THREAD')
-    this.$store.commit('SET_PHOTO_MODE', false)
+    this.resetThread()
+    this.setPhotoMode(false)
 
     if (this.activeCategory.name) {
       this.fromThreadList = true
@@ -361,22 +365,6 @@ export default {
 </script>
 
 <style lang="stylus">
-.male {
-  color: #237afd;
-}
-
-.female {
-  color: #e60d64;
-}
-
-.admin {
-  color: #f1c40f !important;
-}
-
-.author {
-  color: #f1c40f !important;
-}
-
 .comments-container {
   @media(max-width: 767px) {
     margin: 0 -15px;
