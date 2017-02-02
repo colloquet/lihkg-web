@@ -1,7 +1,9 @@
 <template>
-  <div class="uk-text-center comment" v-if="!activeThread.thread_id">
-    <span class="uk-icon-spin uk-icon-spinner"></span>
-    載入中
+  <div class="comments-container" v-if="!activeThread.thread_id">
+    <div class="uk-text-center comment">
+      <span class="uk-icon-spin uk-icon-spinner"></span>
+      載入中
+    </div>
   </div>
   <div v-else>
     <div class="page-container" v-for="(comments, page) in activeThread.item_page" :id="`page-${page}`" :data-page="page">

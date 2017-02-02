@@ -1,7 +1,7 @@
 <template>
   <div id="app" :class="{'is-safari': isSafari}">
 
-    <navbar></navbar>
+    <navbar />
 
     <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">
       <div class="uk-alert" data-uk-alert>
@@ -11,7 +11,7 @@
       <router-view></router-view>
     </div>
 
-    <offcanvas></offcanvas>
+    <offcanvas />
 
     <modal id="modal-about">
       嗚謝：
