@@ -4,7 +4,7 @@ export default {
   fetchCategories () {
     return axios.get('https://lihkg.com/api_v1/system/property')
   },
-  fetchThreadList (catId, page) {
+  fetchThreadList (catId, page, rangeType = null) {
     let type
     switch (+catId) {
       case 1:
@@ -19,11 +19,15 @@ export default {
       default:
         type = 'category'
     }
+    const params = {
+      cat_id: catId,
+      page
+    }
+    if (rangeType) {
+      params.type = rangeType
+    }
     return axios.get(`https://lihkg.com/api_v1/thread/${type}`, {
-      params: {
-        cat_id: catId,
-        page
-      }
+      params
     })
   },
   fetchThread (threadId, page) {

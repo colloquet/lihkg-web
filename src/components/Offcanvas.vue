@@ -21,7 +21,7 @@
           :key="category.cat_id"
           :class="{'uk-active': activeCategory ? category.cat_id === activeCategory.cat_id : false}"
         >
-          <a class="uk-offcanvas-close" @click.prevent="handleSwitchCategory(category.cat_id)">
+          <a :href="`/category/${category.cat_id}`" class="uk-offcanvas-close" @click.prevent="handleSwitchCategory(category.cat_id)">
             {{ category.name }}
           </a>
         </li>
