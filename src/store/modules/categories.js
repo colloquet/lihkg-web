@@ -31,10 +31,10 @@ const actions = {
       window.alert('伺服器出錯，請重試。')
     }
   },
-  async fetchThreadList ({ commit }, { catId, page }) {
+  async fetchThreadList ({ commit }, { catId, page, rangeType = null }) {
     commit('SET_REPLACING_THRED_LIST', true)
     try {
-      const { data } = await lihkg.fetchThreadList(catId, page)
+      const { data } = await lihkg.fetchThreadList(catId, page, rangeType)
       commit('RECEIVE_THREAD_LIST', data.response.items)
       commit('SET_ACTIVE_CATEGORY', data.response.category)
       commit('SET_HAS_MORE_THREADS', true)

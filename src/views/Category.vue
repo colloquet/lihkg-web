@@ -1,5 +1,21 @@
 <template>
   <div>
+    <div class="" v-if="catId == 2">
+      <div class="uk-margin-bottom navigation-bar range-type-bar">
+        <div class="uk-grid uk-grid-collapse">
+          <div class="uk-width-1-3">
+            <router-link :to="{ path: '/category/2' }" exact>即時熱門</router-link>
+          </div>
+          <div class="uk-width-1-3">
+            <router-link :to="{ path: '/category/2', query: { type: 'daily' }}" exact>今天熱門</router-link>
+          </div>
+          <div class="uk-width-1-3">
+            <router-link :to="{ path: '/category/2', query: { type: 'weekly' }}" exact>本週精選</router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <thread-list
       :threads="uniqueThreads"
       :is-loading="isThreadListLoading"
@@ -47,7 +63,8 @@ export default {
       isThreadListLoading: state => state.categories.isThreadListLoading,
       isReplacing: state => state.categories.isReplacing,
       hasMoreThreads: state => state.categories.hasMoreThreads,
-      catId: state => state.route.params.id
+      catId: state => state.route.params.id,
+      rangeType: state => state.route.query.type
     }),
     ...mapGetters([
       'uniqueThreads'
@@ -92,6 +109,13 @@ export default {
         catId: this.catId,
         page: 1
       })
+    },
+    rangeType (newVal, oldVal) {
+      this.fetchThreadList({
+        catId: this.catId,
+        page: 1,
+        rangeType: newVal
+      })
     }
   },
   mounted () {
@@ -104,7 +128,8 @@ export default {
     if (+this.catId !== +this.activeCategory.cat_id || !this.uniqueThreads.length) {
       this.fetchThreadList({
         catId: this.catId,
-        page: 1
+        page: 1,
+        rangeType: this.rangeType
       })
     }
 
@@ -122,3 +147,37 @@ export default {
   }
 }
 </script>
+
+<style lang="stylus">
+.range-type-bar {
+  border: 1px solid #444;
+
+  .white-theme & {
+    border: 1px solid #ddd;
+  }
+
+  .uk-width-1-3:nth-child(n+2) {
+    a {
+      border-left: 1px solid #444;
+
+      .white-theme & {
+        border-left: 1px solid #ddd;
+      }
+    }
+  }
+
+  a {
+    &.uk-active {
+      background: #383838;
+    }
+
+    .white-theme & {
+      color: #222;
+
+      &.uk-active {
+        background: #eee;
+      }
+    }
+  }
+}
+</style>

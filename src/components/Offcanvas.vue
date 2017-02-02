@@ -21,7 +21,7 @@
           :key="category.cat_id"
           :class="{'uk-active': activeCategory ? category.cat_id === activeCategory.cat_id : false}"
         >
-          <a class="uk-offcanvas-close" @click.prevent="handleSwitchCategory(category.cat_id)">
+          <a :href="`/category/${category.cat_id}`" class="uk-offcanvas-close" @click.prevent="handleSwitchCategory(category.cat_id)">
             {{ category.name }}
           </a>
         </li>
@@ -69,6 +69,10 @@ export default {
   .is-safari & {
     background: rgba(#222, 0.7);
     backdrop-filter: blur(10px);
+
+    .white-theme & {
+      background: rgba(#222, 0.9);
+    }
   }
 }
 
@@ -83,5 +87,9 @@ export default {
 .uk-nav-offcanvas > li > a {
   box-shadow: none;
   border-top: 1px solid #333;
+
+  .white-theme & {
+    border-top: 1px solid #444;
+  }
 }
 </style>

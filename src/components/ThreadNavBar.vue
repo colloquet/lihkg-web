@@ -1,7 +1,7 @@
 <template>
   <div class="uk-margin-bottom navigation-bar">
     <div class="uk-grid uk-grid-collapse">
-      <div class="uk-width-1-5 uk-width-1-5 uk-hidden-small">
+      <div class="uk-width-1-5 uk-hidden-small">
         <a class="return-link" v-if="categoryName" @click.prevent="back">
           <span class="uk-icon-reply"></span> {{ categoryName }}
         </a>
@@ -38,7 +38,7 @@ export default {
 <style lang="stylus">
 .navigation-bar {
   background: #2d2d2d;
-  
+
   [class*=uk-width-1-] {
     text-align: center;
 
@@ -90,7 +90,7 @@ export default {
   }
 
   .white-theme & {
-    border: 1px solid #ddd;
+    /*border: 1px solid #ddd;*/
     background: #fafafa;
   }
 }
