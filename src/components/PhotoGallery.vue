@@ -47,7 +47,8 @@ export default {
     line-height: 40px;
 
     .white-theme & {
-      color: #e6e6e6;
+      background: #fff;
+      color: #222;
     }
   }
 

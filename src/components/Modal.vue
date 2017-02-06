@@ -1,7 +1,7 @@
 <template>
   <div :id="id" class="uk-modal">
     <div class="uk-modal-dialog">
-      <a class="uk-modal-close uk-close"></a>
+      <a href="#" class="uk-modal-close uk-close"></a>
       <slot></slot>
     </div>
   </div>

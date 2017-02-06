@@ -62,6 +62,10 @@ export default {
   background: #222;
   box-shadow: 1px 1px 4px 1px rgba(#000, 0.5);
 
+  .white-theme & {
+    background: #fff;
+  }
+
   &:after {
     display: none;
   }
@@ -71,7 +75,7 @@ export default {
     backdrop-filter: blur(10px);
 
     .white-theme & {
-      background: rgba(#222, 0.9);
+      background: rgba(#fff 0.7);
     }
   }
 }
@@ -84,12 +88,36 @@ export default {
   }
 }
 
-.uk-nav-offcanvas > li > a {
-  box-shadow: none;
-  border-top: 1px solid #333;
+.uk-nav-offcanvas > li {
+  > a {
+    box-shadow: none;
+    border-top: 1px solid #333;
+    text-shadow: none;
 
-  .white-theme & {
-    border-top: 1px solid #444;
+    .white-theme & {
+      border-top: 1px solid #ddd;
+      color: #222;
+    }
+
+    &:hover {
+      .white-theme & {
+        background: #f5f5f5 !important;
+        color: #222 !important;
+      }
+    }
+  }
+
+  &.uk-active > a {
+    .white-theme & {
+      background: #f5f5f5 !important;
+      color: #222 !important;
+      box-shadow: none !important;
+      
+      .is-safari & {
+        background: #ddd !important;
+      }
+    }
+
   }
 }
 </style>
