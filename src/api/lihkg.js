@@ -1,8 +1,10 @@
 import axios from 'axios'
 
+const baseUrl = 'https://lihkg.com/api_v1_1'
+
 export default {
   fetchCategories () {
-    return axios.get('https://lihkg.com/api_v1/system/property')
+    return axios.get(`${baseUrl}/system/property`)
   },
   fetchThreadList (catId, page, rangeType = null) {
     let type
@@ -26,17 +28,24 @@ export default {
     if (rangeType) {
       params.type = rangeType
     }
-    return axios.get(`https://lihkg.com/api_v1/thread/${type}`, {
+    return axios.get(`${baseUrl}/thread/${type}`, {
       params
     })
   },
   fetchThread (threadId, page) {
-    return axios.get(`https://lihkg.com/api_v1/thread/${threadId}/page/${page}`)
+    return axios.get(`${baseUrl}/thread/${threadId}/page/${page}`)
   },
-  fetchSearchResult (query, page) {
-    return axios.get(`https://lihkg.com/api_v1/thread/search?q=${query}&page=${page}&count=30`)
+  fetchSearchResult (query, page, sort = 'score') {
+    return axios.get(`${baseUrl}/thread/search`, {
+      params: {
+        q: query,
+        page,
+        sort,
+        count: 30
+      }
+    })
   },
   fetchImages (threadId) {
-    return axios.get(`https://lihkg.com/api_v1/thread/${threadId}/images`)
+    return axios.get(`${baseUrl}/thread/${threadId}/images`)
   }
 }
