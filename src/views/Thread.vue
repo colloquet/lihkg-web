@@ -392,9 +392,9 @@ export default {
     $(window).on('scroll', this.handleOnScroll)
   },
   beforeDestroy () {
-    $('body').off('click', '.image-lazy-load', this.handlePlaceholderClick)
-    $('body').off('click', 'img:not(.image-lazy-load):not(.hkgmoji)', this.handleImageClick)
-    $(window).off('scroll', this.handleOnScroll)
+    $('body').off('click', '.image-lazy-load')
+    $('body').off('click', 'img:not(.image-lazy-load):not(.hkgmoji)')
+    $(window).off('scroll')
   }
 }
 </script>

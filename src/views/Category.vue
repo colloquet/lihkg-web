@@ -1,17 +1,15 @@
 <template>
   <div>
-    <div class="" v-if="catId == 2">
-      <div class="uk-margin-bottom navigation-bar range-type-bar">
-        <div class="uk-grid uk-grid-collapse">
-          <div class="uk-width-1-3">
-            <router-link :to="{ path: '/category/2' }" exact>即時熱門</router-link>
-          </div>
-          <div class="uk-width-1-3">
-            <router-link :to="{ path: '/category/2', query: { type: 'daily' }}" exact>今天熱門</router-link>
-          </div>
-          <div class="uk-width-1-3">
-            <router-link :to="{ path: '/category/2', query: { type: 'weekly' }}" exact>本週精選</router-link>
-          </div>
+    <div class="uk-margin-bottom navigation-bar range-type-bar" v-if="catId == 2">
+      <div class="uk-grid uk-grid-collapse">
+        <div class="uk-width-1-3">
+          <router-link :to="{ path: '/category/2' }" exact>即時熱門</router-link>
+        </div>
+        <div class="uk-width-1-3">
+          <router-link :to="{ path: '/category/2', query: { type: 'daily' }}" exact>今天熱門</router-link>
+        </div>
+        <div class="uk-width-1-3">
+          <router-link :to="{ path: '/category/2', query: { type: 'weekly' }}" exact>本週精選</router-link>
         </div>
       </div>
     </div>
@@ -144,7 +142,7 @@ export default {
     $(window).on('scroll', this.handleOnScroll)
   },
   beforeDestroy () {
-    $(window).off('scroll', this.handleOnScroll)
+    $(window).off('scroll')
   }
 }
 </script>

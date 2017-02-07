@@ -11,9 +11,10 @@
       />
       <li class="uk-width-1-1 load-more">
         <a @click="handleLoadMore" v-if="hasMoreThreads">
+          <span class="uk-icon-spin uk-icon-spinner" v-if="isLoading"></span>
           {{ isLoading ? '載入中…' : '載入更多' }}
         </a>
-        <span v-else>沒有更多</span>
+        <span v-else-if="!hasMoreThreads && !isLoading">沒有更多</span>
       </li>
     </ul>
   </div>
@@ -58,7 +59,7 @@ export default {
 }
 
 .load-more {
-  a, span {
+  > a, > span {
     display: block;
     padding: 15px;
     text-align: center;
