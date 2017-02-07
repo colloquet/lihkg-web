@@ -1,4 +1,5 @@
 import 'es6-promise/auto'
+import 'array-findindex-polyfill'
 import axios from 'axios'
 import Vue from 'vue'
 import Meta from 'vue-meta'

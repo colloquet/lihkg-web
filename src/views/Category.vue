@@ -101,6 +101,14 @@ export default {
           page: this.page
         })
       })
+    },
+    handleOnScroll () {
+      if ((window.innerHeight + (window.scrollY || window.pageYOffset)) >= document.body.offsetHeight - 200) {
+        const canLoadMore = !this.isThreadListLoading && this.hasMoreThreads && this.canLoadMore && !$('body').hasClass('uk-offcanvas-page')
+        if (canLoadMore) {
+          this.handleLoadMore()
+        }
+      }
     }
   },
   watch: {
@@ -133,17 +141,10 @@ export default {
       })
     }
 
-    window.onscroll = () => {
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
-        const canLoadMore = !self.isThreadListLoading && self.hasMoreThreads && self.canLoadMore && !$('body').hasClass('uk-offcanvas-page')
-        if (canLoadMore) {
-          self.handleLoadMore()
-        }
-      }
-    }
+    $(window).on('scroll', this.handleOnScroll)
   },
   beforeDestroy () {
-    window.onscroll = null
+    $(window).off('scroll', this.handleOnScroll)
   }
 }
 </script>

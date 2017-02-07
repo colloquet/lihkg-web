@@ -112,7 +112,6 @@
 /* global $, UIkit, Image */
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import qrCode from 'qrcode-npm'
-import findIndex from 'lodash/findIndex'
 import ThreadNavbar from '../components/ThreadNavbar'
 import PhotoGallery from '../components/PhotoGallery'
 import lihkg from '../api/lihkg'
@@ -343,7 +342,7 @@ export default {
         await this.fetchImages()
       }
       this.lightbox = UIkit.lightbox.create(this.imagesForLightbox)
-      const index = findIndex(this.imagesForLightbox, { 'source': decodeURIComponent(url) })
+      const index = this.imagesForLightbox.findIndex(image => image.source === decodeURIComponent(url))
       this.lightbox.show(index)
     },
     handlePlaceholderClick (e) {
@@ -361,6 +360,15 @@ export default {
         target.attr('src', src)
       }
       newImg.src = src
+    },
+    handleOnScroll () {
+      if ((window.innerHeight + (window.scrollY || window.pageYOffset)) >= document.body.offsetHeight - 200) {
+        if (!this.isThreadLoading && !$('body').hasClass('uk-offcanvas-page')) {
+          if (this.lastLoadedPage < this.activeThread.total_page) {
+            this.handleLoadMore(this.lastLoadedPage + 1)
+          }
+        }
+      }
     }
   },
   watch: {
@@ -371,34 +379,22 @@ export default {
     }
   },
   mounted () {
-    const self = this
-
-    this.resetThread()
-    this.setPhotoMode(false)
-
     if (this.activeCategory.name) {
       this.fromThreadList = true
     }
 
+    this.resetThread()
+    this.setPhotoMode(false)
     this.fetchThread(this.pageNumber)
 
     $('body').on('click', '.image-lazy-load', this.handlePlaceholderClick)
     $('body').on('click', 'img:not(.image-lazy-load):not(.hkgmoji)', this.handleImageClick)
-
-    window.onscroll = () => {
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
-        if (!self.isThreadLoading && !$('body').hasClass('uk-offcanvas-page')) {
-          if (self.lastLoadedPage < self.activeThread.total_page) {
-            self.handleLoadMore(self.lastLoadedPage + 1)
-          }
-        }
-      }
-    }
+    $(window).on('scroll', this.handleOnScroll)
   },
   beforeDestroy () {
     $('body').off('click', '.image-lazy-load', this.handlePlaceholderClick)
     $('body').off('click', 'img:not(.image-lazy-load):not(.hkgmoji)', this.handleImageClick)
-    window.onscroll = null
+    $(window).off('scroll', this.handleOnScroll)
   }
 }
 </script>

@@ -10,6 +10,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "array-findindex-polyfill": "^0.1.0",
     "axios": "^0.15.2",
     "es6-promise": "^4.0.5",
     "eslint-plugin-promise": "^3.4.0",
