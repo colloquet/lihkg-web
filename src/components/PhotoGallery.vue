@@ -6,10 +6,10 @@
     </div>
     <div class="photo-mode-body">
       <div class="uk-container uk-container-center">
-        <p class="uk-text-center" v-if="noImages">此post冇圖片</p>
+        <p class="uk-text-center" v-if="noImages && !isImagesLoading">此post冇圖片</p>
         <div class="uk-grid uk-grid-small uk-grid-width-1-3 uk-grid-width-medium-1-4 uk-grid-width-large-1-5 uk-grid-width-xlarge-1-6" v-else>
           <div v-for="image in images">
-            <a :href="image.url" data-uk-lightbox="{group:'photo-mode'}" data-lightbox-type="image">
+            <a :href="image.url" @click.prevent="$emit('image-click', image.url)">
               <div class="image-container" :style="{backgroundImage: `url(${image.url})`}"></div>
             </a>
           </div>
@@ -22,7 +22,7 @@
 <script>
 export default {
   name: 'modal',
-  props: ['no-images', 'images']
+  props: ['no-images', 'images', 'is-images-loading']
 }
 </script>
 

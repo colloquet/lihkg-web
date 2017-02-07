@@ -94,8 +94,16 @@
         v-if="photoMode"
         :noImages="noImages"
         :images="images"
+        :isImagesLoading="isImagesLoading"
+        @image-click="handleImageClick"
         @onClose="setPhotoMode(false)"
       />
+    </transition>
+
+    <transition name="fade">
+      <div class="uk-flex uk-flex-center uk-flex-middle overlay" v-if="isImagesLoading && noImages">
+        <span class="uk-icon-spin uk-icon-spinner"></span>
+      </div>
     </transition>
   </div>
 </template>
@@ -104,6 +112,7 @@
 /* global $, UIkit, Image */
 import { mapState, mapGetters, mapMutations } from 'vuex'
 import qrCode from 'qrcode-npm'
+import findIndex from 'lodash/findIndex'
 import ThreadNavbar from '../components/ThreadNavbar'
 import PhotoGallery from '../components/PhotoGallery'
 import lihkg from '../api/lihkg'
@@ -118,9 +127,10 @@ export default {
   data () {
     return {
       isThreadLoading: false,
+      isImagesLoading: false,
       fromThreadList: false,
       images: [],
-      noImages: false,
+      noImages: true,
       storeyModeId: -1
     }
   },
@@ -148,6 +158,14 @@ export default {
     },
     currentThreadLink () {
       return `https://lihkg.com/thread/${this.threadId}/page/${this.pageNumber}?ref=lihk-firebase`
+    },
+    imagesForLightbox () {
+      const self = this
+      return self.images.map((image, index) => ({
+        source: image.url,
+        type: 'image',
+        title: `${index + 1} / ${self.images.length}`
+      }))
     }
   },
   methods: {
@@ -302,23 +320,53 @@ export default {
     },
     handleScrollBottom () {
       $('html, body').animate({ scrollTop: $(document).height() }, 1000)
+    },
+    async fetchImages () {
+      const self = this
+      self.isImagesLoading = true
+      try {
+        const { data } = await lihkg.fetchImages(self.threadId)
+        if (data.response.images.length) {
+          self.images = data.response.images
+          self.noImages = false
+        } else {
+          self.noImages = true
+        }
+      } catch (e) {
+        console.log(e)
+      }
+      self.isImagesLoading = false
+    },
+    async handleImageClick (e) {
+      const url = e.target ? e.target.src : e
+      if (!this.images.length) {
+        await this.fetchImages()
+      }
+      this.lightbox = UIkit.lightbox.create(this.imagesForLightbox)
+      const index = findIndex(this.imagesForLightbox, { 'source': decodeURIComponent(url) })
+      this.lightbox.show(index)
+    },
+    handlePlaceholderClick (e) {
+      const target = $(e.target)
+      const src = target.data('src')
+      let newImg = new Image()
+
+      target.attr('src', '/static/loading.png')
+
+      newImg.onload = () => {
+        target.attr('src', src)
+        target.removeClass('image-lazy-load')
+      }
+      newImg.onerror = () => {
+        target.attr('src', src)
+      }
+      newImg.src = src
     }
   },
   watch: {
-    async photoMode (newVal, oldVal) {
-      const self = this
+    photoMode (newVal, oldVal) {
       if (newVal) {
-        try {
-          const { data } = await lihkg.fetchImages(self.threadId)
-          if (data.response.images.length) {
-            self.images = data.response.images
-            self.noImages = false
-          } else {
-            self.noImages = true
-          }
-        } catch (e) {
-          console.log(e)
-        }
+        this.fetchImages()
       }
     }
   },
@@ -334,21 +382,8 @@ export default {
 
     this.fetchThread(this.pageNumber)
 
-    $('body').on('click', '.image-lazy-load', e => {
-      const target = $(e.target)
-      const src = target.data('src')
-      let newImg = new Image()
-
-      target.attr('src', '/static/loading.png')
-
-      newImg.onload = () => {
-        target.attr('src', src)
-      }
-      newImg.onerror = () => {
-        target.attr('src', src)
-      }
-      newImg.src = src
-    })
+    $('body').on('click', '.image-lazy-load', this.handlePlaceholderClick)
+    $('body').on('click', 'img:not(.image-lazy-load):not(.hkgmoji)', this.handleImageClick)
 
     window.onscroll = () => {
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
@@ -361,6 +396,8 @@ export default {
     }
   },
   beforeDestroy () {
+    $('body').off('click', '.image-lazy-load', this.handlePlaceholderClick)
+    $('body').off('click', 'img:not(.image-lazy-load):not(.hkgmoji)', this.handleImageClick)
     window.onscroll = null
   }
 }
@@ -469,10 +506,25 @@ export default {
   }
 }
 
+.image-lazy-load,
+img:not(.image-lazy-load):not(.hkgmoji) {
+  cursor: pointer;
+}
+
 .rating-number {
   margin-top: 5px;
   font-size: 10px;
   line-height: 1;
+}
+
+.overlay {
+  position: fixed;
+  background: rgba(#000, 0.5);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1001;
 }
 
 .slide-enter-active,
@@ -483,5 +535,15 @@ export default {
 .slide-enter,
 .slide-leave-active {
   transform: translateY(100%);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all .3s ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
 }
 </style>

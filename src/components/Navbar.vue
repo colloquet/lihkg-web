@@ -1,39 +1,43 @@
 <template>
-  <nav class="uk-flex uk-flex-space-between navbar">
-    <a href="#offcanvas-categories" class="sidebar-toggle" data-uk-offcanvas="{mode:'slide'}"><span class="uk-icon-bars"></span><span v-show="$route.name === 'Category'"> {{ activeCategory.name || '轉台' }}</span></a>
+  <div class="navbar">
+    <div class="uk-container uk-container-center">
+      <div class="uk-flex uk-flex-space-between">
+        <a href="#offcanvas-categories" class="sidebar-toggle" data-uk-offcanvas="{mode:'slide'}"><span class="uk-icon-bars"></span><span v-show="$route.name === 'Category'"> {{ activeCategory.name || '轉台' }}</span></a>
 
-    <div v-show="$route.name === 'Category'">
-      <a href="https://github.com/colloquet/lihkg-web" target="_blank" class="refresh-toggle"><span class="uk-icon-github"></span> GitHub</a>
-      <router-link to="/search" class="uk-hidden-small search-toggle"><span class="uk-icon-search"></span> 搜尋</router-link>
-      <a class="uk-hidden-small refresh-toggle" @click.prevent="handleRefresh"><span class="uk-icon-refresh"></span> F5</a>
-    </div>
+        <div v-show="$route.name === 'Category'">
+          <a href="https://github.com/colloquet/lihkg-web" target="_blank" class="refresh-toggle"><span class="uk-icon-github"></span> GitHub</a>
+          <router-link to="/search" class="uk-hidden-small search-toggle"><span class="uk-icon-search"></span> 搜尋</router-link>
+          <a class="uk-hidden-small refresh-toggle" @click.prevent="handleRefresh"><span class="uk-icon-refresh"></span> F5</a>
+        </div>
 
-    <div class="nav-title" v-show="$route.name === 'Thread'" @click="goToTop">
-      <span>{{ activeThread ? activeThread.title : '載入中…' }}</span>
-    </div>
+        <div class="nav-title" v-show="$route.name === 'Thread'" @click="goToTop">
+          <span>{{ activeThread ? activeThread.title : '載入中…' }}</span>
+        </div>
 
-    <div class="uk-hidden-small nav-item" v-show="activeThread && $route.name === 'Thread'">
-      <span class="uk-icon-thumbs-up like-color"></span> {{ activeThread.like_count }}
-      <span class="uk-icon-thumbs-down uk-margin-small-left dislike-color"></span> {{ activeThread.dislike_count }}
-    </div>
+        <div class="uk-hidden-small nav-item" v-show="activeThread && $route.name === 'Thread'">
+          <span class="uk-icon-thumbs-up like-color"></span> {{ activeThread.like_count }}
+          <span class="uk-icon-thumbs-down uk-margin-small-left dislike-color"></span> {{ activeThread.dislike_count }}
+        </div>
 
-    <div class="uk-hidden-small nav-item" v-show="$route.name === 'Thread'">
-      <a @click.prevent="enablePhotoMode">
-        <span class="uk-icon-image"></span> 圖片模式
-      </a>
-    </div>
+        <div class="uk-hidden-small nav-item" v-show="$route.name === 'Thread'">
+          <a @click.prevent="enablePhotoMode">
+            <span class="uk-icon-image"></span> 圖片模式
+          </a>
+        </div>
 
-    <div class="uk-hidden-small nav-item" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}" v-show="activeThread && $route.name === 'Thread'">
-      <a>
-        <span class="uk-icon-qrcode"></span><span class="uk-hidden-small"> 開APP</span>
-      </a>
-      <div class="uk-dropdown-blank mobile-entry-popup" v-show="activeThread && $route.name === 'Thread'">
-        <a :href="pageAppLink()" target="_blank"><div class="row"><span class="uk-icon-external-link"></span> 電話繼續追</div></a>
-        <div class="row" v-html="qr()"></div>
+        <div class="uk-hidden-small nav-item" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}" v-show="activeThread && $route.name === 'Thread'">
+          <a>
+            <span class="uk-icon-qrcode"></span><span class="uk-hidden-small"> 開APP</span>
+          </a>
+          <div class="uk-dropdown-blank mobile-entry-popup" v-show="activeThread && $route.name === 'Thread'">
+            <a :href="pageAppLink()" target="_blank"><div class="row"><span class="uk-icon-external-link"></span> 電話繼續追</div></a>
+            <div class="row" v-html="qr()"></div>
+          </div>
+        </div>
+
       </div>
     </div>
-
-  </nav>
+  </div>
 </template>
 
 <script>
@@ -103,6 +107,10 @@ export default {
     a {
       color: #222;
     }
+  }
+
+  .uk-container {
+    padding: 0;
   }
 }
 
