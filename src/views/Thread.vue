@@ -55,24 +55,19 @@
 
 
     <div class="uk-visible-small bottom-bar">
-      <div class="uk-grid uk-grid-collapse">
-        <div class="uk-width-1-6">
-          <a class="return-link" @click.prevent="backToThreadList">
-            <span class="uk-icon-reply"></span>
-          </a>
-        </div>
-        <div class="uk-width-1-6 uk-flex uk-flex-column uk-flex-center uk-flex-middle">
+      <div class="actions">
+        <div class="action uk-flex uk-flex-column uk-flex-center uk-flex-middle">
           <span class="uk-icon-thumbs-up"></span><span class="rating-number">{{ activeThread.like_count }}</span>
         </div>
-        <div class="uk-width-1-6 uk-flex uk-flex-column uk-flex-center uk-flex-middle">
+        <div class="action uk-flex uk-flex-column uk-flex-center uk-flex-middle">
           <span class="uk-icon-thumbs-down"></span><span class="rating-number">{{ activeThread.dislike_count }}</span>
         </div>
-        <div class="uk-width-1-6">
+        <div class="action">
           <a class="action-link" @click.prevent="setPhotoMode(true)">
             <span class="uk-icon-image"></span>
           </a>
         </div>
-        <div class="uk-width-1-6" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}">
+        <div class="action" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}">
           <a>
             <span class="uk-icon-qrcode"></span>
           </a>
@@ -81,7 +76,7 @@
             <div class="row" v-html="qr()"></div>
           </div>
         </div>
-        <div class="uk-width-1-6">
+        <div class="action">
           <a class="action-link" @click.prevent="handleScrollBottom">
             <span class="uk-icon-arrow-down"></span>
           </a>
@@ -447,7 +442,11 @@ export default {
   z-index: 999;
   color: #f1c40f;
 
-  [class*=uk-width-1-] {
+  .actions {
+    display: flex;
+  }
+  .action {
+    flex: 1;
     text-align: center;
 
     > a {

@@ -23,16 +23,16 @@
     ></thread-list>
 
     <div class="uk-visible-small bottom-bar">
-      <div class="uk-grid uk-grid-collapse">
-        <div class="uk-width-1-3">
+      <div class="actions">
+        <div class="action">
           <a class="f5-link" @click.prevent="handleRefresh">
             <span class="uk-icon-refresh"></span> F5
           </a>
         </div>
-        <div class="uk-width-1-3">
+        <div class="action">
           <a href="#offcanvas-categories" data-uk-offcanvas="{mode:'slide'}">轉台</a>
         </div>
-        <div class="uk-width-1-3">
+        <div class="action">
           <router-link to="/search"><span class="uk-icon-search"></span> 搜尋</router-link>
         </div>
       </div>
