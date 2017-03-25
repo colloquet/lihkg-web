@@ -81,7 +81,7 @@ export default {
       titleTemplate: this.officeMode ? null : '%s | LIHKG 討論區',
       link: this.officeMode ? [
         { rel: 'shortcut icon', href: 'https://www.google.com.hk/images/branding/product/ico/googleg_lodp.ico' }
-      ] : null
+      ] : []
     }
   },
   computed: {
@@ -180,6 +180,10 @@ a {
 
   &:hover, &:focus, &:active {
     color: darken(#f1c40f, 2%);
+  }
+
+  .white-theme & {
+    color: #444;
   }
 }
 

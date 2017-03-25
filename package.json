@@ -59,7 +59,6 @@
     "shelljs": "^0.7.4",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.4.0",
-    "sw-precache-webpack-plugin": "^0.9.0",
     "url-loader": "^0.5.7",
     "vue-loader": "^10.0.0",
     "vue-style-loader": "^1.0.0",

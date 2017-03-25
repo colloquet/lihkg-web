@@ -18,7 +18,7 @@
         :handlePageSwitchFromSelect="handlePageSwitchFromSelect"
       />
 
-      <div class="comments-container" :class="{'is-loading': isThreadLoading}">
+      <div class="comments-container">
         <ul class="uk-grid">
           <li class="uk-width-1-1 uk-margin-bottom" v-for="(comment, index) in comments" :id="index % 25 == 0 ? `page-${comment.page}` : ''">
             <div class="comment">
@@ -53,6 +53,12 @@
       </p>
     </div>
 
+    <div class="comments-container" v-if="isThreadLoading">
+      <div class="uk-text-center comment">
+        <span class="uk-icon-spin uk-icon-spinner"></span>
+        載入中
+      </div>
+    </div>
 
     <div class="uk-visible-small bottom-bar">
       <div class="actions">
@@ -427,6 +433,17 @@ export default {
 
   small {
     font-size: 80%;
+  }
+
+  sub {
+    display: inline-block;
+    border: 2px dotted #bdc3c7;
+    color: inherit;
+    padding: 5px 15px;
+    border-radius: 5px;
+    margin: 5px;
+    font-size: inherit;
+    line-height: 1;
   }
 }
 
