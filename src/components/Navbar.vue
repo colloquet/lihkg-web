@@ -90,7 +90,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="scss">
 .navbar {
   position: fixed;
   box-shadow: 1px 1px 9px 1px rgba(0,0,0,0.3);

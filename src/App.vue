@@ -10,7 +10,7 @@
       </div>
       <router-view></router-view>
     </div>
-
+    
     <offcanvas />
 
     <modal id="modal-about">
@@ -147,7 +147,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="scss">
 html {
   background: #222;
   box-sizing: border-box;

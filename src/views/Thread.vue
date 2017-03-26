@@ -400,7 +400,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="scss">
 .comments-container {
   @media(max-width: 767px) {
     margin: 0 -15px;

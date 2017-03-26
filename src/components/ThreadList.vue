@@ -44,7 +44,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="scss">
 .threads-container {
   margin: 0 -15px;
 

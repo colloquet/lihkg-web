@@ -35,7 +35,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="scss">
 .navigation-bar {
   background: #2d2d2d;
 

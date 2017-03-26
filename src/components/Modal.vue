@@ -14,7 +14,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="scss">
 .uk-modal {
   .uk-modal-dialog {
     background: #2b2b2b;

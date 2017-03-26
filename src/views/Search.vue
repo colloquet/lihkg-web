@@ -130,7 +130,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="scss">
 #search {
   border: 1px solid #545454;
   background: #313131;

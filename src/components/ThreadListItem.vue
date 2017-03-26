@@ -39,7 +39,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="scss">
 .thread-container {
   display: flex;
   position: relative;

@@ -26,7 +26,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="scss">
 .photo-mode-container {
   position: fixed;
   background: #222;

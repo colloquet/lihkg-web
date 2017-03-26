@@ -147,7 +147,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="scss">
 .range-type-bar {
   border: 1px solid #444;
 

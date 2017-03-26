@@ -57,7 +57,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="scss">
 .uk-offcanvas-bar {
   background: #222;
   box-shadow: 1px 1px 4px 1px rgba(#000, 0.5);
@@ -75,7 +75,7 @@ export default {
     backdrop-filter: blur(10px);
 
     .white-theme & {
-      background: rgba(#fff 0.7);
+      background: rgba(#fff, 0.7);
     }
   }
 }
