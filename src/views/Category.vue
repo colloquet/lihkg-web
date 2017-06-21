@@ -92,13 +92,15 @@ export default {
       document.body.scrollTop = document.documentElement.scrollTop = 0
     },
     handleLoadMore () {
-      this.page += 1
-      this.$nextTick(() => {
-        this.fetchMoreThreadList({
-          catId: this.catId,
-          page: this.page
+      if (!this.isThreadListLoading) {
+        this.page += 1
+        this.$nextTick(() => {
+          this.fetchMoreThreadList({
+            catId: this.catId,
+            page: this.page
+          })
         })
-      })
+      }
     },
     handleOnScroll () {
       if ((window.innerHeight + (window.scrollY || window.pageYOffset)) >= document.body.offsetHeight - 200) {

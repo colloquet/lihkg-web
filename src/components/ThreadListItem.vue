@@ -117,7 +117,7 @@ export default {
 }
 
 .hot-indicator {
-  color: #f1c40f;
+  color: #f6b701;
   position: absolute;
   top: 18px;
   left: 15px;
@@ -135,7 +135,7 @@ export default {
 }
 
 .like-color {
-  color: #f1c40f;
+  color: #f6b701;
 }
 
 .dislike-color {

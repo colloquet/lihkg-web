@@ -20,20 +20,18 @@
 
       <div class="comments-container">
         <ul class="uk-grid">
-          <li class="uk-width-1-1 uk-margin-bottom" v-for="(comment, index) in comments" :id="index % 25 == 0 ? `page-${comment.page}` : ''">
-            <div class="comment">
-              <p>
-                <small>
-                  <span class="uk-text-muted" :class="{'author': activeThread.user.user_id === comment.user.user_id}">#{{ getCommentIndex(index, page) }}</span>
-                  <span :class="comment.user.level === '999' ? 'admin' : comment.user.gender === 'M' ? 'male' : 'female'">{{ comment.user_nickname }}</span>
-                  <span class="uk-text-muted">// {{ getRelativeTime(comment.reply_time) }}</span>
-                  <span class="uk-icon-eye uk-float-right story-mode-toggle" @click="toggleStoryMode(comment.user.user_id)" v-if="storeyModeId === -1"></span>
-                  <span class="uk-icon-eye-slash uk-float-right story-mode-toggle" @click="toggleStoryMode(comment.user.user_id)" v-else></span>
-                </small>
-              </p>
-              <div v-html="prepareCommentMsg(comment.msg)" v-show="comment.user.user_id === storeyModeId || storeyModeId === -1"></div>
-            </div>
-          </li>
+          <comment-item
+            v-for="(comment, index) in comments"
+            v-if="+comment.status === 1"
+            :index="index"
+            :comment="comment"
+            :isAuthor="activeThread.user.user_id === comment.user.user_id"
+            :toggleStoryMode="toggleStoryMode"
+            :prepareCommentMsg="prepareCommentMsg"
+            :storeyModeId="storeyModeId"
+            :threadLikeCount="activeThread.like_count"
+            :threadDislikeCount="activeThread.dislike_count"
+          ></comment-item>
         </ul>
       </div>
 
@@ -115,14 +113,15 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 import qrCode from 'qrcode-npm'
 import ThreadNavbar from '../components/ThreadNavbar'
 import PhotoGallery from '../components/PhotoGallery'
+import CommentItem from '../components/CommentItem'
 import lihkg from '../api/lihkg'
-import helper from '../helper'
 
 export default {
   name: 'Thread',
   components: {
     ThreadNavbar,
-    PhotoGallery
+    PhotoGallery,
+    CommentItem
   },
   data () {
     return {
@@ -290,12 +289,6 @@ export default {
     hasPrevPage (page) {
       return page > 1
     },
-    getCommentIndex (index, page) {
-      return index + ((page - 1) * 25)
-    },
-    getRelativeTime (timestamp) {
-      return helper.getRelativeTime(timestamp)
-    },
     toggleStoryMode (userId) {
       this.storeyModeId = this.storeyModeId === -1 ? userId : -1
     },
@@ -409,42 +402,6 @@ export default {
 
 .is-loading {
   opacity: 0.5;
-}
-
-.story-mode-toggle {
-  cursor: pointer;
-}
-
-.comment {
-  background: #2d2d2d;
-  padding: 15px;
-  word-wrap: break-word;
-  line-height: 1.5;
-
-  .white-theme & {
-    /*box-shadow: 0 1px 4px rgba(0,0,0,.15);*/
-    /*border: 1px solid #ddd;*/
-    background: #fafafa;
-  }
-
-  img {
-    vertical-align: text-bottom;
-  }
-
-  small {
-    font-size: 80%;
-  }
-
-  sub {
-    display: inline-block;
-    border: 2px dotted #bdc3c7;
-    color: inherit;
-    padding: 5px 15px;
-    border-radius: 5px;
-    margin: 5px;
-    font-size: inherit;
-    line-height: 1;
-  }
 }
 
 .bottom-bar {

@@ -15,8 +15,9 @@
         </div>
 
         <div class="uk-hidden-small nav-item" v-show="activeThread && $route.name === 'Thread'">
-          <span class="uk-icon-thumbs-up like-color"></span> {{ activeThread.like_count }}
-          <span class="uk-icon-thumbs-down uk-margin-small-left dislike-color"></span> {{ activeThread.dislike_count }}
+          <span class="uk-icon-thumbs-up"></span> {{ activeThread.like_count }}
+          &nbsp;
+          <span class="uk-icon-thumbs-down"></span> {{ activeThread.dislike_count }}
         </div>
 
         <div class="uk-hidden-small nav-item" v-show="$route.name === 'Thread'">

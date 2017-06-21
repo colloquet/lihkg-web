@@ -4,10 +4,10 @@
     <navbar />
 
     <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">
-      <div class="uk-alert" data-uk-alert>
+      <!--<div class="uk-alert" data-uk-alert>
         <a href="#" class="uk-alert-close uk-close"></a>
         <p>LIHKG網站現已推出 (已有回覆功能): <a href="https://lihkg.com/" target="_blank">https://lihkg.com/</a></p>
-      </div>
+      </div>-->
       <router-view></router-view>
     </div>
     
@@ -176,10 +176,10 @@ html {
 }
 
 a {
-  color: #f1c40f;
+  color: #f6b701;
 
   &:hover, &:focus, &:active {
-    color: darken(#f1c40f, 2%);
+    color: darken(#f6b701, 2%);
   }
 
   .white-theme & {
@@ -216,11 +216,11 @@ blockquote {
 }
 
 .admin {
-  color: #f1c40f !important;
+  color: #f6b701 !important;
 }
 
 .author {
-  color: #f1c40f !important;
+  color: #f6b701 !important;
 }
 
 .uk-container {
@@ -242,7 +242,7 @@ blockquote {
 }
 
 .uk-close {
-  color: #f1c40f;
+  color: #f6b701;
   opacity: 1;
 }
 
@@ -255,7 +255,7 @@ blockquote {
   line-height: 20px;
 
   >li>a:focus, >li>a:hover {
-    background: #f1c40f;
+    background: #f6b701;
   }
 }
 
@@ -279,7 +279,7 @@ blockquote {
   justify-content: space-between;
   padding: 15px;
   border-bottom: 1px solid #444;
-  color: #f1c40f;
+  color: #f6b701;
 
   .white-theme & {
     border-bottom: 1px solid #ddd;
@@ -348,7 +348,7 @@ blockquote {
 
 	&:checked {
   	+ .tgl-btn {
-  		background: #f1c40f;
+  		background: #f6b701;
       &:after {
         background: #fff;
       }

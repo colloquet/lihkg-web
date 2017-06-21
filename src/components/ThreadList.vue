@@ -14,7 +14,7 @@
           <span class="uk-icon-spin uk-icon-spinner" v-if="isLoading"></span>
           {{ isLoading ? '載入中…' : '載入更多' }}
         </a>
-        <span v-else-if="!hasMoreThreads && !isLoading">沒有更多</span>
+        <span v-else-if="!hasMoreThreads && !isLoading">完</span>
       </li>
     </ul>
   </div>

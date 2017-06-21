@@ -18,6 +18,7 @@
         </li>
         <li
           v-for="category in allCategories"
+          v-if="+category.cat_id !== 999"
           :key="category.cat_id"
           :class="{'uk-active': activeCategory ? category.cat_id === activeCategory.cat_id : false}"
         >

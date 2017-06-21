@@ -36,6 +36,8 @@ export default {
 </script>
 
 <style lang="scss">
+$navbar-height: 40px;
+
 .navigation-bar {
   background: #2d2d2d;
 
@@ -44,9 +46,9 @@ export default {
 
     > a {
       display: block;
-      height: 50px;
+      height: $navbar-height;
       padding: 0 15px;
-      line-height: 50px;
+      line-height: $navbar-height;
 
       @media(max-width: 375px) {
         padding: 0 10px;
@@ -55,9 +57,9 @@ export default {
   }
 
   .page-switcher {
-    height: 50px;
+    height: $navbar-height;
     padding: 0 15px;
-    line-height: 50px;
+    line-height: $navbar-height;
     cursor: pointer;
 
     @media(max-width: 375px) {
