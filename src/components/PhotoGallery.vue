@@ -5,14 +5,12 @@
       <a class="uk-float-right photo-mode-close" @click.prevent="$emit('onClose')"><span class="uk-icon-remove"></span> 關閉</a>
     </div>
     <div class="photo-mode-body">
-      <div class="uk-container uk-container-center">
-        <p class="uk-text-center" v-if="noImages && !isImagesLoading">此post冇圖片</p>
-        <div class="uk-grid uk-grid-small uk-grid-width-1-3 uk-grid-width-medium-1-4 uk-grid-width-large-1-5 uk-grid-width-xlarge-1-6" v-else>
-          <div v-for="image in images">
-            <a :href="image.url" @click.prevent="$emit('image-click', image.url)">
-              <div class="image-container" :style="{backgroundImage: `url(${image.url})`}"></div>
-            </a>
-          </div>
+      <p class="uk-text-center" v-if="noImages && !isImagesLoading">此post冇圖片</p>
+      <div class="uk-grid uk-grid-small uk-grid-width-1-2 uk-grid-width-small-1-3 uk-grid-width-medium-1-4 uk-grid-width-large-1-5 uk-grid-width-xlarge-1-6" v-else>
+        <div v-for="image in images">
+          <a :href="image.url" @click.prevent="$emit('image-click', image.url)">
+            <div class="image-container" :style="{backgroundImage: `url(${image.url})`}"></div>
+          </a>
         </div>
       </div>
     </div>
@@ -58,7 +56,7 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
-    padding: 15px 0;
+    padding: 10px 0;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
 

@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <div class="uk-margin-bottom navigation-bar range-type-bar" v-if="catId == 2">
       <div class="uk-grid uk-grid-collapse">
         <div class="uk-width-1-3">
@@ -10,6 +11,16 @@
         </div>
         <div class="uk-width-1-3">
           <router-link :to="{ path: '/category/2', query: { type: 'weekly' }}" exact>本週精選</router-link>
+        </div>
+      </div>
+    </div>
+    <div class="uk-margin-bottom navigation-bar range-type-bar" v-else-if="activeCategory.postable">
+      <div class="uk-grid uk-grid-collapse">
+        <div class="uk-width-1-2">
+          <router-link :to="{ path: `/category/${catId}` }" exact>最新</router-link>
+        </div>
+        <div class="uk-width-1-2">
+          <router-link :to="{ path: `/category/${catId}`, query: { order: 'hot' }}" exact>熱門</router-link>
         </div>
       </div>
     </div>
@@ -25,12 +36,14 @@
     <div class="uk-visible-small bottom-bar">
       <div class="actions">
         <div class="action">
-          <a class="f5-link" @click.prevent="handleRefresh">
-            <span class="uk-icon-refresh"></span> F5
+          <a href="#offcanvas-categories" data-uk-offcanvas="{mode:'slide'}">
+            <span class="uk-icon-bars"></span> 轉台
           </a>
         </div>
         <div class="action">
-          <a href="#offcanvas-categories" data-uk-offcanvas="{mode:'slide'}">轉台</a>
+          <a class="f5-link" @click.prevent="handleRefresh">
+            <span class="uk-icon-refresh"></span> F5
+          </a>
         </div>
         <div class="action">
           <router-link to="/search"><span class="uk-icon-search"></span> 搜尋</router-link>
@@ -62,7 +75,8 @@ export default {
       isReplacing: state => state.categories.isReplacing,
       hasMoreThreads: state => state.categories.hasMoreThreads,
       catId: state => state.route.params.id,
-      rangeType: state => state.route.query.type
+      rangeType: state => state.route.query.type,
+      order: state => state.route.query.order
     }),
     ...mapGetters([
       'uniqueThreads'
@@ -97,7 +111,9 @@ export default {
         this.$nextTick(() => {
           this.fetchMoreThreadList({
             catId: this.catId,
-            page: this.page
+            page: this.page,
+            rangeType: this.rangeType,
+            order: this.order
           })
         })
       }
@@ -122,7 +138,16 @@ export default {
       this.fetchThreadList({
         catId: this.catId,
         page: 1,
-        rangeType: newVal
+        rangeType: newVal,
+        order: this.order
+      })
+    },
+    order (newVal, oldVal) {
+      this.fetchThreadList({
+        catId: this.catId,
+        page: 1,
+        rangeType: this.rangeType,
+        order: newVal
       })
     }
   },

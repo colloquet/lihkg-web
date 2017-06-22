@@ -60,6 +60,11 @@
 
     <div class="uk-visible-small bottom-bar">
       <div class="actions">
+        <div class="action">
+          <a href="#offcanvas-categories" data-uk-offcanvas="{mode:'slide'}">
+            <span class="uk-icon-bars"></span>
+          </a>
+        </div>
         <div class="action uk-flex uk-flex-column uk-flex-center uk-flex-middle">
           <span class="uk-icon-thumbs-up"></span><span class="rating-number">{{ activeThread.like_count }}</span>
         </div>

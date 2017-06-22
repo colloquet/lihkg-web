@@ -6,7 +6,7 @@ export default {
   fetchCategories () {
     return axios.get(`${baseUrl}/system/property`)
   },
-  fetchThreadList (catId, page, rangeType = null) {
+  fetchThreadList (catId, page, rangeType = 'now', order = 'now') {
     let type
     switch (+catId) {
       case 1:
@@ -23,7 +23,9 @@ export default {
     }
     const params = {
       cat_id: catId,
-      page
+      page,
+      type,
+      order
     }
     if (rangeType) {
       params.type = rangeType
