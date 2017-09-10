@@ -20,7 +20,13 @@
 <script>
 export default {
   name: 'modal',
-  props: ['no-images', 'images', 'is-images-loading']
+  props: ['no-images', 'images', 'is-images-loading'],
+  mounted () {
+    document.body.style.overflow = 'hidden'
+  },
+  beforeDestroy () {
+    document.body.style.overflow = 'auto'
+  }
 }
 </script>
 

@@ -412,7 +412,7 @@ export default {
 .bottom-bar {
   position: fixed;
   box-shadow: 1px 1px 9px 1px rgba(0,0,0,0.3);
-  background: rgba(#222, 0.5);
+  background: rgba(#222, 0.9);
   backdrop-filter: blur(10px);
   left: 0;
   bottom: 0;
