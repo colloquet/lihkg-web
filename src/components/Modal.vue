@@ -1,33 +1,81 @@
 <template>
-  <div :id="id" class="uk-modal">
-    <div class="uk-modal-dialog">
-      <a href="#" class="uk-modal-close uk-close"></a>
-      <slot></slot>
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper" @click.self="$emit('close')">
+        <div class="modal-container">
+          <div class="modal-header">
+            <slot name="header">
+              default header
+            </slot>
+          </div>
+
+          <div class="modal-body">
+            <slot name="body">
+              default body
+            </slot>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
-<script>
-export default {
-  name: 'modal',
-  props: ['id']
-}
-</script>
-
 <style lang="scss">
-.uk-modal {
-  .uk-modal-dialog {
-    background: #2b2b2b;
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  display: table;
+  transition: opacity .3s ease;
+  will-change: opacity;
+}
 
-    .white-theme & {
-      background: #f1f1f1;
-    }
-  }
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
 
-  .uk-close {
-    position: absolute;
-    right: 20px;
-    top: 20px;
+.modal-container {
+  width: 18rem;
+  margin: 0px auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+  transition: all .3s ease;
+  will-change: transform;
+
+  .night-mode & {
+    background: #202020;
   }
+}
+
+.modal-header h3 {
+  display: inline-block;
+  margin: 0;
+  padding-bottom: .25rem;
+  border-bottom: 2px solid #1ecd97;
+
+  .night-mode & {
+    border-bottom-color: #42b983;
+  }
+}
+
+.modal-body {
+  margin: 1rem 0 0;
+}
+
+.modal-enter,
+.modal-leave-active {
+  opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave-active .modal-container {
+  transform: translateY(2rem);
 }
 </style>

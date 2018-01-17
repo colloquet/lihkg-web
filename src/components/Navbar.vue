@@ -1,187 +1,301 @@
 <template>
-  <div class="navbar">
-    <div class="uk-container uk-container-center">
-      <div class="uk-flex uk-flex-space-between">
-        <a href="#offcanvas-categories" class="sidebar-toggle" data-uk-offcanvas="{mode:'slide'}"><span class="uk-icon-bars"></span><span v-show="$route.name === 'Category'"> {{ activeCategory.name || '轉台' }}</span></a>
+  <headroom
+    :disabled="!isMobile || tempDisable"
+    :z-index="3"
+    :up-tolerance="10"
+    :down-tolerance="10"
+    :offset="50"
+  >
+    <div class="navbar" :class="{'has-menu': showDrawer}">
+      <div class="container">
+        <div class="wrapper">
+          <div class="left">
+            <button class="action" @click="handleNavMenuClick" v-if="!isMobile">
+              <span :class="showDrawer ? 'icon-x' : 'icon-menu'"></span>
+            </button>
 
-        <div v-show="$route.name === 'Category'">
-          <a href="https://github.com/colloquet/lihkg-web" target="_blank" class="refresh-toggle"><span class="uk-icon-github"></span> GitHub</a>
-          <router-link to="/search" class="uk-hidden-small search-toggle"><span class="uk-icon-search"></span> 搜尋</router-link>
-          <a class="uk-hidden-small refresh-toggle" @click.prevent="handleRefresh"><span class="uk-icon-refresh"></span> F5</a>
-        </div>
+            <template v-if="inThreadView">
+              <button class="action" @click="handleBackClick" v-if="inThreadView">
+                <span class="icon-arrow-left"></span>
+              </button>
+            </template>
+          </div>
 
-        <div class="nav-title" v-show="$route.name === 'Thread'" @click="goToTop">
-          <span>{{ activeThread ? activeThread.title : '載入中…' }}</span>
-        </div>
+          <div class="center">
+            <div @click="scrollToTop">
+              <span v-if="inThreadView" :title="thread.title">{{ thread.title || 'LIHKG' }}</span>
+              <span v-else>{{ category.name || 'LIHKG' }}</span>
+            </div>
+          </div>
 
-        <div class="uk-hidden-small nav-item" v-show="activeThread && $route.name === 'Thread'">
-          <span class="uk-icon-thumbs-up"></span> {{ activeThread.like_count }}
-          &nbsp;
-          <span class="uk-icon-thumbs-down"></span> {{ activeThread.dislike_count }}
-        </div>
+          <div class="right">
+            <template v-if="inCatView && !isMobile">
+              <!-- <a class="action" href="#">
+                <span class="icon-github"></span>
+              </a> -->
+              <button class="action" @click="handleReloadClick" title="F5">
+                <span class="icon-refresh-ccw"></span>
+              </button>
+            </template>
 
-        <div class="uk-hidden-small nav-item" v-show="$route.name === 'Thread'">
-          <a @click.prevent="enablePhotoMode">
-            <span class="uk-icon-image"></span> 圖片模式
-          </a>
-        </div>
+            <template v-if="inThreadView && !isMobile">
+              <div class="item score">
+                <span class="icon-thumbs-up"></span> <small>{{ thread.like_count || '-' }}</small>
+              </div>
+              <div class="item score">
+                <span class="icon-thumbs-down"></span> <small>{{ thread.dislike_count || '-' }}</small>
+              </div>
+              <button class="action" @click="handleMediaModeClick" v-if="!isMobile" title="圖片模式">
+                <span class="icon-image"></span>
+              </button>
+              <button
+                class="action"
+                :class="{'is-active': $route.query.order === 'score'}"
+                @click="handleHotReplyClick"
+                v-if="!isMobile"
+                title="熱門回覆"
+              >
+                <span class="icon-trending-up"></span>
+              </button>
+            </template>
 
-        <div class="uk-hidden-small nav-item" data-uk-dropdown="{mode:'click', pos: 'bottom-right'}" v-show="activeThread && $route.name === 'Thread'">
-          <a>
-            <span class="uk-icon-qrcode"></span><span class="uk-hidden-small"> 開APP</span>
-          </a>
-          <div class="uk-dropdown-blank mobile-entry-popup" v-show="activeThread && $route.name === 'Thread'">
-            <a :href="pageAppLink()" target="_blank"><div class="row"><span class="uk-icon-external-link"></span> 電話繼續追</div></a>
-            <div class="row" v-html="qr()"></div>
+            <button class="action" @click="handleSettingsClick" v-if="!isMobile" title="設定">
+              <span class="icon-settings"></span>
+            </button>
           </div>
         </div>
-
       </div>
     </div>
-  </div>
+  </headroom>
 </template>
 
 <script>
-/* global UIkit */
-import { mapActions, mapState } from 'vuex'
-import qrCode from 'qrcode-npm'
+import { mapState, mapActions, mapMutations } from 'vuex'
+import { headroom } from 'vue-headroom'
+import helper from '@/helper'
 
 export default {
-  name: 'navbar',
+  name: 'Navbar',
+  components: {
+    headroom,
+  },
+  data: () => ({
+    tempDisable: false,
+  }),
   computed: {
     ...mapState({
-      activeCategory: state => state.categories.category,
-      activeThread: state => state.threads.activeThread
-    })
+      isMobile: state => state.app.isMobile,
+      showDrawer: state => state.ui.showDrawer,
+      category: state => state.category.category,
+      thread: state => state.thread.thread,
+      relatedCatId: state => state.thread.thread.cat_id || 1,
+    }),
+    inThreadView() {
+      return this.$route.name === 'ThreadView'
+    },
+    inCatView() {
+      return this.$route.name === 'CategoryView'
+    },
   },
   methods: {
-    ...mapActions([
-      'fetchThreadList'
-    ]),
-    handleRefresh () {
-      this.fetchThreadList({
-        catId: this.activeCategory.cat_id,
-        page: 1
+    ...mapActions(['fetchThreadList', 'fetchMediaList']),
+    ...mapMutations({
+      toggleDrawer: 'TOGGLE_DRAWER',
+      toggleSettingsModal: 'TOGGLE_SETTINGS_MODAL',
+      setThreadList: 'SET_THREAD_LIST',
+    }),
+    async handleReloadClick() {
+      helper.trackEvent({
+        eventCategory: 'Navbar',
+        eventAction: 'click',
+        eventLabel: 'F5',
       })
-      document.body.scrollTop = document.documentElement.scrollTop = 0
+      this.setThreadList([])
+      await this.fetchThreadList({ catId: this.category.cat_id })
+      window.scrollTo(0, 0)
     },
-    goToTop () {
-      UIkit.Utils.scrollToElement(UIkit.$('#app'))
+    handleNavMenuClick() {
+      helper.trackEvent({
+        eventCategory: 'Navbar',
+        eventAction: 'click',
+        eventLabel: 'Drawer',
+      })
+      this.toggleDrawer()
     },
-    pageAppLink () {
-      const threadId = this.$store.state.route.params.id
-      const currentPage = this.$store.state.route.params.page * 1 || 1
-      return `https://lihkg.com/thread/${threadId}/page/${currentPage}?ref=lihk-firebase`
+    handleSettingsClick() {
+      helper.trackEvent({
+        eventCategory: 'Navbar',
+        eventAction: 'click',
+        eventLabel: 'Settings',
+      })
+      this.toggleSettingsModal()
     },
-    qr () {
-      try {
-        const qr = qrCode.qrcode(4, 'M')
-        const refLink = this.pageAppLink()
-        qr.addData(refLink)
-        qr.make()
-        return qr.createTableTag(4)
-      } catch (e) {
-        return 'QR code: 你條Link 太長.'
+    handleBackClick() {
+      helper.trackEvent({
+        eventCategory: 'Navbar',
+        eventAction: 'click',
+        eventLabel: 'Back',
+      })
+      if (this.category.cat_id) {
+        window.history.back()
+      } else {
+        this.$router.push(`/category/${this.relatedCatId}`)
       }
     },
-    enablePhotoMode () {
-      this.$store.commit('SET_PHOTO_MODE', true)
-    }
-  }
+    handleMediaModeClick() {
+      helper.trackEvent({
+        eventCategory: 'Navbar',
+        eventAction: 'click',
+        eventLabel: 'Media',
+      })
+      this.fetchMediaList({ threadId: this.thread.thread_id, openGallery: true })
+    },
+    handleHotReplyClick() {
+      helper.trackEvent({
+        eventCategory: 'Navbar',
+        eventAction: 'click',
+        eventLabel: 'Hot Reply',
+      })
+      if (this.$route.query.order === 'score') {
+        this.$router.replace({ query: null })
+      } else {
+        this.$router.replace({ query: { order: 'score' } })
+      }
+    },
+    scrollToTop() {
+      const c = document.documentElement.scrollTop || document.body.scrollTop
+      if (c > 0) {
+        window.requestAnimationFrame(this.scrollToTop)
+        window.scrollTo(0, c - (c / 8))
+      }
+    },
+  },
+  watch: {
+    $route(to, from) {
+      if (to.name === 'ThreadView' && from.name === 'CategoryView') {
+        this.tempDisable = true
+
+        setTimeout(() => {
+          this.tempDisable = false
+        }, 500)
+      }
+    },
+  },
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+$navbar-height: 3rem;
+
 .navbar {
-  position: fixed;
-  box-shadow: 1px 1px 9px 1px rgba(0,0,0,0.3);
-  top: 0;
-  left: 0;
+  display: flex;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+  height: $navbar-height;
+  line-height: $navbar-height;
+  transition: box-shadow .45s ease;
+  z-index: 3;
+
+  .night-mode & {
+    background: #1b1b1b;
+  }
+
+  &.has-menu {
+    box-shadow: none;
+  }
+}
+
+.container {
+  max-width: 60rem;
   width: 100%;
-  background: rgba(#222, 0.9);
-  backdrop-filter: blur(10px);
-  z-index: 999;
+  margin: 0 auto;
+}
 
-  .white-theme & {
-    background: rgba(#fff, 0.8);
+.action {
+  display: inline-block;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0 1rem;
+  height: $navbar-height;
+  line-height: $navbar-height;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  outline: 0;
 
-    a {
-      color: #222;
+  &.is-active {
+    color: #1ecd97;
+
+    .night-mode & {
+      color: #42b983;
     }
   }
 
-  .uk-container {
-    padding: 0;
+  .is-hoverable &:hover {
+    color: #1ecd97;
+  }
+
+  .is-hoverable.night-mode &:hover {
+    color: #42b983;
   }
 }
 
-.sidebar-toggle {
-  flex-shrink: 0;
-  height: 50px;
-  padding: 0 15px;
-  line-height: 50px;
-  text-decoration: none;
+.item {
+  padding: 0 1rem;
+  height: $navbar-height;
+  line-height: $navbar-height;
+  color: inherit;
+}
 
-  @media(max-width: 375px) {
-    padding: 0 10px;
-  }
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-  &:hover, &:focus, &:active {
-    text-decoration: none;
+  small {
+    margin-top: .25rem;
+    line-height: 1;
+    font-size: .75rem;
   }
 }
 
-.refresh-toggle, .search-toggle {
-  display: inline-block;
-  height: 50px;
-  padding: 0 15px;
-  line-height: 50px;
-
-  @media(max-width: 375px) {
-    padding: 0 10px;
-  }
+.wrapper {
+  display: flex;
 }
 
-.nav-title {
-  padding: 0 15px;
-  white-space: nowrap;
-  width: 100%;
+.left {
+  display: flex;
+  flex: 1 9999 0%;
+}
+
+.center {
+  flex: 0 1 auto;
   overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 50px;
-  color: #e6e6e6;
-  cursor: pointer;
 
-  .white-theme & {
-    color: #222;
+  > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
-.nav-item {
-  flex-shrink: 0;
-  height: 50px;
-  padding: 0 15px;
-  line-height: 50px;
-  color: #e6e6e6;
-
-  .white-theme & {
-    color: #222;
-  }
+.right {
+  display: flex;
+  flex: 1 0 0%;
+  justify-content: flex-end;
 }
 
-.mobile-entry-popup {
-  margin-top: 10px;
-  width: 200px;
+.category {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
 
-  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-  background: #fafafa;
-  word-wrap: break-word;
-
-  .row {
-   border-bottom: 1px solid rgba(0,0,0,.3);
-   text-align: center;
-   padding: 10px 15px;
-   line-height: 1.5;
- }
+.thread {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
 }
 </style>

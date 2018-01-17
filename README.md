@@ -1,4 +1,4 @@
-# LIHKG (by [Coke_Zero](http://colloquet.github.io/))
+# LIHKG (by [Coke_Zero](http://colloque.io/))
 
 > LIHKG Web client built with Vue.js
 
@@ -15,9 +15,12 @@ npm run dev
 
 # build for production with minification
 npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
 ## Special Thanks
 
@@ -30,7 +33,7 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 
 MIT License
 
-Copyright (c) 2017 Colloque Tsui
+Copyright (c) 2018 Colloque Tsui
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

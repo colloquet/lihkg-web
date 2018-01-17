@@ -1,0 +1,43 @@
+<template>
+  <blockquote>
+    <template v-if="this.quote.quote">
+      <blockquote v-if="level === 3 && hideChildren">
+        <button @click="hideChildren = false" class="button">顯示更多</button>
+      </blockquote>
+      <post-quote :quote="this.quote.quote" :level="level + 1" v-else></post-quote>
+    </template>
+    <message :html="this.quote.msg"></message>
+  </blockquote>
+</template>
+
+<script>
+import Message from './Message/Message'
+import PostQuote from './PostQuote'
+
+export default {
+  name: 'PostQuote',
+  props: ['quote', 'level'],
+  components: {
+    Message,
+    PostQuote,
+  },
+  data() {
+    return {
+      hideChildren: true,
+    }
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.button {
+  appearance: none;
+  border: 1px solid;
+  background: transparent;
+  color: inherit;
+  border-radius: 4px;
+  font-size: .875rem;
+  padding: .25rem .5rem;
+  cursor: pointer;
+}
+</style>

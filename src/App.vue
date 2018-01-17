@@ -1,362 +1,198 @@
 <template>
-  <div id="app" :class="{'is-safari': isSafari}">
+  <div id="app">
+    <navbar></navbar>
 
-    <navbar />
-
-    <div class="uk-container uk-container-center uk-margin-top uk-margin-bottom">
-      <!--<div class="uk-alert" data-uk-alert>
-        <a href="#" class="uk-alert-close uk-close"></a>
-        <p>LIHKG網站現已推出 (已有回覆功能): <a href="https://lihkg.com/" target="_blank">https://lihkg.com/</a></p>
-      </div>-->
+    <div id="route-container" class="route-container">
       <router-view></router-view>
     </div>
-    
-    <offcanvas />
 
-    <modal id="modal-about">
-      嗚謝：
-      <ul>
-        <li>連尼住巴打</li>
-        <li>HKG+巴打</li>
-        <li>望遠巴打</li>
-        <li><a href="https://na.cx" target="_blank">https://na.cx</a></li>
-      </ul>
-      <p>Made in Hong Kong by <a href="http://colloquet.github.io" target="_blank">Coke_Zero</a></p>
-      <p>View source code on GitHub: <a href="https://github.com/colloquet/lihkg-web" target="_blank">https://github.com/colloquet/lihkg-web</a></a></p>
-    </modal>
+    <bottom-bar v-if="isMobile"></bottom-bar>
 
-    <modal id="modal-setting">
-      <div class="settings-toggle">
-        <label for="white-mode">白底</label>
-        <input class="tgl tgl-light" id="white-mode" type="checkbox" :checked="whiteTheme" @change="toggleWhiteTheme" />
-        <label class="tgl-btn" for="white-mode"></label>
-      </div>
-      <div class="settings-toggle">
-        <label for="office-mode">公司模式</label>
-        <input class="tgl tgl-light" id="office-mode" type="checkbox" :checked="officeMode" @change="toggleOfficeMode" />
-        <label class="tgl-btn" for="office-mode"></label>
-      </div>
-      <div class="settings-toggle">
-        <label for="autoload-image">自動撈圖</label>
-        <input class="tgl tgl-light" id="autoload-image" type="checkbox" :checked="autoLoadImage" @change="toggleAutoLoadImage" />
-        <label class="tgl-btn" for="autoload-image"></label>
-      </div>
-      <div class="settings-toggle">
-        <label for="youtube-preview">YouTube預覽</label>
-        <input class="tgl tgl-light" id="youtube-preview" type="checkbox" :checked="youtubePreview" @change="toggleYoutubePreview" />
-        <label class="tgl-btn" for="youtube-preview"></label>
-      </div>
-      <a class="settings-toggle" @click.prevent="resetThreadHistory">
-        清除睇post記錄
-      </a>
-    </modal>
+    <drawer v-if="isMobile"></drawer>
+    <category-menu v-else></category-menu>
 
+    <gallery v-if="showGallery" :media-list="mediaList"></gallery>
+    <lightbox v-if="mediaIndex !== null" :media-index="mediaIndex"></lightbox>
+
+    <settings-modal v-if="showSettingsModal" @close="toggleSettingsModal"></settings-modal>
   </div>
 </template>
 
 <script>
-/* global $ */
-import FastClick from 'fastclick'
-import { mapActions, mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import Navbar from './components/Navbar'
-import Offcanvas from './components/Offcanvas'
-import Modal from './components/Modal'
-
-if ('addEventListener' in document) {
-  document.addEventListener('DOMContentLoaded', () => {
-    FastClick.attach(document.body)
-  }, false)
-}
+import BottomBar from './components/BottomBar'
+import Drawer from './components/Drawer'
+import CategoryMenu from './components/CategoryMenu'
+import SettingsModal from './components/SettingsModal'
+import Gallery from './components/Gallery/Gallery'
+import Lightbox from './components/Lightbox'
 
 export default {
   name: 'app',
+  metaInfo() {
+    const nightModeClass = this.nightMode ? 'night-mode' : ''
+    const isMobileClass = this.isMobile ? 'is-mobile' : ''
+    const isHoverableClass = this.isHoverable ? 'is-hoverable' : ''
+    return {
+      title: this.officeMode ? 'Google' : 'LIHKG',
+      titleTemplate: this.officeMode ? null : '%s | LIHKG（非官方)',
+      htmlAttrs: {
+        class: `${nightModeClass} ${isMobileClass} ${isHoverableClass}`,
+      },
+      meta: [{ name: 'theme-color', content: this.nightMode ? '#1b1b1b' : '#ffffff' }],
+      link: [this.officeMode ? { rel: 'shortcut icon', href: 'https://www.google.com.hk/images/branding/product/ico/googleg_lodp.ico' } : {}],
+    }
+  },
   components: {
     Navbar,
-    Offcanvas,
-    Modal
-  },
-  metaInfo () {
-    return {
-      title: this.title || '載入中',
-      titleTemplate: this.officeMode ? null : '%s | LIHKG 討論區',
-      link: this.officeMode ? [
-        { rel: 'shortcut icon', href: 'https://www.google.com.hk/images/branding/product/ico/googleg_lodp.ico' }
-      ] : []
-    }
+    BottomBar,
+    Drawer,
+    CategoryMenu,
+    SettingsModal,
+    Gallery,
+    Lightbox,
   },
   computed: {
     ...mapState({
-      activeCategory: state => state.categories.category,
-      activeThread: state => state.threads.activeThread,
-      allCategories: state => state.categories.categories,
-      officeMode: state => state.settings.officeMode,
-      whiteTheme: state => state.settings.whiteTheme,
-      autoLoadImage: state => state.settings.autoLoadImage,
-      youtubePreview: state => state.settings.youtubePreview,
-      iconMap: state => state.settings.iconMap
+      isHoverable: state => state.app.isHoverable,
+      isMobile: state => state.app.isMobile,
+      officeMode: state => state.app.officeMode,
+      nightMode: state => state.app.nightMode,
+      showSettingsModal: state => state.ui.showSettingsModal,
+      mediaList: state => state.thread.mediaList,
+      mediaIndex: state => state.thread.mediaIndex,
+      showGallery: state => state.ui.showGallery,
     }),
-    isSafari () {
-      return navigator.userAgent.indexOf('Safari') > -1 && navigator.userAgent.indexOf('Chrome') === -1
-    },
-    title () {
-      if (this.officeMode) {
-        return 'Google'
-      } else {
-        if (this.$route.name === 'Category') {
-          return this.activeCategory.name
-        } else if (this.$route.name === 'Thread') {
-          return this.activeThread.title
-        } else {
-          return '主頁'
-        }
-      }
-    }
   },
   methods: {
-    ...mapActions([
-      'fetchCategories'
-    ]),
     ...mapMutations({
-      toggleWhiteTheme: 'TOGGLE_WHITE_THEME',
-      toggleOfficeMode: 'TOGGLE_OFFICE_MODE',
-      toggleAutoLoadImage: 'TOGGLE_AUTO_LOAD_IMAGE',
-      toggleYoutubePreview: 'TOGGLE_YOUTUBE_PREVIEW',
-      resetThreadHistory: 'RESET_THREAD_HISTORY'
-    })
-  },
-  watch: {
-    whiteTheme (newVal, oldVal) {
-      if (newVal) {
-        $('html').addClass('white-theme')
-      } else {
-        $('html').removeClass('white-theme')
-      }
-    }
-  },
-  mounted () {
-    if (!this.allCategories.length) {
-      this.fetchCategories()
-    }
+      toggleSettingsModal: 'TOGGLE_SETTINGS_MODAL',
+      setIsMobile: 'SET_IS_MOBILE',
+      setIsHoverable: 'SET_IS_HOVERABLE',
+      setMediaList: 'SET_MEDIA_LIST',
+      setMediaIndex: 'SET_MEDIA_INDEX',
+    }),
+    handleResize() {
+      const isMobile = window.innerWidth < 768
+      const isHoverable = !window.matchMedia('(hover: none)').matches
 
-    if (this.whiteTheme) {
-      $('html').addClass('white-theme')
-    } else {
-      $('html').removeClass('white-theme')
-    }
-  }
+      if (isMobile && !this.isMobile) {
+        this.setIsMobile(true)
+      } else if (!isMobile && this.isMobile) {
+        this.setIsMobile(false)
+      }
+
+      if (isHoverable && !this.isHoverable) {
+        this.setIsHoverable(true)
+      } else if (!isHoverable && this.isHoverable) {
+        this.setIsHoverable(false)
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize)
+  },
 }
 </script>
 
 <style lang="scss">
 html {
-  background: #222;
+  font-family: sans-serif;
   box-sizing: border-box;
+  height: 100%;
   font-size: 16px;
-  font-family: "Helvetica Neue", "Helvetica", Arial, Microsoft JhengHei, sans-serif;
 
-  &.white-theme {
-    background: #f1f1f1;
+  &.night-mode {
+    color: rgba(#fff, .8);
   }
 }
 
-*, *:after, *:before {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
-#app {
-  background: #222;
-  color: #e6e6e6;
-  padding: 50px 0;
+body {
+  min-height: 100%;
 
-
-  .white-theme & {
-    background: #f1f1f1;
-    color: #444;
+  .night-mode & {
+    background: #202020;
   }
+}
+
+img {
+  max-width: 100%;
 }
 
 a {
-  color: #f6b701;
+  color: #2574a9;
+  text-decoration: none;
 
-  &:hover, &:focus, &:active {
-    color: darken(#f6b701, 2%);
-  }
-
-  .white-theme & {
-    color: #444;
+  .night-mode & {
+    color: #3498db;
   }
 }
 
-h1, ,h2, h3, h4, h5, h6 {
-  color: inherit;
+.hidden-select {
+  appearance: none;
+  border: 0;
+  bottom: 0;
+  cursor: pointer;
+  height: 100% !important;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100% !important;
 }
 
-blockquote {
-  border-left: 1px solid #585858;
-  font-style: normal;
-  font-size: inherit;
-  line-height: inherit;
-  color: #888;
+.route-container {
+  max-width: 60rem;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 3rem;
+}
 
-  > blockquote {
-    > blockquote {
-      > blockquote {
-        display: none;
-      }
+.color-admin {
+  color: #f1c40f;
+}
+
+.color-male {
+  color: #3498db;
+
+  .night-mode & {
+    color: #2980b9;
+  }
+}
+
+.color-female {
+  color: #e74c3c;
+
+  .night-mode & {
+    color: #c0392b;
+  }
+}
+
+#nprogress {
+  .bar {
+    background: #1ecd97;
+
+    .night-mode & {
+      background: #42b983;
     }
   }
-}
 
-.male {
-  color: #237afd;
-}
+  .spinner-icon {
+    border-top-color: #1ecd97;
+    border-left-color: #1ecd97;
 
-.female {
-  color: #e60d64;
-}
-
-.admin {
-  color: #f6b701 !important;
-}
-
-.author {
-  color: #f6b701 !important;
-}
-
-.uk-container {
-  max-width: 980px;
-  padding: 0 15px;
-}
-
-.uk-alert {
-  background: #2d2d2d;
-  border: 1px solid #444;
-  color: #e6e6e6;
-  text-shadow: none;
-
-  .white-theme & {
-    background: #fafafa;
-    border: 1px solid #ddd;
-    color: #444;
-  }
-}
-
-.uk-close {
-  color: #f6b701;
-  opacity: 1;
-}
-
-.uk-dropdown-scrollable {
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-}
-
-.uk-nav-dropdown {
-  line-height: 20px;
-
-  >li>a:focus, >li>a:hover {
-    background: #f6b701;
-  }
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgba(128, 128, 128, .4);
-  background-clip: padding-box;
-
-  &:hover {
-    background-color: rgba(128, 128, 128, .6);
-  }
-}
-
-
-.settings-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 15px;
-  border-bottom: 1px solid #444;
-  color: #f6b701;
-
-  .white-theme & {
-    border-bottom: 1px solid #ddd;
-    color: #222;
-  }
-
-  &:last-child {
-    border-bottom: 0;
-  }
-}
-
-.tgl {
-	display: none;
-
-	+ .tgl-btn {
-		outline: 0;
-		display: block;
-		width: 3em;
-		height: 1.5em;
-		position: relative;
-		cursor: pointer;
-    user-select: none;
-		&:after,
-    &:before {
-			position: relative;
-			display: block;
-			content: "";
-			width: 50%;
-			height: 100%;
-		}
-
-		&:after {
-			left: 0;
-		}
-
-		&:before {
-			display: none;
-		}
-	}
-
-	&:checked + .tgl-btn:after {
-		left: 50%;
-	}
-}
-
-.tgl-light {
-	+ .tgl-btn {
-		background: #444;
-		border-radius: 1.5em;
-		padding: 2px;
-		transition: all .4s ease;
-		&:after {
-			border-radius: 50%;
-			background: #888;
-			transition: all .2s ease;
-
-      .white-theme & {
-        background: #fff;
-      }
-		}
-
-    .white-theme & {
-      background: #ddd;
+    .night-mode & {
+      border-top-color: #42b983;
+      border-left-color: #42b983;
     }
-	}
-
-	&:checked {
-  	+ .tgl-btn {
-  		background: #f6b701;
-      &:after {
-        background: #fff;
-      }
-
-      .white-theme & {
-        background: #86d993;
-      }
-  	}
   }
 }
 </style>

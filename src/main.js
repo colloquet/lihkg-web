@@ -1,44 +1,68 @@
-import 'es6-promise/auto'
-import 'array-findindex-polyfill'
-import axios from 'axios'
+// import 'babel-polyfill'
+// import 'whatwg-fetch'
 import Vue from 'vue'
 import Meta from 'vue-meta'
-import { sync } from 'vuex-router-sync'
+import VueWaypoint from 'vue-waypoint'
+import headroom from 'vue-headroom'
+import VueLazyload from 'vue-lazyload'
+
+import 'normalize.css/normalize.css'
+import 'nprogress/nprogress.css'
+
+import helper from '@/helper'
+import * as types from '@/store/mutation-types'
 import App from './App'
 import router from './router'
 import store from './store'
 
-sync(store, router)
-
+Vue.config.productionTip = false
+Vue.use(VueLazyload, {
+  lazyComponent: true,
+})
+Vue.use(VueWaypoint)
 Vue.use(Meta)
+Vue.use(headroom)
 
-const init = async () => {
-  const { data: hkgmoji } = await axios.get('https://x.lihkg.com/hkgmoji.json')
-  const iconMap = hkgmoji.reduce((set, current) => ({
-    ...set,
-    [current.cat]: current.icons.reduce((icons, map) => ({
-      ...icons,
-      [map[1]]: map[0]
-    }), {})
-  }), {})
-  store.commit('SET_ICON_MAP', iconMap)
-
-  /* eslint-disable no-new */
-  new Vue({
-    store,
-    router,
-    el: '#app',
-    template: '<App/>',
-    components: { App }
+fetch('https://x.lihkg.com/hkgmoji6.json')
+  .then(response => response.json())
+  .then((hkgmoji) => {
+    const flattenIconMap = hkgmoji.reduce(
+      (set, current) => ({
+        ...set,
+        ...current.icons.reduce((all, icon) => ({
+          ...all,
+          [icon[1]]: icon[0],
+        }), {}),
+      }),
+      {},
+    )
+    store.commit('SET_ICON_MAP', flattenIconMap)
   })
-}
 
-init()
+window.addEventListener('storage', (event) => {
+  if (event.key === 'history') {
+    store.commit(types.SYNC_HISTORY, JSON.parse(event.newValue))
+  }
+  if (
+    event.key === 'officeMode' ||
+    event.key === 'staticIcons' ||
+    event.key === 'autoLoadImage' ||
+    event.key === 'nightMode'
+  ) {
+    store.commit(types.SYNC_SETTINGS, {
+      key: event.key,
+      value: JSON.parse(event.newValue),
+    })
+  }
+})
 
-if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(registrations => {
-    for (let registration of registrations) {
-      registration.unregister()
-    }
-  })
-}
+helper.initYoutube()
+
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  router,
+  store,
+  template: '<App/>',
+  components: { App },
+})
