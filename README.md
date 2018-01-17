@@ -2,7 +2,7 @@
 
 > LIHKG Web client built with Vue.js
 
-[Live Demo](https://lihk-forum.firebaseapp.com/)
+[Live Demo](https://lihkg.colloque.io/)
 
 ## Build Setup
 
