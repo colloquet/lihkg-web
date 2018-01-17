@@ -30,9 +30,9 @@
 
           <div class="right">
             <template v-if="inCatView && !isMobile">
-              <!-- <a class="action" href="#">
+              <a class="action" href="https://github.com/colloquet/lihkg-web" target="_blank">
                 <span class="icon-github"></span>
-              </a> -->
+              </a>
               <button class="action" @click="handleReloadClick" title="F5">
                 <span class="icon-refresh-ccw"></span>
               </button>
