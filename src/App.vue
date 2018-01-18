@@ -164,7 +164,7 @@ a {
   color: #3498db;
 
   .night-mode & {
-    color: #2980b9;
+    color: #3693d0;
   }
 }
 
@@ -172,7 +172,7 @@ a {
   color: #e74c3c;
 
   .night-mode & {
-    color: #c0392b;
+    color: #d74839;
   }
 }
 

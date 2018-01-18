@@ -17,7 +17,7 @@
         <span class="brand">
           LIHKG
         </span>
-        <a href="https://github.com/colloquet/lihkg-web" target="_blank" class="github-link">
+        <a href="https://github.com/colloquet/lihkg-web" target="_blank" rel="noopener" class="github-link">
           <span class="icon-github"></span>
         </a>
       </div>

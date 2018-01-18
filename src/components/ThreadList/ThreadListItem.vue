@@ -34,13 +34,13 @@
           </div>
 
           <div class="meta-right">
-            <span class="page-switcher" @click.prevent="handlePageSelectClick">
+            <label class="page-switcher" @click.prevent="handlePageSelectClick">
               {{ thread.total_page }} 頁 <span class="icon-chevron-down"></span>
               <select @change="handlePageSelect" class="hidden-select">
                 <option>選擇頁數</option>
                 <option :value="n" :key="n" v-for="n in thread.total_page">第 {{ n }} 頁</option>
               </select>
-            </span>
+            </label>
           </div>
         </small>
 
