@@ -36,8 +36,8 @@ export default {
   background: transparent;
   color: inherit;
   border-radius: 4px;
-  font-size: .875rem;
-  padding: .25rem .5rem;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
   cursor: pointer;
 }
 </style>

@@ -13,7 +13,7 @@ import Anchor from './Anchor'
 function getInlineStyle(str) {
   return str
     .split(/\s{0,};\s{0,}/)
-    .map((s) => {
+    .map(s => {
       const [attr, value] = s.split(/\s{0,}:\s{0,}/)
       return [attr.replace(/-([a-z])/g, g => g[1].toUpperCase()), value]
     })
@@ -44,7 +44,10 @@ export default {
     parsedMessage() {
       let message = this.html
       message = linkifyHtml(message)
-      message = message.replace(/src="\/assets/g, 'src="https://lihkg.com/assets')
+      message = message.replace(
+        /src="\/assets/g,
+        'src="https://lihkg.com/assets',
+      )
       const ast = parseAST(`<x>${message}</x>`)
 
       return ast[0].children
@@ -55,7 +58,7 @@ export default {
       return decode.HTML(content)
     },
     renderAST(h, ast, nestInfo = { quote: 1, sub: 1 }) {
-      return ast.map((node) => {
+      return ast.map(node => {
         if (node.type === 'text') {
           return decode.HTML(node.content)
         }

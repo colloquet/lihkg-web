@@ -26,7 +26,7 @@ function parseDuration(duration) {
     return duration
   }
 
-  matches.forEach((part) => {
+  matches.forEach(part => {
     const unit = part.charAt(part.length - 1)
     const amount = parseInt(part.slice(0, -1), 10)
 
@@ -62,7 +62,8 @@ export default {
       const matches = this.href.match(regex)
       const isYoutube = matches && matches[1]
       const videoId = matches && matches[1]
-      const start = matches && matches[2] ? parseDuration(matches[2].toLowerCase()) : 0
+      const start =
+        matches && matches[2] ? parseDuration(matches[2].toLowerCase()) : 0
 
       return { isYoutube, videoId, start }
     },

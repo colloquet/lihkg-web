@@ -16,7 +16,9 @@ export default {
       staticIcons: state => state.app.staticIcons,
     }),
     source() {
-      return this.staticIcons ? this.src.replace('/faces/', '/faces_png/').replace('.gif', '.png') : this.src
+      return this.staticIcons
+        ? this.src.replace('/faces/', '/faces_png/').replace('.gif', '.png')
+        : this.src
     },
     code() {
       const uri = this.src.split('lihkg.com/')[1]

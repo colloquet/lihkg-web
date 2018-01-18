@@ -98,13 +98,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(#000, .9);
+  background: rgba(#000, 0.9);
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   z-index: 4;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
   will-change: opacity, transform;
 
   .image {
@@ -121,7 +121,7 @@ export default {
   }
 
   .image-link {
-    transition: all .2s ease;
+    transition: all 0.2s ease;
     will-change: opacity, transform;
 
     &.is-loaded {
@@ -147,7 +147,7 @@ export default {
   justify-content: center;
   border: 0;
   border-radius: 0;
-  background: rgba(#000, .1);
+  background: rgba(#000, 0.1);
   height: 3rem;
   width: 3rem;
   padding: 10px;
@@ -155,7 +155,7 @@ export default {
   text-decoration: none;
   outline: 0;
   font-size: 1.5rem;
-  color: rgba(#fff, .8);
+  color: rgba(#fff, 0.8);
   z-index: 1;
 
   .is-hoverable &:hover {
@@ -173,7 +173,8 @@ export default {
   right: 1rem;
 }
 
-.prev, .next {
+.prev,
+.next {
   top: 50%;
   transform: translateY(-50%);
 }
@@ -217,9 +218,11 @@ export default {
   transform: translateY(1.5rem);
 }
 
-.next-enter-active, .next-leave-active,
-.prev-enter-active, .prev-leave-active {
-  transition: all .2s ease;
+.next-enter-active,
+.next-leave-active,
+.prev-enter-active,
+.prev-leave-active {
+  transition: all 0.2s ease;
 }
 .next-enter {
   opacity: 0;

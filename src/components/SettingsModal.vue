@@ -10,12 +10,7 @@
           自動載入圖片 <toggle :on="autoLoadImage" @change="handleToggleClick('autoLoadImage')"></toggle>
         </li>
         <li>
-          <span>
-            節省圖片流量
-            <!-- <br> -->
-            <!-- <small class="subtitle">(需要重新整理)</small> -->
-          </span>
-          <toggle :on="imageProxy" @change="handleToggleClick('imageProxy')"></toggle>
+          節省圖片流量 <toggle :on="imageProxy" @change="handleToggleClick('imageProxy')"></toggle>
         </li>
         <li>
           Youtube 預覽 <toggle :on="youtubePreview" @change="handleToggleClick('youtubePreview')"></toggle>
@@ -123,7 +118,7 @@ export default {
   }
 
   .subtitle {
-    font-size: .75rem;
+    font-size: 0.75rem;
     color: #999;
   }
 }

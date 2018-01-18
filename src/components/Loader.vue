@@ -11,9 +11,9 @@
 }
 .loader {
   display: inline-block;
-  border-top: 3px solid rgba(#888, .2);
-  border-right: 3px solid rgba(#888, .2);
-  border-bottom: 3px solid rgba(#888, .2);
+  border-top: 3px solid rgba(#888, 0.2);
+  border-right: 3px solid rgba(#888, 0.2);
+  border-bottom: 3px solid rgba(#888, 0.2);
   border-left: 3px solid #888;
   font-size: 10px;
   position: relative;
@@ -22,9 +22,9 @@
   animation: load 1.1s infinite linear;
 
   .night-mode & {
-    border-top: 3px solid rgba(#fff, .2);
-    border-right: 3px solid rgba(#fff, .2);
-    border-bottom: 3px solid rgba(#fff, .2);
+    border-top: 3px solid rgba(#fff, 0.2);
+    border-right: 3px solid rgba(#fff, 0.2);
+    border-bottom: 3px solid rgba(#fff, 0.2);
     border-left: 3px solid #fff;
   }
 }

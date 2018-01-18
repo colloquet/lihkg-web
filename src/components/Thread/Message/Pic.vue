@@ -44,7 +44,9 @@ export default {
     }),
     async handleImageClick() {
       await this.fetchMediaList({ threadId: this.threadId })
-      const index = this.mediaList.findIndex(media => media.url === this.original)
+      const index = this.mediaList.findIndex(
+        media => media.url === this.original,
+      )
       if (index !== -1) {
         this.setMediaIndex(index)
       }
@@ -68,7 +70,7 @@ export default {
   width: 0;
   visibility: hidden;
   opacity: 0;
-  transition: opacity .3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .loaded {

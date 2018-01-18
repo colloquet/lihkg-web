@@ -17,7 +17,10 @@ const getters = {}
 
 // actions
 const actions = {
-  async fetchThread({ commit, state, dispatch }, { threadId, page = 1, append = false, order = 'reply_time' }) {
+  async fetchThread(
+    { commit, state, dispatch },
+    { threadId, page = 1, append = false, order = 'reply_time' },
+  ) {
     if (state.isLoading) return false
 
     dispatch('startProgress')

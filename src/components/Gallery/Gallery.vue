@@ -123,7 +123,7 @@ $navbar-height: 3rem;
   bottom: 0;
   left: 0;
   z-index: 3;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
   will-change: opacity, transform;
 
   .night-mode & {
@@ -139,7 +139,7 @@ $navbar-height: 3rem;
 
 .nav {
   background: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   height: $navbar-height;
   line-height: $navbar-height;
   z-index: 3;
@@ -153,7 +153,8 @@ $navbar-height: 3rem;
     justify-content: space-between;
   }
 
-  .item, .action {
+  .item,
+  .action {
     display: inline-block;
     padding: 0 1rem;
     height: $navbar-height;

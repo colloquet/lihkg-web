@@ -63,7 +63,9 @@ export default {
       this.hideDrawer()
     },
     update() {
-      const distanceScrolled = Math.abs(window.pageYOffset - this.lastKnownScrollY)
+      const distanceScrolled = Math.abs(
+        window.pageYOffset - this.lastKnownScrollY,
+      )
       if (distanceScrolled > 10 && this.showDrawer) {
         this.hideDrawer()
       }
@@ -89,7 +91,7 @@ export default {
 .menu {
   position: fixed;
   background: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 1rem 0;
   top: 3rem;
   left: 0;
@@ -143,7 +145,7 @@ export default {
   margin-bottom: 1rem;
   margin-top: 10px;
   color: #aaa;
-  font-size: .875rem;
+  font-size: 0.875rem;
 
   .night-mode & {
     color: #888;
@@ -160,7 +162,7 @@ export default {
   li {
     flex-shrink: 0;
     width: 50%;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
 
     .is-single & {
       width: 100%;
@@ -170,8 +172,8 @@ export default {
       position: relative;
       display: inline-block;
       border-radius: 4px;
-      padding: .25rem;
-      margin-left: -.25rem;
+      padding: 0.25rem;
+      margin-left: -0.25rem;
       color: inherit;
       text-decoration: none;
       font-size: 14px;
@@ -182,8 +184,8 @@ export default {
         display: block;
         background: #1ecd97;
         bottom: 0;
-        left: .25rem;
-        right: .25rem;
+        left: 0.25rem;
+        right: 0.25rem;
         height: 2px;
 
         .night-mode & {
@@ -204,7 +206,7 @@ export default {
 
 .slide-fade-enter-active,
 .slide-fade-leave-active {
-  transition: all .45s cubic-bezier(.36, .66, .04, 1);
+  transition: all 0.45s cubic-bezier(0.36, 0.66, 0.04, 1);
 }
 .slide-fade-enter,
 .slide-fade-leave-to {

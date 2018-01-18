@@ -47,7 +47,7 @@ const mutations = {
     const history = {
       ...state.history,
       [threadId]: {
-        ...state.history[threadId] || {},
+        ...(state.history[threadId] || {}),
         page,
         postId,
       },

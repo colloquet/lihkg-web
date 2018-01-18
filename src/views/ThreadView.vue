@@ -263,7 +263,7 @@ $color: #1ecd97;
   border: 2px solid $color;
   color: $color;
   font-weight: 600;
-  transition: all .1s ease-in-out;
+  transition: all 0.1s ease-in-out;
 
   span {
     display: flex;
@@ -271,7 +271,7 @@ $color: #1ecd97;
     align-items: center;
     width: 100%;
     height: 100%;
-    transition: opacity .1s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
   }
 
   .is-hoverable &:hover {
@@ -288,7 +288,7 @@ $color: #1ecd97;
     border-bottom-color: #eee;
 
     animation: spin;
-    animation-delay: .3s;
+    animation-delay: 0.3s;
     animation-duration: 2s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;

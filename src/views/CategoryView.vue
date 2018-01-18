@@ -95,7 +95,10 @@ export default {
       this.canLoadMore = true
     }, 200)
 
-    if (this.threadList.length && +this.$route.params.catId === +this.category.cat_id) {
+    if (
+      this.threadList.length &&
+      +this.$route.params.catId === +this.category.cat_id
+    ) {
       if (this.activeThreadId) {
         const threadItem = document.getElementById(this.activeThreadId)
         if (threadItem) {
@@ -122,7 +125,7 @@ export default {
   margin: 1rem 0 0;
 
   .is-mobile & {
-    margin: .5rem 0 0;
+    margin: 0.5rem 0 0;
   }
 
   .night-mode & {
@@ -138,7 +141,7 @@ export default {
 
     a {
       display: block;
-      padding: .5rem 1rem;
+      padding: 0.5rem 1rem;
       margin-bottom: -1px;
       color: #999;
 

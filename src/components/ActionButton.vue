@@ -44,7 +44,7 @@ export default {
     align-items: center;
     justify-content: center;
     height: 2rem;
-    transition: transform .2s ease;
+    transition: transform 0.2s ease;
   }
 
   .bottom {

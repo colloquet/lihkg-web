@@ -51,7 +51,7 @@ export default {
 
   &-item {
     flex: 1;
-    padding: .5rem;
+    padding: 0.5rem;
     text-align: center;
 
     a {

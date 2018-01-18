@@ -116,7 +116,10 @@ export default {
         eventAction: 'click',
         eventLabel: 'Media',
       })
-      this.fetchMediaList({ threadId: this.thread.thread_id, openGallery: true })
+      this.fetchMediaList({
+        threadId: this.thread.thread_id,
+        openGallery: true,
+      })
     },
     handleHotReplyClick() {
       helper.trackEvent({
@@ -141,7 +144,7 @@ $bottom-bar-height: 3rem;
   box-sizing: content-box;
   position: fixed;
   background: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   bottom: 0;
   left: 0;
   width: 100%;
@@ -203,9 +206,9 @@ $bottom-bar-height: 3rem;
   justify-content: center;
 
   small {
-    margin-top: .25rem;
+    margin-top: 0.25rem;
     line-height: 1;
-    font-size: .75rem;
+    font-size: 0.75rem;
   }
 }
 

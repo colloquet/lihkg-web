@@ -148,7 +148,10 @@ export default {
         eventAction: 'click',
         eventLabel: 'Media',
       })
-      this.fetchMediaList({ threadId: this.thread.thread_id, openGallery: true })
+      this.fetchMediaList({
+        threadId: this.thread.thread_id,
+        openGallery: true,
+      })
     },
     handleHotReplyClick() {
       helper.trackEvent({
@@ -166,7 +169,7 @@ export default {
       const c = document.documentElement.scrollTop || document.body.scrollTop
       if (c > 0) {
         window.requestAnimationFrame(this.scrollToTop)
-        window.scrollTo(0, c - (c / 8))
+        window.scrollTo(0, c - c / 8)
       }
     },
   },
@@ -190,10 +193,10 @@ $navbar-height: 3rem;
 .navbar {
   display: flex;
   background: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   height: $navbar-height;
   line-height: $navbar-height;
-  transition: box-shadow .45s ease;
+  transition: box-shadow 0.45s ease;
   z-index: 3;
 
   .night-mode & {
@@ -255,9 +258,9 @@ $navbar-height: 3rem;
   justify-content: center;
 
   small {
-    margin-top: .25rem;
+    margin-top: 0.25rem;
     line-height: 1;
-    font-size: .75rem;
+    font-size: 0.75rem;
   }
 }
 

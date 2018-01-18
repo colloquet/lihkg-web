@@ -40,8 +40,21 @@ export default {
       htmlAttrs: {
         class: `${nightModeClass} ${isMobileClass} ${isHoverableClass}`,
       },
-      meta: [{ name: 'theme-color', content: this.nightMode ? '#1b1b1b' : '#ffffff' }],
-      link: [this.officeMode ? { rel: 'shortcut icon', href: 'https://www.google.com.hk/images/branding/product/ico/googleg_lodp.ico' } : {}],
+      meta: [
+        {
+          name: 'theme-color',
+          content: this.nightMode ? '#1b1b1b' : '#ffffff',
+        },
+      ],
+      link: [
+        this.officeMode
+          ? {
+              rel: 'shortcut icon',
+              href:
+                'https://www.google.com.hk/images/branding/product/ico/googleg_lodp.ico',
+            }
+          : {},
+      ],
     }
   },
   components: {
@@ -104,7 +117,7 @@ html {
   font-size: 16px;
 
   &.night-mode {
-    color: rgba(#fff, .8);
+    color: rgba(#fff, 0.8);
   }
 }
 

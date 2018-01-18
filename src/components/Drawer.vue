@@ -58,7 +58,8 @@ export default {
     ...mapState({
       isOpen: state => state.ui.showDrawer,
       activeCategoryId: state => state.category.category.cat_id,
-      isSwipeDisabled: state => state.thread.mediaList !== null || state.thread.mediaIndex !== null,
+      isSwipeDisabled: state =>
+        state.thread.mediaList !== null || state.thread.mediaIndex !== null,
     }),
     xPos() {
       return this.isOpen
@@ -100,7 +101,10 @@ export default {
         const willOpen = absX > absY
         this.direction = this.direction || (willOpen ? 'x' : 'y')
 
-        if (this.direction === 'x' && ((!this.isOpen && deltaX > 0) || (this.isOpen && deltaX < 0))) {
+        if (
+          this.direction === 'x' &&
+          ((!this.isOpen && deltaX > 0) || (this.isOpen && deltaX < 0))
+        ) {
           event.preventDefault()
           this.deltaX = deltaX
         } else if (this.direction === 'y') {
@@ -157,7 +161,7 @@ export default {
   bottom: 0;
   left: 0;
   z-index: 9;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
   pointer-events: none;
 
   &.is-open {
@@ -171,8 +175,8 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(#000, .5);
-  transition: opacity .3s ease;
+  background-color: rgba(#000, 0.5);
+  transition: opacity 0.3s ease;
   z-index: 1;
   will-change: opacity;
 }
@@ -180,14 +184,14 @@ export default {
 .drawer {
   position: absolute;
   background: #fff;
-  padding: 1rem .5rem 3rem;
+  padding: 1rem 0.5rem 3rem;
   padding-bottom: calc(3rem + constant(safe-area-inset-bottom));
   padding-bottom: calc(3rem + env(safe-area-inset-bottom));
   top: 0;
   bottom: 0;
   left: 0;
   width: 200px;
-  transition: left .2s ease;
+  transition: left 0.2s ease;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
   z-index: 2;
@@ -252,8 +256,8 @@ export default {
   li {
     flex-shrink: 0;
     width: 50%;
-    margin-bottom: .5rem;
-    padding-left: .5rem;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
 
     a {
       position: relative;

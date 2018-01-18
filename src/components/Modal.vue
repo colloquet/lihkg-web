@@ -28,9 +28,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: table;
-  transition: opacity .3s ease;
+  transition: opacity 0.3s ease;
   will-change: opacity;
 }
 
@@ -45,8 +45,8 @@
   padding: 1.5rem;
   background: #fff;
   border-radius: 4px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .05);
-  transition: all .3s ease;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
   will-change: transform;
 
   .night-mode & {
@@ -57,7 +57,7 @@
 .modal-header h3 {
   display: inline-block;
   margin: 0;
-  padding-bottom: .25rem;
+  padding-bottom: 0.25rem;
   border-bottom: 2px solid #1ecd97;
 
   .night-mode & {

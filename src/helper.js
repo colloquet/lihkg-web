@@ -54,11 +54,11 @@ const helper = {
     const year = date.getFullYear()
     const month = date.getMonth() + 1
     const day = date.getDate()
-    const hours = `0${date.getHours()}`
-    const minutes = `0${date.getMinutes()}`
-    const seconds = `0${date.getSeconds()}`
+    const hours = `0${date.getHours()}`.substr(-2)
+    const minutes = `0${date.getMinutes()}`.substr(-2)
+    const seconds = `0${date.getSeconds()}`.substr(-2)
 
-    return `${year}年${month}月${day}日 ${hours.substr(-2)}:${minutes.substr(-2)}:${seconds.substr(-2)}`
+    return `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`
   },
   getUsernameClass(level, gender) {
     if (Number(level) === 999) return 'color-admin'

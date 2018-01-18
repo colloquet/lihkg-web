@@ -32,7 +32,7 @@ export default {
     user-select: none;
     overflow: hidden;
     backface-visibility: hidden;
-    transition: all .2s ease;
+    transition: all 0.2s ease;
     font-family: sans-serif;
     background: #888;
 
@@ -41,7 +41,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all .2s ease;
+      transition: all 0.2s ease;
       width: 100%;
       height: 100%;
       text-align: center;

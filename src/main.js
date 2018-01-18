@@ -29,10 +29,13 @@ fetch('https://x.lihkg.com/hkgmoji6.json')
     const flattenIconMap = hkgmoji.reduce(
       (set, current) => ({
         ...set,
-        ...current.icons.reduce((all, icon) => ({
-          ...all,
-          [icon[1]]: icon[0],
-        }), {}),
+        ...current.icons.reduce(
+          (all, icon) => ({
+            ...all,
+            [icon[1]]: icon[0],
+          }),
+          {},
+        ),
       }),
       {},
     )
@@ -63,6 +66,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  template: '<App/>',
   components: { App },
+  template: '<App/>',
 })

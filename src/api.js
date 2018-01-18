@@ -19,11 +19,12 @@ const request = async (endpoint, params) => {
 
 export default {
   fetchThreadList({ catId: cat_id, page = 1, type: rangeType = 'now', count = 50, order = 'now' }) {
-    const type = {
+    const types = {
       1: 'latest',
       2: 'hot',
       3: 'news',
-    }[cat_id] || 'category'
+    }
+    const type = types[cat_id] || 'category'
 
     const params = {
       cat_id,

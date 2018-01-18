@@ -64,10 +64,14 @@ export default {
       return +this.authodId === +this.userId
     },
     likeCount() {
-      return this.post.msg_num === 1 ? this.threadLikeCount : this.post.like_count
+      return this.post.msg_num === 1
+        ? this.threadLikeCount
+        : this.post.like_count
     },
     dislikeCount() {
-      return this.post.msg_num === 1 ? this.threadDislikeCount : this.post.dislike_count
+      return this.post.msg_num === 1
+        ? this.threadDislikeCount
+        : this.post.dislike_count
     },
     scoreClass() {
       return {
@@ -76,7 +80,10 @@ export default {
       }
     },
     usernameClass() {
-      return helper.getUsernameClass(this.post.user.level, this.post.user_gender)
+      return helper.getUsernameClass(
+        this.post.user.level,
+        this.post.user_gender,
+      )
     },
     replyTime() {
       return {
@@ -125,7 +132,7 @@ export default {
     color: #aaa;
 
     > span {
-      margin-right: .5rem;
+      margin-right: 0.5rem;
 
       &:last-of-type {
         margin-right: 0;
@@ -178,7 +185,7 @@ export default {
   color: #aaa;
 
   > span:first-child {
-    margin-right: .5rem;
+    margin-right: 0.5rem;
   }
 }
 </style>

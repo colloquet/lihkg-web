@@ -17,7 +17,9 @@ export default {
       imageProxy: state => state.app.imageProxy,
     }),
     src() {
-      return this.imageProxy ? `https://i.lihkg.com/200/${this.media.url}` : this.media.url
+      return this.imageProxy
+        ? `https://i.lihkg.com/200/${this.media.url}`
+        : this.media.url
     },
   },
 }

@@ -104,9 +104,11 @@ export default {
           threadId: this.thread.thread_id,
           page: this.lastReadPage || 1,
         },
-        query: this.lastReadPostId ? {
-          post: this.lastReadPostId,
-        } : {},
+        query: this.lastReadPostId
+          ? {
+              post: this.lastReadPostId,
+            }
+          : {},
       }
     },
     score() {
@@ -116,7 +118,10 @@ export default {
       return helper.getScoreClass(this.score)
     },
     usernameClass() {
-      return helper.getUsernameClass(this.thread.user.level, this.thread.user_gender)
+      return helper.getUsernameClass(
+        this.thread.user.level,
+        this.thread.user_gender,
+      )
     },
     lastReplyTime() {
       return helper.getRelativeTime(this.thread.last_reply_time)
@@ -128,7 +133,9 @@ export default {
   methods: {
     handlePageSelectClick: () => false,
     handlePageSelect(event) {
-      this.$router.push(`/thread/${this.thread.thread_id}/page/${event.target.value}`)
+      this.$router.push(
+        `/thread/${this.thread.thread_id}/page/${event.target.value}`,
+      )
     },
   },
 }
@@ -170,10 +177,10 @@ export default {
   justify-content: center;
   width: 1rem;
   height: 1rem;
-  left: .5rem;
+  left: 0.5rem;
 
   .is-mobile & {
-    left: .25rem;
+    left: 0.25rem;
   }
 
   &.hot {
@@ -198,8 +205,8 @@ export default {
       display: block;
       background: currentColor;
       border-radius: 50%;
-      width: .5rem;
-      height: .5rem;
+      width: 0.5rem;
+      height: 0.5rem;
     }
   }
 
@@ -223,7 +230,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
     color: #aaa;
   }
 
@@ -232,7 +239,7 @@ export default {
     align-items: center;
 
     > span:not(:first-of-type) {
-      margin-left: .5rem;
+      margin-left: 0.5rem;
     }
   }
 
@@ -259,9 +266,9 @@ export default {
   flex-shrink: 0;
   border-radius: 4px;
   border: 1px solid;
-  padding: .25rem;
+  padding: 0.25rem;
   color: #aaa;
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 
 .lower {
@@ -281,14 +288,14 @@ export default {
 .title {
   word-break: break-word;
   line-height: 1.5;
-  margin-right: .5rem;
+  margin-right: 0.5rem;
 }
 
 .page-link {
   border-radius: 4px;
   color: #848482;
-  font-size: .75em;
-  padding: .2rem .4rem;
+  font-size: 0.75em;
+  padding: 0.2rem 0.4rem;
   position: relative;
   text-decoration: none;
 
@@ -305,8 +312,8 @@ export default {
 .page-switcher {
   position: relative;
   flex-shrink: 0;
-  padding: .5rem;
-  margin: -.5rem;
+  padding: 0.5rem;
+  margin: -0.5rem;
   color: #aaa;
   font-size: 14px;
 }

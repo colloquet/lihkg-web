@@ -34,7 +34,7 @@ export default {
           rel: 0,
         },
         events: {
-          onReady: (event) => {
+          onReady: event => {
             this.isReady = true
             event.target.playVideo()
           },
@@ -50,7 +50,7 @@ export default {
 
 <style lang="scss">
 .yt-outer {
-  margin: .25rem 0;
+  margin: 0.25rem 0;
 }
 
 .yt-inner {
