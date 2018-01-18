@@ -1,7 +1,7 @@
 <template>
-  <div class="drawer-container" :class="{'is-open': isOpen}">
+  <div class="container" :class="{'is-open': isOpen}">
     <div
-      class="drawer-overlay"
+      class="overlay"
       :class="{'is-pressed': isPressed}"
       @click="hideDrawer"
       :style="`opacity: ${this.opacity}`"
@@ -13,7 +13,14 @@
       :class="{'is-pressed': isPressed}"
       :style="`left: ${this.xPos}`"
     >
-      <span class="brand">LIHKG</span>
+      <div class="header">
+        <span class="brand">
+          LIHKG
+        </span>
+        <a href="https://github.com/colloquet/lihkg-web" target="_blank" class="github-link">
+          <span class="icon-github"></span>
+        </a>
+      </div>
       <div
         class="section"
         :key="section"
@@ -143,7 +150,7 @@ export default {
   transition: none !important;
 }
 
-.drawer-container {
+.container {
   position: fixed;
   top: 0;
   right: 0;
@@ -158,7 +165,7 @@ export default {
   }
 }
 
-.drawer-overlay {
+.overlay {
   position: absolute;
   top: 0;
   right: 0;
@@ -197,12 +204,26 @@ export default {
   }
 }
 
-.brand {
+.header {
+  display: flex;
   padding-left: 1rem;
   margin-bottom: 1rem;
-  display: block;
+}
+
+.brand {
   letter-spacing: 6px;
   font-weight: 100;
+}
+
+.github-link {
+  padding: 1rem;
+  color: #1ecd97;
+  margin-top: -1rem;
+  margin-bottom: -1rem;
+
+  .night-mode & {
+    color: #42b983;
+  }
 }
 
 .section {
