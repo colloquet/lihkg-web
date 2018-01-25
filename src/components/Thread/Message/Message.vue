@@ -27,7 +27,6 @@ function getInlineStyle(str) {
 }
 
 export default {
-  name: 'Message',
   props: ['html'],
   components: {
     Message,

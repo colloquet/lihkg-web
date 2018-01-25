@@ -10,7 +10,6 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'Media',
   props: ['media'],
   computed: {
     ...mapState({

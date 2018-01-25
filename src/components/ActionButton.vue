@@ -11,7 +11,6 @@
 
 <script>
 export default {
-  name: 'ActionButton',
   props: ['success'],
 }
 </script>

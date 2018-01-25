@@ -7,7 +7,6 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'Icon',
   props: ['src'],
   computed: {
     ...mapState({

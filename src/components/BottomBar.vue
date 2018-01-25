@@ -56,7 +56,6 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import helper from '@/helper'
 
 export default {
-  name: 'BottomBar',
   computed: {
     ...mapState({
       thread: state => state.thread.thread,

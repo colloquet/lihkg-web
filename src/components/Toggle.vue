@@ -7,7 +7,6 @@
 
 <script>
 export default {
-  name: 'Toggle',
   props: ['on'],
   data() {
     return {

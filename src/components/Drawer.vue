@@ -48,12 +48,13 @@ import { mapState, mapMutations } from 'vuex'
 import helper from '@/helper'
 
 export default {
-  name: 'Drawer',
-  data: () => ({
-    categoryList: helper.categoryList,
-    deltaX: 0,
-    isPressed: false,
-  }),
+  data() {
+    return {
+      categoryList: helper.categoryList,
+      deltaX: 0,
+      isPressed: false,
+    }
+  },
   computed: {
     ...mapState({
       isOpen: state => state.ui.showDrawer,

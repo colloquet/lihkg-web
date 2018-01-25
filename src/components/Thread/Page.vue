@@ -1,12 +1,12 @@
 <template>
-  <div :id="`page-${pageNumber}`" class="page-container">
+  <div :id="`page-${pageNumber}`">
     <ul class="post-list">
-      <post
+      <Post
         v-for="post in pageObj"
         v-if="+post.status === 1"
         :key="post.post_id"
         :post="post"
-      ></post>
+      />
     </ul>
   </div>
 </template>
@@ -15,7 +15,6 @@
 import Post from './Post'
 
 export default {
-  name: 'Page',
   components: {
     Post,
   },
@@ -23,7 +22,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .post-list {
   list-style: none;
   padding: 0;

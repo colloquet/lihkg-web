@@ -33,10 +33,11 @@ import { mapState, mapMutations } from 'vuex'
 import helper from '@/helper'
 
 export default {
-  name: 'CategoryMenu',
-  data: () => ({
-    categoryList: helper.categoryList,
-  }),
+  data() {
+    return {
+      categoryList: helper.categoryList,
+    }
+  },
   computed: {
     ...mapState({
       showDrawer: state => state.ui.showDrawer,

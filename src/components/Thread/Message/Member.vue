@@ -7,7 +7,6 @@
 
 <script>
 export default {
-  name: 'Member',
   props: ['level', 'isDeep'],
   data() {
     return {

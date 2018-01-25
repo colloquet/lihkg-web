@@ -91,7 +91,6 @@ import { mapState } from 'vuex'
 import helper from '@/helper'
 
 export default {
-  name: 'ThreadListItem',
   props: ['thread', 'isVisited', 'lastReadPage', 'lastReadPostId', 'newReply'],
   computed: {
     ...mapState({

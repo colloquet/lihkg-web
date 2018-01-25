@@ -25,7 +25,6 @@
 
 <script>
 export default {
-  name: 'ThreadNavigation',
   props: ['threadId', 'page', 'totalPage'],
   computed: {
     hasNextPage() {

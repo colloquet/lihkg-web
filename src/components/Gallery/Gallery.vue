@@ -22,7 +22,7 @@
         <div class="container" @click.self="handleCloseClick">
           <div class="grid" @click.self="handleCloseClick">
             <div class="grid-item" :key="media.url" v-for="(media, index) in mediaList">
-              <media :media="media" @click="handleMediaClick(index)"></media>
+              <Media :media="media" @click="handleMediaClick(index)" />
             </div>
           </div>
         </div>
@@ -36,7 +36,6 @@ import { mapState, mapMutations } from 'vuex'
 import Media from './Media'
 
 export default {
-  name: 'Gallery',
   props: ['mediaList'],
   components: {
     Media,

@@ -75,13 +75,14 @@ import { headroom } from 'vue-headroom'
 import helper from '@/helper'
 
 export default {
-  name: 'Navbar',
   components: {
     headroom,
   },
-  data: () => ({
-    tempDisable: false,
-  }),
+  data() {
+    return {
+      tempDisable: false,
+    }
+  },
   computed: {
     ...mapState({
       isMobile: state => state.app.isMobile,

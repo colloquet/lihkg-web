@@ -1,42 +1,42 @@
 <template>
-  <modal @close="$emit('close')">
+  <Modal @close="$emit('close')">
     <h3 slot="header">設定</h3>
     <div slot="body">
       <ul class="list">
         <li>
-          夜間模式 <toggle :on="nightMode" @change="handleToggleClick('nightMode')"></toggle>
+          夜間模式 <Toggle :on="nightMode" @change="handleToggleClick('nightMode')" />
         </li>
         <li>
-          自動載入圖片 <toggle :on="autoLoadImage" @change="handleToggleClick('autoLoadImage')"></toggle>
+          自動載入圖片 <Toggle :on="autoLoadImage" @change="handleToggleClick('autoLoadImage')" />
         </li>
         <li>
-          節省圖片流量 <toggle :on="imageProxy" @change="handleToggleClick('imageProxy')"></toggle>
+          節省圖片流量 <Toggle :on="imageProxy" @change="handleToggleClick('imageProxy')" />
         </li>
         <li>
-          Youtube 預覽 <toggle :on="youtubePreview" @change="handleToggleClick('youtubePreview')"></toggle>
+          Youtube 預覽 <Toggle :on="youtubePreview" @change="handleToggleClick('youtubePreview')" />
         </li>
         <li>
-          公司模式 <toggle :on="officeMode" @change="handleToggleClick('officeMode')"></toggle>
+          公司模式 <Toggle :on="officeMode" @change="handleToggleClick('officeMode')" />
         </li>
         <li>
-          靜態表情 <toggle :on="staticIcons" @change="handleToggleClick('staticIcons')"></toggle>
+          靜態表情 <Toggle :on="staticIcons" @change="handleToggleClick('staticIcons')" />
         </li>
         <li class="center">
-          <action-button @click="handleClearHistory" :success="clearHistorySuccess">
+          <ActionButton @click="handleClearHistory" :success="clearHistorySuccess">
             <span slot="text">
               <span class="icon-trash"></span> 清除瀏覽記錄
             </span>
             <span slot="successText">
               成功！
             </span>
-          </action-button>
+          </ActionButton>
         </li>
       </ul>
       <div class="footer">
         <small>Made in HK by <a href="https://colloque.io/" target="_blank">Coke_Zero</a></small>
       </div>
     </div>
-  </modal>
+  </Modal>
 </template>
 
 <script>
@@ -47,15 +47,16 @@ import Toggle from './Toggle'
 import ActionButton from './ActionButton'
 
 export default {
-  name: 'SettingsModal',
   components: {
     Modal,
     Toggle,
     ActionButton,
   },
-  data: () => ({
-    clearHistorySuccess: false,
-  }),
+  data() {
+    return {
+      clearHistorySuccess: false,
+    }
+  },
   computed: {
     ...mapState({
       officeMode: state => state.app.officeMode,

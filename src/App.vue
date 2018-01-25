@@ -1,20 +1,20 @@
 <template>
   <div id="app">
-    <navbar></navbar>
+    <Navbar />
 
     <div id="route-container" class="route-container">
       <router-view></router-view>
     </div>
 
-    <bottom-bar v-if="isMobile"></bottom-bar>
+    <BottomBar v-if="isMobile" />
 
-    <drawer v-if="isMobile"></drawer>
-    <category-menu v-else></category-menu>
+    <Drawer v-if="isMobile" />
+    <CategoryMenu v-else />
 
-    <gallery v-if="showGallery" :media-list="mediaList"></gallery>
-    <lightbox v-if="mediaIndex !== null" :media-index="mediaIndex"></lightbox>
+    <Gallery v-if="showGallery" :media-list="mediaList" />
+    <Lightbox v-if="mediaIndex !== null" :media-index="mediaIndex" />
 
-    <settings-modal v-if="showSettingsModal" @close="toggleSettingsModal"></settings-modal>
+    <SettingsModal v-if="showSettingsModal" @close="toggleSettingsModal" />
   </div>
 </template>
 
@@ -29,7 +29,6 @@ import Gallery from './components/Gallery/Gallery'
 import Lightbox from './components/Lightbox'
 
 export default {
-  name: 'app',
   metaInfo() {
     const nightModeClass = this.nightMode ? 'night-mode' : ''
     const isMobileClass = this.isMobile ? 'is-mobile' : ''
@@ -191,20 +190,11 @@ a {
 
 #nprogress {
   .bar {
+    height: 4px;
     background: #1ecd97;
 
     .night-mode & {
       background: #42b983;
-    }
-  }
-
-  .spinner-icon {
-    border-top-color: #1ecd97;
-    border-left-color: #1ecd97;
-
-    .night-mode & {
-      border-top-color: #42b983;
-      border-left-color: #42b983;
     }
   }
 }

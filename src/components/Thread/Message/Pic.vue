@@ -5,7 +5,7 @@
         <img :src="this.src" class="lazy" :class="{loaded: loaded}" @load="onLoad" @error="onError" />
       </a>
       <div class="error" v-if="error"></div>
-      <loader v-else-if="!loaded"></loader>
+      <Loader v-else-if="!loaded" />
     </template>
     <img :src="placeholder" class="placeholder" @click="loadImage" v-else>
   </lazy-component>
@@ -17,7 +17,6 @@ import placeholder from '@/assets/image-placeholder.png'
 import Loader from '../../Loader'
 
 export default {
-  name: 'Pic',
   props: ['src', 'original'],
   components: {
     Loader,

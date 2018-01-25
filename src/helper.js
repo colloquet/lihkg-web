@@ -61,12 +61,12 @@ const helper = {
     return `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`
   },
   getUsernameClass(level, gender) {
-    if (Number(level) === 999) return 'color-admin'
+    if (+level === 999) return 'color-admin'
     return gender === 'M' ? 'color-male' : 'color-female'
   },
   getScoreClass(score, isDislike = false) {
-    if (Number(score) >= 100) return isDislike ? 'color-female' : 'color-admin'
-    return Number(score) <= -100 ? 'color-female' : ''
+    if (+score >= 100) return isDislike ? 'color-female' : 'color-admin'
+    return +score <= -100 ? 'color-female' : ''
   },
   categoryList: {
     一般: [

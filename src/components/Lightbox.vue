@@ -26,7 +26,6 @@
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  name: 'Lightbox',
   props: ['mediaIndex'],
   data() {
     return {

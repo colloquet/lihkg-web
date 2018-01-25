@@ -16,7 +16,6 @@
 import helper from '@/helper'
 
 export default {
-  name: 'YoutubePlayer',
   props: ['videoId', 'start'],
   data() {
     return {

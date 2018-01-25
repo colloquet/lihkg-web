@@ -1,29 +1,29 @@
 <template>
   <div class="threadview-container" v-if="thread.thread_id">
     <template v-for="(pageObj, pageNumber) in thread.pages">
-      <thread-navigation
+      <ThreadNavigation
         :key="`${pageNumber}-header`"
         :thread-id="thread.thread_id"
         :page="+pageNumber"
         :total-page="thread.total_page"
         @navigate="fetchPage"
-      ></thread-navigation>
+      />
 
-      <page
+      <Page
         :key="pageNumber"
         :page-obj="pageObj"
         :page-number="+pageNumber"
         :thread-id="thread.thread_id"
-      ></page>
+      />
 
-      <thread-navigation
+      <ThreadNavigation
         v-if="loadedPages.indexOf(pageNumber) === loadedPages.length - 1"
         :key="`${pageNumber}-footer`"
         :thread-id="thread.thread_id"
         :page="+pageNumber"
         :total-page="thread.total_page"
         @navigate="fetchPage"
-      ></thread-navigation>
+      />
     </template>
 
     <div v-waypoint="{ active: true, callback: onEndReached }"></div>
@@ -35,7 +35,7 @@
     </div>
   </div>
   <div class="loader-container" v-else>
-    <loader></loader>
+    <Loader />
   </div>
 </template>
 
@@ -47,7 +47,6 @@ import ThreadNavigation from '@/components/Thread/ThreadNavigation'
 import Loader from '@/components/Loader'
 
 export default {
-  name: 'threadView',
   metaInfo() {
     return {
       title: this.officeMode ? 'Google' : this.thread.title || 'LIHKG',
@@ -290,7 +289,7 @@ $color: #1ecd97;
     animation: spin;
     animation-delay: 0.3s;
     animation-duration: 2s;
-    animation-timing-function: ease-in-out;
+    animation-timing-function: linear;
     animation-iteration-count: infinite;
 
     .night-mode & {

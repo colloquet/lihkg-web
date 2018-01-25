@@ -16,8 +16,8 @@
     </small>
 
     <div class="post-msg" v-show="!storyMode || +storyMode === +userId || tempVisible">
-      <post-quote :quote="this.post.quote" v-if="this.post.quote" :level="1"></post-quote>
-      <message :html="this.post.msg"></message>
+      <PostQuote :quote="this.post.quote" v-if="this.post.quote" :level="1" />
+      <Message :html="this.post.msg" />
     </div>
 
     <small class="scores">
@@ -38,7 +38,6 @@ import PostQuote from './PostQuote'
 import Message from './Message/Message'
 
 export default {
-  name: 'Post',
   props: ['post'],
   components: {
     PostQuote,

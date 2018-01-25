@@ -10,7 +10,11 @@
       <li><router-link :to="{ query: { type: 'weekly' } }" exact>本週精選</router-link></li>
     </ul>
 
-    <thread-list :thread-list="threadList" @load-more="handleLoadMore" :is-loading="isLoading"></thread-list>
+    <ThreadList
+      :thread-list="threadList"
+      @load-more="handleLoadMore"
+      :is-loading="isLoading"
+    />
   </div>
 </template>
 
@@ -20,7 +24,6 @@ import helper from '@/helper'
 import ThreadList from '../components/ThreadList/ThreadList'
 
 export default {
-  name: 'categoryView',
   props: ['catId'],
   components: {
     ThreadList,

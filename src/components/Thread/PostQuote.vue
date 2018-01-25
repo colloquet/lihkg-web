@@ -4,9 +4,9 @@
       <blockquote v-if="level === 3 && hideChildren">
         <button @click="hideChildren = false" class="button">顯示更多</button>
       </blockquote>
-      <post-quote :quote="this.quote.quote" :level="level + 1" v-else></post-quote>
+      <PostQuote :quote="this.quote.quote" :level="level + 1" v-else />
     </template>
-    <message :html="this.quote.msg"></message>
+    <Message :html="this.quote.msg" />
   </blockquote>
 </template>
 
@@ -15,7 +15,6 @@ import Message from './Message/Message'
 import PostQuote from './PostQuote'
 
 export default {
-  name: 'PostQuote',
   props: ['quote', 'level'],
   components: {
     Message,

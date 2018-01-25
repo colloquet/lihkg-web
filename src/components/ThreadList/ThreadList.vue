@@ -4,7 +4,7 @@
       <placeholder v-for="n in numberOfPlaceholder" :key="n"></placeholder>
     </div>
     <ul class="thread-list" v-else>
-      <thread-list-item
+      <ThreadListItem
         v-for="thread in threadList"
         :key="thread.thread_id"
         :thread="thread"
@@ -12,14 +12,14 @@
         :last-read-page="thread.thread_id in history && history[thread.thread_id].page"
         :last-read-post-id="thread.thread_id in history && history[thread.thread_id].postId"
         :new-reply="thread.thread_id in history && thread.no_of_reply - history[thread.thread_id].replies"
-      ></thread-list-item>
+      />
     </ul>
 
     <div v-waypoint="{ active: true, callback: onEndReached }"></div>
 
     <div class="end-of-list">
       <template v-if="hasMore">
-        <placeholder v-for="n in 2" :key="n"></placeholder>
+        <Placeholder v-for="n in 2" :key="n" />
       </template>
       <span v-else>完</span>
     </div>
@@ -34,7 +34,6 @@ import Placeholder from './Placeholder'
 const placeholderHeight = 80
 
 export default {
-  name: 'ThreadList',
   props: ['threadList', 'isLoading'],
   components: {
     ThreadListItem,

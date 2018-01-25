@@ -7,7 +7,6 @@
 
 <script>
 export default {
-  name: 'Quote',
   props: ['level', 'isDeep'],
   data() {
     return {

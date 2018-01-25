@@ -1,10 +1,10 @@
 <template>
   <div>
-    <youtube-player
+    <YoutubePlayer
       v-if="linkInfo.isYoutube && youtubePreview"
       :video-id="linkInfo.videoId"
       :start="linkInfo.start"
-    ></youtube-player>
+    />
 
     <a :href="href" target="_blank">
       <slot></slot>
@@ -16,6 +16,7 @@
 import { mapState } from 'vuex'
 import YoutubePlayer from './YoutubePlayer'
 
+// eslint-disable-next-line
 const regex = /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=))([\w-]{10,12})(?:[&?#].*?)*?(?:[&?#]start|t=(\d+|[\dhm]+s))?$/
 
 function parseDuration(duration) {
@@ -49,7 +50,6 @@ function parseDuration(duration) {
 }
 
 export default {
-  name: 'Anchor',
   props: ['href'],
   components: {
     YoutubePlayer,
