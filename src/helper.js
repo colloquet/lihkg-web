@@ -1,4 +1,5 @@
 const helper = {
+  ytRegex: /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=))([\w-]{10,12})(?:[&?#].*?)*?(?:[&?#]start|t=(\d+|[\dhm]+s))?$/,
   isIOS() {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
   },
@@ -24,6 +25,9 @@ const helper = {
     }
 
     return top >= window.pageYOffset
+  },
+  isOverflown(element) {
+    return element.scrollWidth > element.clientWidth
   },
   getRelativeTime(timestamp) {
     const current = Math.floor(Date.now() / 1000)
@@ -67,52 +71,6 @@ const helper = {
   getScoreClass(score, isDislike = false) {
     if (+score >= 100) return isDislike ? 'color-female' : 'color-admin'
     return +score <= -100 ? 'color-female' : ''
-  },
-  categoryList: {
-    一般: [
-      { cat_id: '1', name: '吹水台' },
-      { cat_id: '31', name: '創意台' },
-      { cat_id: '2', name: '熱　門' },
-      { cat_id: '12', name: '講故台' },
-      { cat_id: '3', name: '最　新' },
-      { cat_id: '18', name: '學術台' },
-    ],
-    新聞: [
-      { cat_id: '5', name: '時事台' },
-      { cat_id: '7', name: '娛樂台' },
-      { cat_id: '33', name: '政事台' },
-      { cat_id: '15', name: '財經台' },
-    ],
-    科技: [
-      { cat_id: '4', name: '手機台' },
-      { cat_id: '22', name: '硬件台' },
-      { cat_id: '9', name: 'Apps台' },
-      { cat_id: '26', name: '軟件台' },
-      { cat_id: '35', name: '電訊台' },
-    ],
-    生活: [
-      { cat_id: '30', name: '感情台' },
-      { cat_id: '14', name: '上班台' },
-      { cat_id: '16', name: '飲食台' },
-      { cat_id: '19', name: '校園台' },
-      { cat_id: '17', name: '旅遊台' },
-      { cat_id: '27', name: '活動台' },
-    ],
-    興趣: [
-      { cat_id: '6', name: '體育台' },
-      { cat_id: '10', name: '遊戲台' },
-      { cat_id: '11', name: '影視台' },
-      { cat_id: '8', name: '動漫台' },
-      { cat_id: '23', name: '攝影台' },
-      { cat_id: '21', name: '音樂台' },
-      { cat_id: '20', name: '汽車台' },
-      { cat_id: '25', name: '寵物台' },
-      { cat_id: '13', name: '潮流台' },
-      { cat_id: '24', name: '玩具台' },
-      { cat_id: '34', name: '直播台' },
-      { cat_id: '29', name: '成人台' },
-    ],
-    其他: [{ cat_id: '28', name: '站務台' }, { cat_id: '32', name: '黑　洞' }],
   },
 }
 

@@ -20,6 +20,25 @@
   </transition>
 </template>
 
+<script>
+export default {
+  methods: {
+    handleKeyDown(event) {
+      if (event.keyCode === 27) {
+        this.$emit('close')
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener('keydown', this.handleKeyDown)
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.handleKeyDown)
+  }
+}
+</script>
+
+
 <style lang="scss">
 .modal-mask {
   position: fixed;

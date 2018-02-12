@@ -23,12 +23,12 @@
       </div>
       <div
         class="section"
-        :key="section"
-        v-for="(categories, section) in categoryList"
+        :key="section.name"
+        v-for="section in fixedCategoryList"
       >
-        <span class="title" v-if="section">{{ section }}</span>
+        <span class="title">{{ section.name || '一般' }}</span>
         <ul class="submenu">
-          <li v-for="category in categories" :key="category.cat_id">
+          <li v-for="category in section.cat_list" :key="category.cat_id">
             <a
               :class="{'is-active': category.cat_id === activeCategoryId}"
               :href="`/category/${category.cat_id}`"
@@ -50,13 +50,13 @@ import helper from '@/helper'
 export default {
   data() {
     return {
-      categoryList: helper.categoryList,
       deltaX: 0,
       isPressed: false,
     }
   },
   computed: {
     ...mapState({
+      fixedCategoryList: state => state.category.fixedCategoryList,
       isOpen: state => state.ui.showDrawer,
       activeCategoryId: state => state.category.category.cat_id,
       isSwipeDisabled: state =>

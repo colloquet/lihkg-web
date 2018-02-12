@@ -15,6 +15,7 @@ import Message from './Message/Message'
 import PostQuote from './PostQuote'
 
 export default {
+  name: 'PostQuote',
   props: ['quote', 'level'],
   components: {
     Message,

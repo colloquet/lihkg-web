@@ -5,13 +5,13 @@
         <div class="grid">
           <div
             class="grid-item"
-            :key="section"
-            v-for="(categories, section) in categoryList"
-            :class="{'is-single': section === '其他'}"
+            :key="section.name"
+            v-for="section in fixedCategoryList"
+            :class="{'is-single': section.name === '其他'}"
           >
-            <span class="title" v-if="section">{{ section }}</span>
+            <span class="title">{{ section.name || '一般' }}</span>
             <ul class="submenu">
-              <li v-for="category in categories" :key="category.cat_id">
+              <li v-for="category in section.cat_list" :key="category.cat_id">
                 <a
                   :class="{'is-active': category.cat_id === activeCategoryId}"
                   :href="`/category/${category.cat_id}`"
@@ -30,16 +30,11 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-import helper from '@/helper'
 
 export default {
-  data() {
-    return {
-      categoryList: helper.categoryList,
-    }
-  },
   computed: {
     ...mapState({
+      fixedCategoryList: state => state.category.fixedCategoryList,
       showDrawer: state => state.ui.showDrawer,
       activeCategoryId: state => state.category.category.cat_id,
     }),

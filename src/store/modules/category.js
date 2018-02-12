@@ -20,10 +20,12 @@ function uniqBy(originalArray, objKey) {
 
 // initial state
 const initialState = {
-  isLoading: false,
+  categoryList: [],
+  fixedCategoryList: [],
   category: {},
   threadList: [],
   page: 1,
+  isLoading: false,
   hasMore: true,
 }
 
@@ -32,14 +34,14 @@ const getters = {}
 
 // actions
 const actions = {
-  async fetchThreadList({ commit, state, dispatch }, { catId, page = 1, order, type }) {
+  async fetchThreadList({ commit, state, dispatch }, { catId, page = 1, ...query }) {
     if (state.isLoading) return
 
     const append = page > 1
     commit(types.SET_CATEGORY_IS_LOADING, true)
 
     try {
-      const data = await API.fetchThreadList({ catId, page, order, type })
+      const data = await API.fetchThreadList({ catId, page, ...query })
       if (data.success) {
         commit(types.SET_CATEGORY, data.response.category)
         if (append) {
@@ -69,6 +71,9 @@ const mutations = {
   },
   [types.SET_CATEGORY_LIST](state, categoryList) {
     state.categoryList = categoryList
+  },
+  [types.SET_FIXED_CATEGORY_LIST](state, fixedCategoryList) {
+    state.fixedCategoryList = fixedCategoryList
   },
   [types.SET_CATEGORY_PAGE](state, page) {
     state.page = page

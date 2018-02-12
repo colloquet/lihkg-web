@@ -18,7 +18,10 @@ const request = async (endpoint, params) => {
 }
 
 export default {
-  fetchThreadList({ catId: cat_id, page = 1, type: rangeType = 'now', count = 50, order = 'now' }) {
+  fetchSystemProperty() {
+    return request('/system/property')
+  },
+  fetchThreadList({ catId: cat_id, page = 1, count = 50, ...query }) {
     const types = {
       1: 'latest',
       2: 'hot',
@@ -30,10 +33,8 @@ export default {
       cat_id,
       page,
       count,
-      order,
+      ...query,
     }
-
-    if (rangeType) params.type = rangeType
 
     return request(`/thread/${type}`, params)
   },

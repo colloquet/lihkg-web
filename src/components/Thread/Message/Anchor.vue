@@ -15,9 +15,7 @@
 <script>
 import { mapState } from 'vuex'
 import YoutubePlayer from './YoutubePlayer'
-
-// eslint-disable-next-line
-const regex = /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=))([\w-]{10,12})(?:[&?#].*?)*?(?:[&?#]start|t=(\d+|[\dhm]+s))?$/
+import helper from '@/helper'
 
 function parseDuration(duration) {
   const matches = duration.match(/[0-9]+[hms]/g)
@@ -59,7 +57,7 @@ export default {
       youtubePreview: state => state.app.youtubePreview,
     }),
     linkInfo() {
-      const matches = this.href.match(regex)
+      const matches = this.href.match(helper.ytRegex)
       const isYoutube = matches && matches[1]
       const videoId = matches && matches[1]
       const start =

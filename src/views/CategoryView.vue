@@ -1,19 +1,11 @@
 <template>
   <div class="categoryview-container">
-    <ul v-if="category.postable" class="tab">
-      <li><router-link :to="{ query: null }" exact>最新</router-link></li>
-      <li><router-link :to="{ query: { order: 'hot' } }" @click.native="handleHotClick">熱門</router-link></li>
-    </ul>
-    <ul v-else-if="+category.cat_id === 2" class="tab">
-      <li><router-link :to="{ query: null }" exact>即時熱門</router-link></li>
-      <li><router-link :to="{ query: { type: 'daily' } }" exact>今天熱門</router-link></li>
-      <li><router-link :to="{ query: { type: 'weekly' } }" exact>本週精選</router-link></li>
-    </ul>
+    <SubCategorySwitcher :list="subCategoryList" v-if="subCategoryList.length > 1" />
 
     <ThreadList
       :thread-list="threadList"
-      @load-more="handleLoadMore"
       :is-loading="isLoading"
+      @load-more="handleLoadMore"
     />
   </div>
 </template>
@@ -22,11 +14,13 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import helper from '@/helper'
 import ThreadList from '../components/ThreadList/ThreadList'
+import SubCategorySwitcher from '../components/SubCategorySwitcher'
 
 export default {
   props: ['catId'],
   components: {
     ThreadList,
+    SubCategorySwitcher,
   },
   metaInfo() {
     return {
@@ -43,11 +37,16 @@ export default {
       isMobile: state => state.app.isMobile,
       officeMode: state => state.app.officeMode,
       category: state => state.category.category,
+      categoryList: state => state.category.categoryList,
       threadList: state => state.category.threadList,
       page: state => state.category.page,
       isLoading: state => state.category.isLoading,
       activeThreadId: state => state.thread.thread.thread_id,
     }),
+    subCategoryList() {
+      const category = this.categoryList.find(cat => +cat.cat_id === +this.catId)
+      return category ? category.sub_category : []
+    }
   },
   methods: {
     ...mapActions(['fetchThreadList']),
@@ -59,8 +58,7 @@ export default {
       window.scrollTo(0, 0)
       this.fetchThreadList({
         catId: this.catId,
-        order: this.$route.query.order,
-        type: this.$route.query.type,
+        ...this.$route.query,
       })
     },
     handleLoadMore() {
@@ -72,8 +70,7 @@ export default {
       this.fetchThreadList({
         catId: this.catId,
         page: this.page + 1,
-        order: this.$route.query.order,
-        type: this.$route.query.type,
+        ...this.$route.query,
       })
     },
     handleHotClick() {
@@ -117,51 +114,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.tab {
-  display: flex;
-  justify-content: center;
-  border-bottom: 1px solid #f1f1f1;
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 0;
-
-  .is-mobile & {
-    margin: 0.5rem 0 0;
-  }
-
-  .night-mode & {
-    border-bottom-color: #333;
-  }
-
-  li {
-    text-align: center;
-
-    .is-mobile & {
-      flex: 1;
-    }
-
-    a {
-      display: block;
-      padding: 0.5rem 1rem;
-      margin-bottom: -1px;
-      color: #999;
-
-      &:hover {
-        text-decoration: none;
-        border-bottom: 1px solid #888;
-      }
-
-      &.is-active {
-        border-bottom: 1px solid #1ecd97;
-        color: inherit;
-
-        .night-mode & {
-          border-bottom-color: #42b983;
-        }
-      }
-    }
-  }
-}
-</style>

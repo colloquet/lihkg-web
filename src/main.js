@@ -14,6 +14,7 @@ import * as types from '@/store/mutation-types'
 import App from './App'
 import router from './router'
 import store from './store'
+import API from './api'
 
 Vue.config.productionTip = false
 Vue.use(VueLazyload, {
@@ -23,24 +24,29 @@ Vue.use(VueWaypoint)
 Vue.use(Meta)
 Vue.use(headroom)
 
-fetch('https://x.lihkg.com/hkgmoji6.json')
-  .then(response => response.json())
-  .then((hkgmoji) => {
-    const flattenIconMap = hkgmoji.reduce(
-      (set, current) => ({
-        ...set,
-        ...current.icons.reduce(
-          (all, icon) => ({
-            ...all,
-            [icon[1]]: icon[0],
-          }),
-          {},
-        ),
-      }),
-      {},
-    )
-    store.commit('SET_ICON_MAP', flattenIconMap)
-  })
+async function fetchIconMap() {
+  const response = await fetch('https://x.lihkg.com/hkgmoji6.json')
+  const hkgmoji = await response.json()
+  const flattenIconMap = hkgmoji.reduce(
+    (set, current) => ({
+      ...set,
+      ...current.icons.reduce(
+        (all, icon) => ({
+          ...all,
+          [icon[1]]: icon[0],
+        }),
+        {},
+      ),
+    }),
+    {},
+  )
+  return flattenIconMap
+}
+
+async function fetchSystemProperty() {
+  const data = await API.fetchSystemProperty()
+  return data.response
+}
 
 window.addEventListener('storage', (event) => {
   if (event.key === 'history') {
@@ -60,6 +66,23 @@ window.addEventListener('storage', (event) => {
 })
 
 helper.initYoutube()
+
+async function init() {
+  const [iconMap, systemProperty] = await Promise.all([
+    fetchIconMap(),
+    fetchSystemProperty(),
+  ])
+
+  // remove 自選台
+  const fixedCategoryList = systemProperty.fixed_category_list
+  fixedCategoryList[0].cat_list = fixedCategoryList[0].cat_list.filter(cat => +cat.cat_id !== 999)
+
+  store.commit('SET_ICON_MAP', iconMap)
+  store.commit('SET_CATEGORY_LIST', systemProperty.category_list)
+  store.commit('SET_FIXED_CATEGORY_LIST', fixedCategoryList)
+}
+
+init()
 
 /* eslint-disable no-new */
 new Vue({
