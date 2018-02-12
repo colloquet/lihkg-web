@@ -99,6 +99,11 @@ export default {
       }
     },
   },
+  watch: {
+    list() {
+      this.renderVisibleItems()
+    },
+  },
   mounted() {
     window.addEventListener('resize', this.renderVisibleItems)
     this.renderVisibleItems()
