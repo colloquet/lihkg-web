@@ -21,7 +21,9 @@ export default {
   fetchSystemProperty() {
     return request('/system/property')
   },
-  fetchThreadList({ catId: cat_id, page = 1, count = 50, ...query }) {
+  fetchThreadList({
+    catId: cat_id, page = 1, count = 50, ...query
+  }) {
     const types = {
       1: 'latest',
       2: 'hot',
@@ -41,7 +43,9 @@ export default {
   fetchThread({ threadId, page, order }) {
     return request(`/thread/${threadId}/page/${page}`, { order })
   },
-  fetchSearchResult({ query: q, page, sort = 'score', count = 30 }) {
+  fetchSearchResult({
+    query: q, page, sort = 'score', count = 30,
+  }) {
     return request('/thread/search', {
       q,
       page,

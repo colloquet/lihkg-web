@@ -19,7 +19,9 @@ const getters = {}
 const actions = {
   async fetchThread(
     { commit, state, dispatch },
-    { threadId, page = 1, append = false, order = 'reply_time' },
+    {
+      threadId, page = 1, append = false, order = 'reply_time',
+    },
   ) {
     if (state.isLoading) return false
 
