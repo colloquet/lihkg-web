@@ -66,7 +66,6 @@ export default {
   },
   methods: {
     renderVisibleItems() {
-      console.log('asd')
       this.visibleItemsCount = this.list.length
 
       this.$nextTick(() => {
