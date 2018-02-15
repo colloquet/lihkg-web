@@ -54,7 +54,6 @@ export default {
   methods: {
     ...mapMutations({
       toggleGallery: 'TOGGLE_GALLERY',
-      setMediaList: 'SET_MEDIA_LIST',
       setMediaIndex: 'SET_MEDIA_INDEX',
     }),
     onBeforeEnter() {
@@ -70,7 +69,6 @@ export default {
       window.scrollTo(0, this.scrollPos)
     },
     handleCloseClick() {
-      this.setMediaList(null)
       this.toggleGallery()
     },
     handleMediaClick(index) {

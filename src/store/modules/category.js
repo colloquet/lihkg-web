@@ -42,22 +42,20 @@ const actions = {
 
     try {
       const data = await API.fetchThreadList({ catId, page, ...query })
-      if (data.success) {
-        commit(types.SET_CATEGORY, data.response.category)
-        if (append) {
-          commit(types.APPEND_THREAD_LIST, data.response.items)
-        } else {
-          commit(types.SET_THREAD_LIST, data.response.items)
-        }
-        commit(types.SET_CATEGORY_PAGE, page)
-        commit(types.SET_CATEGORY_HAS_MORE, true)
-      } else if (data.error_code === 100) {
+      commit(types.SET_CATEGORY, data.response.category)
+      if (append) {
+        commit(types.APPEND_THREAD_LIST, data.response.items)
+      } else {
+        commit(types.SET_THREAD_LIST, data.response.items)
+      }
+      commit(types.SET_CATEGORY_PAGE, page)
+      commit(types.SET_CATEGORY_HAS_MORE, true)
+    } catch (error) {
+      if (error.error_code === 100) {
         commit(types.SET_CATEGORY_HAS_MORE, false)
       } else {
-        throw data
+        dispatch('handleError', error)
       }
-    } catch (error) {
-      dispatch('handleError', error)
     } finally {
       commit(types.SET_CATEGORY_IS_LOADING, false)
     }

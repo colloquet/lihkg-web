@@ -32,19 +32,16 @@ const actions = {
     }
     try {
       const data = await API.fetchThread({ threadId, page, order })
-      if (data.success) {
-        if (append) {
-          commit(types.APPEND_THREAD, data.response)
-        } else {
-          commit(types.SET_THREAD, data.response)
-        }
-        commit(types.SET_THREAD_PAGE, page)
-        if (order === 'reply_time') {
-          commit(types.SET_HISTORY, data.response)
-        }
-        return data
+      if (append) {
+        commit(types.APPEND_THREAD, data.response)
+      } else {
+        commit(types.SET_THREAD, data.response)
       }
-      throw data
+      commit(types.SET_THREAD_PAGE, page)
+      if (order === 'reply_time') {
+        commit(types.SET_HISTORY, data.response)
+      }
+      return data
     } catch (error) {
       dispatch('handleError', error)
       return false
@@ -53,29 +50,32 @@ const actions = {
       dispatch('stopProgress')
     }
   },
-  async fetchMediaList({ state, commit, dispatch }, { threadId, openGallery = false }) {
+  async fetchMediaList(
+    { state, commit, dispatch },
+    { threadId, openGallery = false, showProgress = true },
+  ) {
     if (state.isFetchingMedia) return
 
-    dispatch('startProgress')
+    if (showProgress) {
+      dispatch('startProgress')
+    }
     commit(types.SET_IS_FETCHING_MEDIA, true)
     try {
       const data = await API.fetchMediaList({ threadId })
-      if (data.success) {
-        if (data.response.images.length) {
-          commit(types.SET_MEDIA_LIST, data.response.images)
-          if (openGallery) {
-            commit(types.TOGGLE_GALLERY)
-          }
-        } else {
-          alert('找不到媒體')
+      if (data.response.images.length) {
+        commit(types.SET_MEDIA_LIST, data.response.images)
+        if (openGallery) {
+          commit(types.TOGGLE_GALLERY)
         }
       } else {
-        throw data
+        alert('找不到媒體')
       }
     } catch (error) {
       dispatch('handleError', error)
     } finally {
-      dispatch('stopProgress')
+      if (showProgress) {
+        dispatch('stopProgress')
+      }
       commit(types.SET_IS_FETCHING_MEDIA, false)
     }
   },

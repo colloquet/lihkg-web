@@ -10,7 +10,10 @@ const request = async (endpoint, params) => {
   try {
     const response = await fetch(`${API_ROOT}${endpoint}${serializedParams}`)
     const json = await response.json()
-    return json
+    if (json.success) {
+      return json
+    }
+    throw json
   } catch (error) {
     console.log(error)
     throw error

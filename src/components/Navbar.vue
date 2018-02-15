@@ -90,6 +90,7 @@ export default {
       category: state => state.category.category,
       thread: state => state.thread.thread,
       relatedCatId: state => state.thread.thread.cat_id || 1,
+      mediaList: state => state.thread.mediaList,
     }),
     inThreadView() {
       return this.$route.name === 'ThreadView'
@@ -104,6 +105,7 @@ export default {
       toggleDrawer: 'TOGGLE_DRAWER',
       toggleSettingsModal: 'TOGGLE_SETTINGS_MODAL',
       setThreadList: 'SET_THREAD_LIST',
+      toggleGallery: 'TOGGLE_GALLERY',
     }),
     async handleReloadClick() {
       helper.trackEvent({
@@ -149,10 +151,20 @@ export default {
         eventAction: 'click',
         eventLabel: 'Media',
       })
-      this.fetchMediaList({
-        threadId: this.thread.thread_id,
-        openGallery: true,
-      })
+      if (this.mediaList) {
+        // if already fetched, show immediately and fetch update in the background
+        this.toggleGallery()
+        this.fetchMediaList({
+          threadId: this.thread.thread_id,
+          openGallery: false,
+          showProgress: false,
+        })
+      } else {
+        this.fetchMediaList({
+          threadId: this.thread.thread_id,
+          openGallery: true,
+        })
+      }
     },
     handleHotReplyClick() {
       helper.trackEvent({
