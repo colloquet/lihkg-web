@@ -98,8 +98,8 @@ export default {
       const absX = Math.abs(deltaX)
       const absY = Math.abs(deltaY)
 
-      if (absX > 10 || absY > 10) {
-        const willOpen = absX > absY
+      if (absX > 5 || absY > 5) {
+        const willOpen = absY < 8 && absX > absY
         this.direction = this.direction || (willOpen ? 'x' : 'y')
 
         if (
