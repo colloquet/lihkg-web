@@ -29,7 +29,8 @@
     <div v-waypoint="{ active: true, callback: onEndReached }"></div>
 
     <div class="f5-container">
-      <button class="f5-button spin" @click="handleReloadClick" :class="{processing: isLoading}">
+      <Loader :f5="true" v-if="isLoading" />
+      <button class="f5-button" @click="handleReloadClick" v-else>
         <span>F5</span>
       </button>
     </div>
@@ -241,78 +242,29 @@ $color: #1ecd97;
 }
 
 .f5-button {
+  display: inline-block;
   position: relative;
   appearance: none;
   padding: 0;
-  width: 6rem;
+  width: 3rem;
   height: 3rem;
   border-radius: 1.5rem;
   background-color: transparent;
   outline: 0;
   cursor: pointer;
   overflow: hidden;
-}
-
-.loader-container {
-  margin: 1rem;
-  text-align: center;
-}
-
-.spin {
   border: 2px solid $color;
   color: $color;
   font-weight: 600;
-  transition: all 0.1s ease-in-out;
-
-  span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    transition: opacity 0.1s ease-in-out;
-  }
 
   .is-hoverable &:hover {
     background-color: $color;
     color: #fff;
   }
-
-  &.processing {
-    pointer-events: none;
-    cursor: default;
-    width: 3rem;
-    border-width: 4px;
-    border-right-color: #eee;
-    border-bottom-color: #eee;
-
-    animation: spin;
-    animation-delay: 0.3s;
-    animation-duration: 2s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-
-    .night-mode & {
-      border-right-color: #3e3e3e;
-      border-bottom-color: #3e3e3e;
-    }
-
-    &:hover {
-      background-color: transparent;
-    }
-
-    span:first-child {
-      opacity: 0;
-    }
-  }
 }
 
-@keyframes spin {
-  0% {
-    transform: rotateZ(0);
-  }
-  to {
-    transform: rotateZ(720deg);
-  }
+.loader-container {
+  margin: 1rem;
+  text-align: center;
 }
 </style>

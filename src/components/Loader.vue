@@ -1,13 +1,20 @@
 <template>
-  <div class="loader">Loading...</div>
+  <div class="loader" :class="{f5}">Loading...</div>
 </template>
+
+<script>
+export default {
+  props: ['f5']
+}
+</script>
+
 
 <style lang="scss" scoped>
 .loader,
 .loader:after {
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 3rem;
+  height: 3rem;
 }
 .loader {
   display: inline-block;
@@ -18,7 +25,7 @@
   font-size: 10px;
   position: relative;
   text-indent: -9999em;
-  transform: translateZ(0);
+  will-change: transform;
   animation: load 1.1s infinite linear;
 
   .night-mode & {
@@ -26,6 +33,13 @@
     border-right: 3px solid rgba(#fff, 0.2);
     border-bottom: 3px solid rgba(#fff, 0.2);
     border-left: 3px solid #fff;
+  }
+
+  &.f5 {
+    border-top: 3px solid rgba(#1ecd97, 0.2);
+    border-right: 3px solid rgba(#1ecd97, 0.2);
+    border-bottom: 3px solid rgba(#1ecd97, 0.2);
+    border-left: 3px solid #1ecd97;
   }
 }
 @-webkit-keyframes load {
