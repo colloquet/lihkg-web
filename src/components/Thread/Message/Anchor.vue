@@ -1,15 +1,16 @@
 <template>
-  <div>
+  <div v-if="linkInfo.isYoutube && youtubePreview">
     <YoutubePlayer
-      v-if="linkInfo.isYoutube && youtubePreview"
       :video-id="linkInfo.videoId"
       :start="linkInfo.start"
     />
-
     <a :href="href" target="_blank">
       <slot></slot>
     </a>
   </div>
+  <a :href="href" target="_blank" v-else>
+    <slot></slot>
+  </a>
 </template>
 
 <script>

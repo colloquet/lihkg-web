@@ -25,7 +25,7 @@ Vue.use(Meta)
 Vue.use(headroom)
 
 async function fetchIconMap() {
-  const response = await fetch('https://x.lihkg.com/hkgmoji6.json')
+  const response = await fetch('https://x.lihkg.com/hkgmoji7.json')
   const hkgmoji = await response.json()
   const flattenIconMap = hkgmoji.reduce(
     (set, current) => ({
