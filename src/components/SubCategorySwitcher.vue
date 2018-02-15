@@ -35,6 +35,7 @@
 <script>
 import helper from '@/helper'
 import isEqual from 'lodash/isEqual'
+import debounce from 'lodash/debounce'
 
 export default {
   props: ['list'],
@@ -65,6 +66,7 @@ export default {
   },
   methods: {
     renderVisibleItems() {
+      console.log('asd')
       this.visibleItemsCount = this.list.length
 
       this.$nextTick(() => {
@@ -98,6 +100,9 @@ export default {
         })
       }
     },
+    onResize: debounce(function() {
+      this.renderVisibleItems()
+    }, 200),
   },
   watch: {
     list() {
@@ -105,11 +110,11 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('resize', this.renderVisibleItems)
+    window.addEventListener('resize', this.onResize)
     this.renderVisibleItems()
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.renderVisibleItems)
+    window.removeEventListener('resize', this.onResize)
   }
 }
 </script>
