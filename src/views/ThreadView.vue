@@ -36,7 +36,7 @@
     </div>
   </div>
   <div class="loader-container" v-else>
-    <Loader />
+    <Loader :f5="true" />
   </div>
 </template>
 

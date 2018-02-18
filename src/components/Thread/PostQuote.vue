@@ -6,7 +6,17 @@
       </blockquote>
       <PostQuote :quote="this.quote.quote" :level="level + 1" v-else />
     </template>
-    <Message :html="this.quote.msg" />
+    <Message :html="this.quote.msg">
+      <a
+        :href="link"
+        target="_blank"
+        class="link"
+        title="跳至回覆"
+        slot="link"
+      >
+        <span class="icon-external-link"></span>
+      </a>
+    </Message>
   </blockquote>
 </template>
 
@@ -26,6 +36,11 @@ export default {
       hideChildren: true,
     }
   },
+  computed: {
+    link() {
+      return `/thread/${this.quote.thread_id}/page/${this.quote.page}?post=${this.quote.msg_num}`
+    },
+  },
 }
 </script>
 
@@ -39,5 +54,21 @@ export default {
   font-size: 0.875rem;
   padding: 0.25rem 0.5rem;
   cursor: pointer;
+  opacity: 0.5;
+
+  .is-hoverable &:hover {
+    opacity: 1;
+  }
+}
+
+.link {
+  display: inline-block;
+  margin-left: 0.5rem;
+  opacity: 0.5;
+  color: inherit;
+
+  .is-hoverable &:hover {
+    opacity: 1;
+  }
 }
 </style>

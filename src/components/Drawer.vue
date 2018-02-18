@@ -17,9 +17,9 @@
         <span class="brand">
           LIHKG
         </span>
-        <a href="https://github.com/colloquet/lihkg-web" target="_blank" rel="noopener" class="github-link">
-          <span class="icon-github"></span>
-        </a>
+        <button class="action" @click="handleSettingsClick">
+          <span class="icon-settings"></span>
+        </button>
       </div>
       <div
         class="section"
@@ -75,7 +75,17 @@ export default {
     ...mapMutations({
       openDrawer: 'OPEN_DRAWER',
       hideDrawer: 'HIDE_DRAWER',
+      toggleSettingsModal: 'TOGGLE_SETTINGS_MODAL',
     }),
+    handleSettingsClick() {
+      helper.trackEvent({
+        eventCategory: 'Drawer',
+        eventAction: 'click',
+        eventLabel: 'Settings',
+      })
+      this.hideDrawer()
+      this.toggleSettingsModal()
+    },
     handleLinkClick(event) {
       setTimeout(() => {
         this.$router.push(event.target.pathname)
@@ -99,7 +109,7 @@ export default {
       const absY = Math.abs(deltaY)
 
       if (absX > 5 || absY > 5) {
-        const willOpen = absY < 8 && absX > absY
+        const willOpen = absX / absY > 2.5
         this.direction = this.direction || (willOpen ? 'x' : 'y')
 
         if (
@@ -211,6 +221,7 @@ export default {
 
 .header {
   display: flex;
+  justify-content: space-between;
   padding-left: 1rem;
   margin-bottom: 1rem;
 }
@@ -220,15 +231,15 @@ export default {
   font-weight: 100;
 }
 
-.github-link {
+.action {
   padding: 1rem;
-  color: #1ecd97;
   margin-top: -1rem;
   margin-bottom: -1rem;
-
-  .night-mode & {
-    color: #42b983;
-  }
+  color: inherit;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 .section {

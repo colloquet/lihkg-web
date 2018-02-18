@@ -153,7 +153,7 @@ export default {
     },
   },
   render(h) {
-    return h('div', this.renderAST(h, this.parsedMessage))
+    return h('div', [this.renderAST(h, this.parsedMessage), this.$slots.link])
   },
 }
 </script>

@@ -26,5 +26,10 @@ export default {
   font-size: 0.875rem;
   padding: 0.25rem 0.5rem;
   cursor: pointer;
+  opacity: 0.5;
+
+  .is-hoverable &:hover {
+    opacity: 1;
+  }
 }
 </style>
