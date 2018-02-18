@@ -26,7 +26,7 @@
       />
     </template>
 
-    <div v-waypoint="{ active: true, callback: onEndReached }"></div>
+    <div v-observe-visibility="onEndReached"></div>
 
     <div class="f5-container">
       <Loader :f5="true" v-if="isLoading" />
@@ -89,9 +89,9 @@ export default {
     updateUrl(page) {
       this.$router.replace({ params: { page }, query: this.$route.query })
     },
-    onEndReached(event) {
+    onEndReached(isVisible) {
       if (this.isLoading) return
-      if (event.going !== 'in' || !event.direction) return
+      if (!isVisible) return
 
       if (this.hasNextPage) {
         this.fetchNextPage()

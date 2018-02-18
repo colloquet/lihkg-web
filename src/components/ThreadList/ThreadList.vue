@@ -15,7 +15,7 @@
       />
     </ul>
 
-    <div v-waypoint="{ active: true, callback: onEndReached }"></div>
+    <div v-observe-visibility="onEndReached"></div>
 
     <div class="end-of-list">
       <template v-if="hasMore">
@@ -49,9 +49,9 @@ export default {
     },
   },
   methods: {
-    onEndReached(event) {
+    onEndReached(isVisible) {
       if (this.isLoading) return
-      if (event.going !== 'in' || !event.direction) return
+      if (!isVisible) return
       this.$emit('load-more')
     },
   },

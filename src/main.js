@@ -1,8 +1,9 @@
+import 'intersection-observer'
 import Vue from 'vue'
 import Meta from 'vue-meta'
-import VueWaypoint from 'vue-waypoint'
 import headroom from 'vue-headroom'
 import VueLazyload from 'vue-lazyload'
+import VueObserveVisibility from 'vue-observe-visibility'
 
 import 'normalize.css/normalize.css'
 import 'nprogress/nprogress.css'
@@ -18,9 +19,9 @@ Vue.config.productionTip = false
 Vue.use(VueLazyload, {
   lazyComponent: true,
 })
-Vue.use(VueWaypoint)
 Vue.use(Meta)
 Vue.use(headroom)
+Vue.use(VueObserveVisibility)
 
 async function fetchIconMap() {
   const response = await fetch('https://x.lihkg.com/hkgmoji7.json')
