@@ -1,5 +1,3 @@
-// import 'babel-polyfill'
-// import 'whatwg-fetch'
 import Vue from 'vue'
 import Meta from 'vue-meta'
 import VueWaypoint from 'vue-waypoint'

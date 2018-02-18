@@ -1,26 +1,32 @@
 <template>
-  <transition name="slide-fade">
-    <div ref="menu" class="menu" v-if="showDrawer">
-      <div class="container">
-        <div class="grid">
-          <div
-            class="grid-item"
-            :key="section.name"
-            v-for="section in fixedCategoryList"
-            :class="{'is-single': section.name === '其他'}"
-          >
-            <span class="title">{{ section.name || '一般' }}</span>
-            <ul class="submenu">
-              <li v-for="category in section.cat_list" :key="category.cat_id">
-                <a
-                  :class="{'is-active': category.cat_id === activeCategoryId}"
-                  :href="`/category/${category.cat_id}`"
-                  @click.prevent="handleLinkClick"
-                >
-                  {{ category.name }}
-                </a>
-              </li>
-            </ul>
+  <transition name="slide-fade" :duration="450">
+    <div v-if="showDrawer">
+      <div
+        class="overlay"
+        @click="hideDrawer"
+      ></div>
+      <div ref="menu" class="menu">
+        <div class="container">
+          <div class="grid">
+            <div
+              class="grid-item"
+              :key="section.name"
+              v-for="section in fixedCategoryList"
+              :class="{'is-single': section.name === '其他'}"
+            >
+              <span class="title">{{ section.name || '一般' }}</span>
+              <ul class="submenu">
+                <li v-for="category in section.cat_list" :key="category.cat_id">
+                  <a
+                    :class="{'is-active': category.cat_id === activeCategoryId}"
+                    :href="`/category/${category.cat_id}`"
+                    @click.prevent="handleLinkClick"
+                  >
+                    {{ category.name }}
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -84,6 +90,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(#000, 0.5);
+  z-index: 1;
+  will-change: opacity;
+}
+
 .menu {
   position: fixed;
   background: #fff;
@@ -202,10 +219,18 @@ export default {
 
 .slide-fade-enter-active,
 .slide-fade-leave-active {
-  transition: all 0.45s cubic-bezier(0.36, 0.66, 0.04, 1);
+  .overlay, .menu {
+    transition: all 0.45s cubic-bezier(0.36, 0.66, 0.04, 1);
+  }
 }
 .slide-fade-enter,
 .slide-fade-leave-to {
-  transform: translateY(-100%);
+  .overlay {
+    opacity: 0;
+  }
+
+  .menu {
+    transform: translateY(-100%);
+  }
 }
 </style>
