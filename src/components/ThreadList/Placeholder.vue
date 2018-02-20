@@ -41,7 +41,7 @@
 
 .animated {
   border-radius: 4px;
-  background: linear-gradient(45deg, #f9f9f9, #e9e9e9, #f9f9f9);
+  background: linear-gradient(45deg, #f9f9f9, #f3f3f3, #f9f9f9);
   animation: loading 2s ease infinite;
   background-size: 600% 600%;
 

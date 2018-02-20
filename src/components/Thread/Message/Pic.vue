@@ -35,6 +35,9 @@ export default {
       mediaList: state => state.thread.mediaList,
       threadId: state => state.thread.thread.thread_id,
     }),
+    mediaIndex() {
+      return this.mediaList ? this.mediaList.findIndex(media => media.url === this.original) : -1
+    }
   },
   methods: {
     ...mapActions(['fetchMediaList']),
@@ -42,13 +45,10 @@ export default {
       setMediaIndex: 'SET_MEDIA_INDEX',
     }),
     async handleImageClick() {
-      await this.fetchMediaList({ threadId: this.threadId })
-      const index = this.mediaList.findIndex(
-        media => media.url === this.original,
-      )
-      if (index !== -1) {
-        this.setMediaIndex(index)
+      if (this.mediaIndex === -1) {
+        await this.fetchMediaList({ threadId: this.threadId })
       }
+      this.setMediaIndex(this.mediaIndex)
     },
     loadImage() {
       this.showImage = true

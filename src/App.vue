@@ -188,6 +188,10 @@ a {
   }
 }
 
+.headroom {
+  position: fixed;
+}
+
 #nprogress {
   .bar {
     height: 4px;

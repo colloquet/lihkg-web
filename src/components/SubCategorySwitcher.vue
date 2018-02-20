@@ -69,11 +69,11 @@ export default {
       this.visibleItemsCount = this.list.length
 
       this.$nextTick(() => {
+        if (!this.$refs.container) return
+
         const isOverflown = helper.isOverflown(this.$refs.container)
 
-        if (!isOverflown) {
-          return
-        }
+        if (!isOverflown) return
 
         let total = 0
         let count
@@ -133,7 +133,7 @@ export default {
 
   .is-mobile & {
     justify-content: flex-start;
-    margin: 0.5rem 0;
+    margin: 0;
   }
 
   .night-mode & {
@@ -158,6 +158,11 @@ export default {
   line-height: 2.25rem;
   margin-bottom: -1px;
   color: #999;
+
+  .is-mobile & {
+    height: 3rem;
+    line-height: 3rem;
+  }
 
   &:hover {
     text-decoration: none;
