@@ -14,7 +14,7 @@
         title="跳至回覆"
         slot="link"
       >
-        <span class="icon-external-link"></span>
+        <span class="icon-link"></span>
       </a>
     </Message>
   </blockquote>
