@@ -160,7 +160,7 @@ export default {
   }
 
   .night-mode & {
-    border-bottom-color: #2b2b2b;
+    border-bottom-color: #333;
   }
 
   .is-mobile & {

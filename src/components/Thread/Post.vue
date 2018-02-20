@@ -114,8 +114,8 @@ export default {
   }
 
   .night-mode & {
-    border-top-color: #2b2b2b;
-    border-bottom-color: #2b2b2b;
+    border-top-color: #333;
+    border-bottom-color: #333;
   }
 
   .meta {
