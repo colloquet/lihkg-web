@@ -145,7 +145,7 @@ export default {
   position: relative;
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 0.5px solid #f1f1f1;
   padding: 1.5rem;
   padding-left: 2rem;
   text-decoration: none;

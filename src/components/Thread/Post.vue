@@ -107,10 +107,10 @@ export default {
 <style lang="scss">
 .post {
   padding: 1.5rem 1rem;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 0.5px solid #f1f1f1;
 
   &:first-of-type {
-    border-top: 1px solid #f1f1f1;
+    border-top: 0.5px solid #f1f1f1;
   }
 
   .night-mode & {
