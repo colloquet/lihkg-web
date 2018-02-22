@@ -1,17 +1,19 @@
 {
-  "short_name": "LIHKG",
   "name": "LIHKG 討論區（非官方)",
-  "description": "LIHKG client made with Vue.js",
-  "icons": [{
-    "src": "/static/android-chrome-256x256.png",
-    "sizes": "256x256",
-    "type": "image/png"
-  }, {
-    "src": "/static/android-chrome-192x192.png",
-    "sizes": "192x192",
-    "type": "image/png"
-  }],
-  "start_url": "./index.html",
+  "short_name": "LIHKG",
+  "icons": [
+    {
+      "src": "/static/img/icons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/img/icons/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/index.html",
   "display": "standalone",
   "theme_color": "#1b1b1b",
   "background_color": "#1d1d1d",

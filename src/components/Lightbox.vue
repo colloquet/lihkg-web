@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
   props: ['mediaIndex'],
@@ -38,15 +38,11 @@ export default {
     ...mapState({
       mediaList: state => state.thread.mediaList,
     }),
-    media() {
-      return this.mediaList[this.mediaIndex]
-    },
-    hasPrev() {
-      return this.mediaIndex > 0
-    },
-    hasNext() {
-      return this.mediaIndex + 1 !== this.mediaList.length
-    },
+    ...mapGetters([
+      'media',
+      'hasPrev',
+      'hasNext',
+    ]),
   },
   methods: {
     ...mapMutations({

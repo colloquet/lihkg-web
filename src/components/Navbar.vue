@@ -302,16 +302,4 @@ $navbar-height: 3rem;
   flex: 1 0 0%;
   justify-content: flex-end;
 }
-
-.category {
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
-}
-
-.thread {
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
-}
 </style>

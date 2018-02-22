@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import helper from '@/helper'
 import Page from '@/components/Thread/Page'
 import ThreadNavigation from '@/components/Thread/ThreadNavigation'
@@ -65,18 +65,12 @@ export default {
       thread: state => state.thread.thread,
       isLoading: state => state.thread.isLoading,
     }),
-    loadedPages() {
-      return Object.keys(this.thread.pages || {})
-    },
-    maxPage() {
-      return Math.max(...this.loadedPages)
-    },
-    minPage() {
-      return Math.min(...this.loadedPages)
-    },
-    hasNextPage() {
-      return this.maxPage < this.thread.total_page
-    },
+    ...mapGetters([
+      'loadedPages',
+      'maxPage',
+      'minPage',
+      'hasNextPage',
+    ]),
   },
   methods: {
     ...mapActions(['fetchThread']),
@@ -84,6 +78,7 @@ export default {
       setThread: 'SET_THREAD',
       updateHistory: 'UPDATE_HISTORY',
       setMediaList: 'SET_MEDIA_LIST',
+      setMediaIndex: 'SET_MEDIA_INDEX',
       hideGallery: 'HIDE_GALLERY',
     }),
     updateUrl(page) {
@@ -218,6 +213,7 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     this.setMediaList(null)
+    this.setMediaIndex(null)
     this.hideGallery()
     if (this.$route.query.order !== 'score') {
       this.saveLastRead()

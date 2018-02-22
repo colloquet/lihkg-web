@@ -13,7 +13,29 @@ const initialState = {
 }
 
 // getters
-const getters = {}
+const getters = {
+  loadedPages(state) {
+    return Object.keys(state.thread.pages || {})
+  },
+  maxPage(state, _getters) {
+    return Math.max(..._getters.loadedPages)
+  },
+  minPage(state, _getters) {
+    return Math.min(..._getters.loadedPages)
+  },
+  hasNextPage(state, _getters) {
+    return _getters.maxPage < state.thread.total_page
+  },
+  media(state) {
+    return state.mediaList[state.mediaIndex]
+  },
+  hasPrev(state) {
+    return state.mediaIndex > 0
+  },
+  hasNext(state) {
+    return state.mediaIndex + 1 !== state.mediaList.length
+  },
+}
 
 // actions
 const actions = {

@@ -19,6 +19,7 @@ const router = new Router({
   },
   routes: [
     { path: '/', redirect: '/category/1' },
+    { path: '/index.html', redirect: '/category/1' },
     { path: '/thread/:threadId', redirect: '/thread/:threadId/page/1' },
     { path: '/:threadId', redirect: '/thread/:threadId/page/1' },
     { path: '/t/:threadId', redirect: '/thread/:threadId/page/1' },

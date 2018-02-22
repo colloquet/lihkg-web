@@ -145,7 +145,7 @@ export default {
   position: relative;
   display: flex;
   flex-direction: row;
-  border-bottom: 0.5px solid #f1f1f1;
+  border-bottom: 0.5px solid #e6e6e6;
   padding: 1.5rem;
   padding-left: 2rem;
   text-decoration: none;
@@ -263,11 +263,15 @@ export default {
 .category-label {
   display: inline-block;
   flex-shrink: 0;
-  border-radius: 4px;
-  border: 1px solid;
-  padding: 0.25rem;
+  border-radius: 12px;
+  background: #f5f6f7;
+  padding: 0.25rem 0.5rem;
   color: #aaa;
   font-size: 0.75rem;
+
+  .night-mode & {
+    background: #333;
+  }
 }
 
 .lower {
@@ -315,6 +319,10 @@ export default {
   margin: -0.5rem;
   color: #aaa;
   font-size: 14px;
+
+  .is-hoverable &:hover {
+    color: #fff;
+  }
 }
 
 .highlight {
