@@ -152,7 +152,7 @@ export default {
   color: inherit;
 
   .is-hoverable &:hover {
-    background: #f9f9f9;
+    background: #f5f6f7;
   }
 
   .is-hoverable.night-mode &:hover {
@@ -303,7 +303,7 @@ export default {
   text-decoration: none;
 
   &:hover {
-    background: #eee;
+    background: #e6e6e6;
 
     .night-mode & {
       background: #404040;
@@ -321,6 +321,10 @@ export default {
   font-size: 14px;
 
   .is-hoverable &:hover {
+    color: #000;
+  }
+
+  .is-hoverable.night-mode &:hover {
     color: #fff;
   }
 }
@@ -335,7 +339,7 @@ export default {
 
 @keyframes highlight {
   0% {
-    background: #eee;
+    background: #f5f6f7;
   }
   to {
     background: transparent;

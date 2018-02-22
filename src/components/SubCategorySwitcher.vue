@@ -126,7 +126,7 @@ export default {
 .tab {
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1px solid #e6e6e6;
   list-style: none;
   padding: 0;
   margin: 1rem 0 0;

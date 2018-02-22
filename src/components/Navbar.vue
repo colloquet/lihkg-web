@@ -10,7 +10,11 @@
       <div class="container">
         <div class="wrapper">
           <div class="left">
-            <button class="action" @click="handleNavMenuClick" v-if="!isMobile">
+            <button
+              class="action"
+              :class="{'is-active': showDrawer}"
+              @click="handleNavMenuClick" v-if="!isMobile"
+            >
               <span :class="showDrawer ? 'icon-x' : 'icon-menu'"></span>
             </button>
 

@@ -96,9 +96,13 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(#000, 0.5);
+  background-color: rgba(#000, 0.2);
   z-index: 1;
   will-change: opacity;
+
+  .night-mode & {
+    background-color: rgba(#000, 0.5);
+  }
 }
 
 .menu {
