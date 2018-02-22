@@ -26,15 +26,6 @@ const getters = {
   hasNextPage(state, _getters) {
     return _getters.maxPage < state.thread.total_page
   },
-  media(state) {
-    return state.mediaList[state.mediaIndex]
-  },
-  hasPrev(state) {
-    return state.mediaIndex > 0
-  },
-  hasNext(state) {
-    return state.mediaIndex + 1 !== state.mediaList.length
-  },
 }
 
 // actions
