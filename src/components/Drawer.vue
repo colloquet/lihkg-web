@@ -11,7 +11,7 @@
       ref="drawer"
       class="drawer"
       :class="{'is-pressed': isPressed}"
-      :style="`left: ${this.xPos}`"
+      :style="`transform: translate3d(${this.xPos}, 0, 0);`"
     >
       <div class="header">
         <span class="brand">
@@ -202,11 +202,11 @@ export default {
   bottom: 0;
   left: 0;
   width: 200px;
-  transition: left 0.2s ease;
+  transition: transform 0.2s ease;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
   z-index: 2;
-  will-change: left;
+  will-change: transform;
 
   .night-mode & {
     background: #222;
@@ -301,7 +301,7 @@ export default {
 .drawer-enter,
 .drawer-leave-active {
   .drawer {
-    transform: translateX(-100%);
+    transform: translate3d(-100%, 0, 0);
   }
 
   .drawer-overlay {

@@ -215,7 +215,7 @@ export default {
 
 .lightbox-enter .image-link,
 .lightbox-leave-active .image-link {
-  transform: translateY(1.5rem);
+  transform: translate3d(0, 1.5rem, 0);
 }
 
 .next-enter-active,
@@ -226,18 +226,18 @@ export default {
 }
 .next-enter {
   opacity: 0;
-  transform: translateX(1.5rem);
+  transform: translate3d(1.5rem, 0, 0);
 }
 .next-leave-to {
   opacity: 0;
-  transform: translateX(-1.5rem);
+  transform: translate3d(-1.5rem, 0, 0);
 }
 .prev-enter {
   opacity: 0;
-  transform: translateX(-1.5rem);
+  transform: translate3d(-1.5rem, 0, 0);
 }
 .prev-leave-to {
   opacity: 0;
-  transform: translateX(1.5rem);
+  transform: translate3d(1.5rem, 0, 0);
 }
 </style>

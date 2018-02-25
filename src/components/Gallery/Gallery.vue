@@ -205,6 +205,6 @@ $navbar-height: 3rem;
 
 .gallery-enter,
 .gallery-leave-active {
-  transform: translateY(1.5rem);
+  transform: translate3d(0, 1.5rem, 0);
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="linkInfo.isYoutube && youtubePreview">
+  <div v-if="isYoutube && youtubePreview">
     <YoutubePlayer
       :video-id="linkInfo.videoId"
       :start="linkInfo.start"
@@ -8,6 +8,9 @@
       <slot></slot>
     </a>
   </div>
+
+  <LIHKGPreview :thread-id="linkInfo.threadId" :href="href" v-else-if="isLihkg" />
+
   <a :href="href" target="_blank" v-else>
     <slot></slot>
   </a>
@@ -16,56 +19,45 @@
 <script>
 import { mapState } from 'vuex'
 import YoutubePlayer from './YoutubePlayer'
+import LIHKGPreview from './LIHKGPreview'
 import helper from '@/helper'
-
-function parseDuration(duration) {
-  const matches = duration.match(/[0-9]+[hms]/g)
-  let seconds = 0
-
-  if (!matches) {
-    return duration
-  }
-
-  matches.forEach(part => {
-    const unit = part.charAt(part.length - 1)
-    const amount = parseInt(part.slice(0, -1), 10)
-
-    switch (unit) {
-      case 'h':
-        seconds += amount * 60 * 60
-        break
-      case 'm':
-        seconds += amount * 60
-        break
-      case 's':
-        seconds += amount
-        break
-      default:
-      // noop
-    }
-  })
-
-  return seconds
-}
 
 export default {
   props: ['href'],
   components: {
     YoutubePlayer,
+    LIHKGPreview,
+  },
+  data() {
+    return {
+      isYoutube: false,
+      isLihkg: false,
+      linkInfo: {},
+    }
   },
   computed: {
     ...mapState({
       youtubePreview: state => state.app.youtubePreview,
     }),
-    linkInfo() {
-      const matches = this.href.match(helper.ytRegex)
-      const isYoutube = matches && matches[1]
-      const videoId = matches && matches[1]
-      const start =
-        matches && matches[2] ? parseDuration(matches[2].toLowerCase()) : 0
+  },
+  beforeMount() {
+    const ytMatches = this.href.match(helper.ytRegex)
+    const isYoutube = ytMatches && ytMatches[1]
+    this.isYoutube = isYoutube
+    if (isYoutube) {
+      const videoId = ytMatches && ytMatches[1]
+      const start = ytMatches && ytMatches[2] ? helper.parseDuration(ytMatches[2].toLowerCase()) : 0
+      this.linkInfo = { videoId, start }
+      return
+    }
 
-      return { isYoutube, videoId, start }
-    },
+    const lihkgMatches = this.href.match(helper.lihkgRegex)
+    const isLihkg = lihkgMatches && lihkgMatches[1]
+    this.isLihkg = isLihkg
+    if (isLihkg) {
+      const threadId = lihkgMatches && lihkgMatches[1]
+      this.linkInfo = { threadId }
+    }
   },
 }
 </script>

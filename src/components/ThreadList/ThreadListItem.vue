@@ -339,7 +339,7 @@ export default {
 
 @keyframes highlight {
   0% {
-    background: #f5f6f7;
+    background: #eee;
   }
   to {
     background: transparent;

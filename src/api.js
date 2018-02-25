@@ -43,7 +43,7 @@ export default {
 
     return request(`/thread/${type}`, params)
   },
-  fetchThread({ threadId, page, order }) {
+  fetchThread({ threadId, page = 1, order = 'reply_time' }) {
     return request(`/thread/${threadId}/page/${page}`, { order })
   },
   fetchSearchResult({

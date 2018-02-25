@@ -91,6 +91,6 @@ export default {
 
 .modal-enter .modal-container,
 .modal-leave-active .modal-container {
-  transform: translateY(2rem);
+  transform: translate3d(0, 2rem, 0);
 }
 </style>

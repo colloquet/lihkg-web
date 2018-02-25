@@ -1,5 +1,6 @@
 const helper = {
   ytRegex: /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=))([\w-]{10,12})(?:[&?#].*?)*?(?:[&?#]start|t=(\d+|[\dhm]+s))?$/,
+  lihkgRegex: /^(?:https?:\/\/)?lihkg\.com\/(?:t|thread)\/(\d+)/,
   isIOS() {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
   },
@@ -71,6 +72,35 @@ const helper = {
   getScoreClass(score, isDislike = false) {
     if (+score >= 100) return isDislike ? 'color-female' : 'color-admin'
     return +score <= -100 ? 'color-female' : ''
+  },
+  parseDuration(duration) {
+    const matches = duration.match(/[0-9]+[hms]/g)
+    let seconds = 0
+
+    if (!matches) {
+      return duration
+    }
+
+    matches.forEach((part) => {
+      const unit = part.charAt(part.length - 1)
+      const amount = parseInt(part.slice(0, -1), 10)
+
+      switch (unit) {
+        case 'h':
+          seconds += amount * 60 * 60
+          break
+        case 'm':
+          seconds += amount * 60
+          break
+        case 's':
+          seconds += amount
+          break
+        default:
+        // noop
+      }
+    })
+
+    return seconds
   },
 }
 

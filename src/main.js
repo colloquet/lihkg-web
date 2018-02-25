@@ -1,3 +1,4 @@
+import 'babel-polyfill'
 import 'intersection-observer'
 import Vue from 'vue'
 import Meta from 'vue-meta'
@@ -14,6 +15,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import API from './api'
+import './assets/font.css'
 
 Vue.config.productionTip = false
 Vue.use(VueLazyload, {
@@ -88,6 +90,5 @@ new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
-  template: '<App/>',
+  render: h => h(App),
 })
