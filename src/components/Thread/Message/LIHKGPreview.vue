@@ -97,6 +97,7 @@ export default {
   }
 
   .title, .link {
+    display: block;
     overflow: hidden;
     text-overflow: ellipsis;
   }
