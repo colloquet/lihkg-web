@@ -4,14 +4,14 @@
       class="overlay"
       :class="{'is-pressed': isPressed}"
       @click="hideDrawer"
-      :style="`opacity: ${this.opacity}`"
+      :style="`opacity: ${opacity}`"
     ></div>
 
     <div
       ref="drawer"
       class="drawer"
       :class="{'is-pressed': isPressed}"
-      :style="`transform: translate3d(${this.xPos}, 0, 0);`"
+      :style="`transform: translate3d(${xPos}px, 0, 0);`"
     >
       <div class="header">
         <span class="brand">
@@ -47,6 +47,8 @@
 import { mapState, mapMutations } from 'vuex'
 import helper from '@/helper'
 
+const DRAWER_WIDTH = 200
+
 export default {
   data() {
     return {
@@ -64,11 +66,11 @@ export default {
     }),
     xPos() {
       return this.isOpen
-        ? `${Math.min(Math.max(this.deltaX, -200), 0)}px`
-        : `${Math.min(Math.max(this.deltaX, 0), 200) - 200}px`
+        ? Math.min(Math.max(this.deltaX, -DRAWER_WIDTH), 0)
+        : Math.min(Math.max(this.deltaX, 0), DRAWER_WIDTH) - DRAWER_WIDTH
     },
     opacity() {
-      return this.isOpen ? 1 : this.deltaX / 200
+      return this.isOpen ? 1 : this.deltaX / DRAWER_WIDTH
     },
   },
   methods: {

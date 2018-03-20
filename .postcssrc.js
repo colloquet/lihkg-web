@@ -2,8 +2,7 @@
 
 module.exports = {
   "plugins": {
-    // to edit target browsers: use "browserslist" field in package.json
-    "postcss-import": {},
+    // to edit target browsers: use "browserlist" field in package.json
     "autoprefixer": {}
   }
 }
