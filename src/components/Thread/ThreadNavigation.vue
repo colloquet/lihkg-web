@@ -1,7 +1,7 @@
 <template>
   <div class="navigation">
     <div class="navigation-item">
-      <a :href="`/thread/${threadId}/page/${+page - 1}`" v-if="hasPrevPage" @click.prevent="$emit('navigate', page - 1)">
+      <a :href="`/thread/${threadId}/page/${+page - 1}`" v-if="hasPrevPage" @click.prevent="$emit('navigate', page - 1, true)">
         <span class="icon-chevron-up"></span> 上一頁
       </a>
     </div>

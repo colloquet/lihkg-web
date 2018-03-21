@@ -109,14 +109,17 @@ export default {
       })
       this.updateUrl(this.maxPage + 1)
     },
-    jumpToPage(page) {
-      const pageContainer = document.getElementById(`page-${page}`)
+    jumpToPage(page, retainScroll) {
+      const pageNumber = page + +retainScroll
+      const offsetTop = retainScroll ? 180 : 120
+      const pageContainer = document.getElementById(`page-${pageNumber}`)
+
       if (pageContainer) {
-        const top = document.getElementById(`page-${page}`).offsetTop - 120
+        const top = pageContainer.offsetTop - offsetTop
         window.scrollTo(0, top)
       }
     },
-    async fetchPage(page) {
+    async fetchPage(page, retainScroll = false) {
       const append = +page === +this.maxPage + 1 || +page === +this.minPage - 1
       const isPageLoaded = page in this.thread.pages
       if (!isPageLoaded) {
@@ -126,7 +129,7 @@ export default {
         })
       }
       this.updateUrl(page)
-      this.jumpToPage(page)
+      this.jumpToPage(page, !isPageLoaded && retainScroll)
     },
     async reload() {
       const data = await this.tryFetchThread({
