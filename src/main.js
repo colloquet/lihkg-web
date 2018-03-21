@@ -25,6 +25,24 @@ Vue.use(Meta)
 Vue.use(headroom)
 Vue.use(VueObserveVisibility)
 
+Vue.directive('username', (el, { value: user }) => {
+  if (+user.level === 999) {
+    el.className += ' color-admin'
+  } else if (user.gender === 'M') {
+    el.className += ' color-male'
+  } else {
+    el.className += ' color-female'
+  }
+})
+
+Vue.directive('score', (el, { value: score, arg }) => {
+  if (+score >= 100) {
+    el.className += arg === 'dislike' ? ' color-female' : ' color-admin'
+  } else if (+score <= -100) {
+    el.className += ' color-female'
+  }
+})
+
 async function fetchIconMap() {
   const response = await fetch('https://x.lihkg.com/hkgmoji7.json')
   const hkgmoji = await response.json()
@@ -69,10 +87,7 @@ window.addEventListener('storage', (event) => {
 helper.initYoutube()
 
 async function init() {
-  const [iconMap, systemProperty] = await Promise.all([
-    fetchIconMap(),
-    fetchSystemProperty(),
-  ])
+  const [iconMap, systemProperty] = await Promise.all([fetchIconMap(), fetchSystemProperty()])
 
   // remove 自選台
   const fixedCategoryList = systemProperty.fixed_category_list

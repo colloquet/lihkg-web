@@ -12,7 +12,7 @@
       <div class="body">
         <small class="meta">
           <div class="meta-left">
-            <span class="name" :class="usernameClass">
+            <span class="name" v-username="thread.user">
               {{ thread.user_nickname }}
             </span>
 
@@ -26,7 +26,7 @@
               </span>
             </span>
 
-            <span class="score" :class="scoreClass">
+            <span class="score" v-score="score">
               <span class="icon-thumbs-up" v-if="score > -1"></span>
               <span class="icon-thumbs-down" v-else></span>
               {{ score }}
@@ -112,15 +112,6 @@ export default {
     },
     score() {
       return this.thread.like_count - this.thread.dislike_count
-    },
-    scoreClass() {
-      return helper.getScoreClass(this.score)
-    },
-    usernameClass() {
-      return helper.getUsernameClass(
-        this.thread.user.level,
-        this.thread.user_gender,
-      )
     },
     lastReplyTime() {
       return helper.getRelativeTime(this.thread.last_reply_time)

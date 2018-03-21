@@ -2,7 +2,7 @@
   <li ref="container" :id="`post-${post.msg_num}`" class="post" :data-id="post.msg_num" :data-page="post.page">
     <small class="meta">
       <span :class="{'color-admin': isAuthor}">#{{ post.msg_num }}</span>
-      <span :class="`username ${usernameClass}`">{{ post.user_nickname }}</span>
+      <span class="username" v-username="post.user">{{ post.user_nickname }}</span>
       <span class="temp-visible-toggle" @click="tempVisible = !tempVisible" v-if="storyMode && +storyMode !== +userId">
         暫時{{ tempVisible ? '隱藏' : '顯示' }}
       </span>
@@ -21,10 +21,10 @@
     </div>
 
     <small class="scores">
-      <span :class="scoreClass.like">
+      <span v-score="likeCount">
         <span class="icon-arrow-up"></span> {{ likeCount }}
       </span>
-      <span :class="scoreClass.dislike">
+      <span v-score:dislike="dislikeCount">
         <span class="icon-arrow-down"></span> {{ dislikeCount }}
       </span>
     </small>
@@ -67,15 +67,6 @@ export default {
     },
     dislikeCount() {
       return this.post.msg_num === 1 ? this.threadDislikeCount : this.post.dislike_count
-    },
-    scoreClass() {
-      return {
-        like: helper.getScoreClass(this.likeCount),
-        dislike: helper.getScoreClass(this.dislikeCount, true),
-      }
-    },
-    usernameClass() {
-      return helper.getUsernameClass(this.post.user.level, this.post.user_gender)
     },
     replyTime() {
       return {
