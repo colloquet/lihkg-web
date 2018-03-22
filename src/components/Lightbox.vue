@@ -64,9 +64,11 @@ export default {
           this.handleCloseClick()
           break
         case 37:
+          if (!this.hasPrev) return
           this.handleNavigation(-1)
           break
         case 39:
+          if (!this.hasNext) return
           this.handleNavigation(1)
           break
         default:
