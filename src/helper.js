@@ -94,6 +94,22 @@ const helper = {
 
     return seconds
   },
+  uniqBy(originalArray, objKey) {
+    const trimmedArray = []
+    const values = []
+    let value
+
+    for (let i = 0; i < originalArray.length; i += 1) {
+      value = originalArray[i][objKey]
+
+      if (values.indexOf(value) === -1) {
+        trimmedArray.push(originalArray[i])
+        values.push(value)
+      }
+    }
+
+    return trimmedArray
+  },
 }
 
 export default helper

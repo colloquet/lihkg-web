@@ -45,6 +45,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+
 import helper from '@/helper'
 
 const DRAWER_WIDTH = 200

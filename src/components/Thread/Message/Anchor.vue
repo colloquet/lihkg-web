@@ -18,9 +18,10 @@
 
 <script>
 import { mapState } from 'vuex'
+
+import helper from '@/helper'
 import YoutubePlayer from './YoutubePlayer'
 import LIHKGPreview from './LIHKGPreview'
-import helper from '@/helper'
 
 export default {
   props: ['href'],

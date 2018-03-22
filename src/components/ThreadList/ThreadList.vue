@@ -28,6 +28,7 @@
 
 <script>
 import { mapState } from 'vuex'
+
 import ThreadListItem from './ThreadListItem'
 import Placeholder from './Placeholder'
 

@@ -33,9 +33,10 @@
 </template>
 
 <script>
-import helper from '@/helper'
 import isEqual from 'lodash/isEqual'
 import debounce from 'lodash/debounce'
+
+import helper from '@/helper'
 
 export default {
   props: ['list'],
@@ -104,13 +105,13 @@ export default {
     }, 200),
   },
   watch: {
-    list() {
-      this.renderVisibleItems()
+    list: {
+      handler: 'renderVisibleItems',
+      immediate: true,
     },
   },
   mounted() {
     window.addEventListener('resize', this.onResize)
-    this.renderVisibleItems()
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.onResize)

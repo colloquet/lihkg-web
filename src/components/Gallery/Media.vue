@@ -3,7 +3,7 @@
     class="container"
     v-lazy:background-image="this.src"
     @click="$emit('click')"
-  ></div>
+  />
 </template>
 
 <script>

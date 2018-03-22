@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import CategoryView from '@/views/CategoryView'
 import ThreadView from '@/views/ThreadView'
 

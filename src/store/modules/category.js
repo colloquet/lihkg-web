@@ -1,24 +1,7 @@
 import API from '@/api'
+import helper from '@/helper'
 import * as types from '../mutation-types'
 
-function uniqBy(originalArray, objKey) {
-  const trimmedArray = []
-  const values = []
-  let value
-
-  for (let i = 0; i < originalArray.length; i += 1) {
-    value = originalArray[i][objKey]
-
-    if (values.indexOf(value) === -1) {
-      trimmedArray.push(originalArray[i])
-      values.push(value)
-    }
-  }
-
-  return trimmedArray
-}
-
-// initial state
 const initialState = {
   categoryList: [],
   fixedCategoryList: [],
@@ -29,10 +12,8 @@ const initialState = {
   hasMore: true,
 }
 
-// getters
 const getters = {}
 
-// actions
 const actions = {
   async fetchThreadList({ commit, state, dispatch }, { catId, page = 1, ...query }) {
     if (state.isLoading) return
@@ -62,7 +43,6 @@ const actions = {
   },
 }
 
-// mutations
 const mutations = {
   [types.SET_CATEGORY_IS_LOADING](state, isLoading) {
     state.isLoading = isLoading
@@ -86,7 +66,7 @@ const mutations = {
     state.threadList = threadList
   },
   [types.APPEND_THREAD_LIST](state, threadList) {
-    state.threadList = uniqBy(state.threadList.concat(threadList), 'thread_id')
+    state.threadList = helper.uniqBy(state.threadList.concat(threadList), 'thread_id')
   },
 }
 

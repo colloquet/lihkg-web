@@ -41,6 +41,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
+
 import helper from '@/helper'
 import Modal from './Modal'
 import Toggle from './Toggle'

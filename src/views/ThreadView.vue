@@ -42,6 +42,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
+
 import helper from '@/helper'
 import Page from '@/components/Thread/Page'
 import ThreadNavigation from '@/components/Thread/ThreadNavigation'

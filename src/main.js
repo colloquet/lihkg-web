@@ -63,8 +63,8 @@ async function fetchIconMap() {
 }
 
 async function fetchSystemProperty() {
-  const data = await API.fetchSystemProperty()
-  return data.response
+  const { response } = await API.fetchSystemProperty()
+  return response
 }
 
 window.addEventListener('storage', (event) => {

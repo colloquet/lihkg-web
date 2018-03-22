@@ -7,12 +7,13 @@
       <div class="error" v-if="error"></div>
       <Loader v-else-if="!loaded" />
     </template>
-    <img :src="placeholder" class="placeholder" @click="loadImage" v-else>
+    <img :src="placeholder" class="placeholder" @click="loadImage" v-else />
   </lazy-component>
 </template>
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
+
 import placeholder from '@/assets/image-placeholder.png'
 import Loader from '../../Loader'
 

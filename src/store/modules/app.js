@@ -1,7 +1,6 @@
 import storage from '@/storage'
 import * as types from '../mutation-types'
 
-// initial state
 const initialState = {
   isHoverable: !window.matchMedia('(hover: none)').matches,
   isMobile: window.innerWidth < 768,
@@ -15,13 +14,10 @@ const initialState = {
   flattenIconMap: {},
 }
 
-// getters
 const getters = {}
 
-// actions
 const actions = {}
 
-// mutations
 const mutations = {
   [types.SYNC_HISTORY](state, history) {
     state.history = history

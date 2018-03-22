@@ -33,6 +33,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+
 import Media from './Media'
 
 export default {

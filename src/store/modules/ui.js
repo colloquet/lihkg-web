@@ -1,19 +1,15 @@
 import * as types from '../mutation-types'
 
-// initial state
 const initialState = {
   showDrawer: false,
   showSettingsModal: false,
   showGallery: false,
 }
 
-// getters
 const getters = {}
 
-// actions
 const actions = {}
 
-// mutations
 const mutations = {
   [types.TOGGLE_DRAWER](state) {
     state.showDrawer = !state.showDrawer

@@ -1,5 +1,4 @@
 import NProgress from 'nprogress'
-// import * as types from './mutation-types'
 
 NProgress.configure({ showSpinner: false })
 

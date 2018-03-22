@@ -1,7 +1,6 @@
 import API from '@/api'
 import * as types from '../mutation-types'
 
-// initial state
 const initialState = {
   isLoading: false,
   isFetchingMedia: false,
@@ -12,7 +11,6 @@ const initialState = {
   mediaIndex: null,
 }
 
-// getters
 const getters = {
   loadedPages(state) {
     return Object.keys(state.thread.pages || {})
@@ -28,7 +26,6 @@ const getters = {
   },
 }
 
-// actions
 const actions = {
   async fetchThread(
     { commit, state, dispatch },
@@ -94,7 +91,6 @@ const actions = {
   },
 }
 
-// mutations
 const mutations = {
   [types.SET_STORY_MODE](state, storyMode) {
     state.storyMode = storyMode

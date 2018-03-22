@@ -76,6 +76,7 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { headroom } from 'vue-headroom'
+
 import helper from '@/helper'
 
 export default {

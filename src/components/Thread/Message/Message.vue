@@ -3,6 +3,7 @@ import { mapState } from 'vuex'
 import parseAST from 'html-parse-stringify/lib/parse'
 import linkifyHtml from 'linkifyjs/html'
 import decode from 'entities/lib/decode'
+
 import Message from './Message'
 import Quote from './Quote'
 import Member from './Member'
@@ -59,7 +60,7 @@ export default {
     renderAST(h, ast, nestInfo = { quote: 1, sub: 1 }) {
       return ast.map(node => {
         if (node.type === 'text') {
-          return decode.HTML(node.content)
+          return this.decode(node.content)
         }
         switch (node.name) {
           case 'blockquote': {
@@ -120,7 +121,7 @@ export default {
             )
           }
           case 'img': {
-            const src = decode.HTML(node.attrs.src)
+            const src = this.decode(node.attrs.src)
             if (node.attrs.class && node.attrs.class.indexOf('hkgmoji') >= 0) {
               return h('icon', {
                 props: { src },
@@ -141,7 +142,7 @@ export default {
               'anchor',
               {
                 props: {
-                  href: decode.HTML(node.attrs.href),
+                  href: this.decode(node.attrs.href),
                 },
               },
               this.renderAST(h, node.children),

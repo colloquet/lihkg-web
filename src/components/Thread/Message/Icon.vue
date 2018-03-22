@@ -1,6 +1,6 @@
 <template>
   <span v-if="officeMode">{{ code }}</span>
-  <img :src="source" :alt="code" v-else>
+  <img :src="source" :alt="code" v-else />
 </template>
 
 <script>

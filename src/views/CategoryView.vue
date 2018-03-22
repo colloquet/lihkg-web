@@ -12,6 +12,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
+
 import helper from '@/helper'
 import ThreadList from '../components/ThreadList/ThreadList'
 import SubCategorySwitcher from '../components/SubCategorySwitcher'
@@ -82,13 +83,8 @@ export default {
     },
   },
   watch: {
-    catId() {
-      this.fetchAndScrollTop()
-    },
-    // eslint-disable-next-line
-    '$route.query': function() {
-      this.fetchAndScrollTop()
-    },
+    catId: 'fetchAndScrollTop',
+    '$route.query': 'fetchAndScrollTop',
   },
   mounted() {
     setTimeout(() => {

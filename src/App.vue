@@ -20,6 +20,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+
 import Navbar from './components/Navbar'
 import BottomBar from './components/BottomBar'
 import Drawer from './components/Drawer'
