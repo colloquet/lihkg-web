@@ -110,7 +110,7 @@ export default {
       this.updateUrl(this.maxPage + 1)
     },
     jumpToPage(page, retainScroll) {
-      const pageNumber = page + +retainScroll
+      const pageNumber = Number(page) + Number(retainScroll)
       const offsetTop = retainScroll ? 180 : 120
       const pageContainer = document.getElementById(`page-${pageNumber}`)
 
