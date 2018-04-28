@@ -38,26 +38,4 @@
   width: 100%;
   height: 20px;
 }
-
-.animated {
-  border-radius: 4px;
-  background: linear-gradient(45deg, #f9f9f9, #f3f3f3, #f9f9f9);
-  animation: loading 2s ease infinite;
-  background-size: 600% 600%;
-
-  .night-mode & {
-    background: linear-gradient(45deg, #222, #333, #222);
-    background-size: 600% 600%;
-  }
-}
-
-@keyframes loading {
-  0%,
-  to {
-    background-position: 0 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
 </style>

@@ -36,7 +36,10 @@
     </div>
   </div>
   <div class="loader-container" v-else>
-    <Loader :f5="true" />
+    <NavigationPlaceholder />
+    <div>
+      <PostPlaceholder :key="n" v-for="n in 3" />
+    </div>
   </div>
 </template>
 
@@ -46,6 +49,8 @@ import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import helper from '@/helper'
 import Page from '@/components/Thread/Page'
 import ThreadNavigation from '@/components/Thread/ThreadNavigation'
+import NavigationPlaceholder from '@/components/Thread/NavigationPlaceholder'
+import PostPlaceholder from '@/components/Thread/PostPlaceholder'
 import Loader from '@/components/Loader'
 
 export default {
@@ -57,6 +62,8 @@ export default {
   components: {
     Page,
     ThreadNavigation,
+    NavigationPlaceholder,
+    PostPlaceholder,
     Loader,
   },
   props: ['threadId', 'page'],
@@ -261,10 +268,5 @@ $color: #1ecd97;
     background-color: $color;
     color: #fff;
   }
-}
-
-.loader-container {
-  margin: 1rem;
-  text-align: center;
 }
 </style>
