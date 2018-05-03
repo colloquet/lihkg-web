@@ -5,7 +5,7 @@ import * as types from '../mutation-types'
 const initialState = {
   categoryList: [],
   fixedCategoryList: [],
-  category: {},
+  category: null,
   threadList: [],
   page: 1,
   isLoading: false,
@@ -28,9 +28,7 @@ const actions = {
         throw data
       }
 
-      console.log(append)
-
-      commit(types.SET_CATEGORY, data.data.list)
+      commit(types.SET_CATEGORY, catId)
       if (append) {
         commit(types.APPEND_THREAD_LIST, data.data.list)
       } else {

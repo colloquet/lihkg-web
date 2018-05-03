@@ -18,9 +18,9 @@
         <li>
           公司模式 <Toggle :on="officeMode" @change="handleToggleClick('officeMode')" />
         </li>
-        <li>
+        <!-- <li>
           靜態表情 <Toggle :on="staticIcons" @change="handleToggleClick('staticIcons')" />
-        </li>
+        </li> -->
         <li class="center">
           <ActionButton @click="handleClearHistory" :success="clearHistorySuccess">
             <span slot="text">

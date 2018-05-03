@@ -27,8 +27,8 @@
 
           <div class="center">
             <div @click="scrollToTop">
-              <span v-if="inThreadView" :title="thread.title">{{ thread.title || 'LIHKG' }}</span>
-              <span v-else>{{ category.name || 'LIHKG' }}</span>
+              <span v-if="inThreadView" :title="thread.title">{{ thread.title || '香港高登' }}</span>
+              <span v-else>{{ topicsMap[category] || '香港高登' }}</span>
             </div>
           </div>
 
@@ -44,15 +44,15 @@
 
             <template v-if="inThreadView && !isMobile">
               <div class="item score">
-                <span class="icon-thumbs-up"></span> <small>{{ thread.like_count || '-' }}</small>
+                <span class="icon-thumbs-up"></span> <small>{{ thread.marksGood || '-' }}</small>
               </div>
               <div class="item score">
-                <span class="icon-thumbs-down"></span> <small>{{ thread.dislike_count || '-' }}</small>
+                <span class="icon-thumbs-down"></span> <small>{{ thread.marksBad || '-' }}</small>
               </div>
-              <button class="action" @click="handleMediaModeClick" v-if="!isMobile" title="圖片模式">
+              <!-- <button class="action" @click="handleMediaModeClick" v-if="!isMobile" title="圖片模式">
                 <span class="icon-image"></span>
-              </button>
-              <button
+              </button> -->
+              <!-- <button
                 class="action"
                 :class="{'is-active': $route.query.order === 'score'}"
                 @click="handleHotReplyClick"
@@ -60,7 +60,7 @@
                 title="熱門回覆"
               >
                 <span class="icon-trending-up"></span>
-              </button>
+              </button> -->
             </template>
 
             <button class="action" @click="handleSettingsClick" v-if="!isMobile" title="設定">
@@ -94,7 +94,7 @@ export default {
       showDrawer: state => state.ui.showDrawer,
       category: state => state.category.category,
       thread: state => state.thread.thread,
-      relatedCatId: state => state.thread.thread.cat_id || 1,
+      relatedCatId: state => state.thread.thread.forum || 'BW',
       mediaList: state => state.thread.mediaList,
     }),
     inThreadView() {
@@ -102,6 +102,9 @@ export default {
     },
     inCatView() {
       return this.$route.name === 'CategoryView'
+    },
+    topicsMap() {
+      return helper.topicsMap
     },
   },
   methods: {
@@ -119,7 +122,7 @@ export default {
         eventLabel: 'F5',
       })
       this.setThreadList([])
-      await this.fetchThreadList({ catId: this.category.cat_id })
+      await this.fetchThreadList({ catId: this.category })
       window.scrollTo(0, 0)
     },
     handleNavMenuClick() {
@@ -144,10 +147,10 @@ export default {
         eventAction: 'click',
         eventLabel: 'Back',
       })
-      if (this.category.cat_id) {
+      if (this.category) {
         window.history.back()
       } else {
-        this.$router.push(`/category/${this.relatedCatId}`)
+        this.$router.push(`/topics/${this.relatedCatId}`)
       }
     },
     handleMediaModeClick() {

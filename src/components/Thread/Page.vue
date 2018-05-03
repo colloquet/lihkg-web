@@ -1,13 +1,11 @@
 <template>
   <div :id="`page-${pageNumber}`">
-    <ul class="post-list">
-      <Post
-        v-for="post in pageObj"
-        v-if="+post.status === 1"
-        :key="post.post_id"
-        :post="post"
-      />
-    </ul>
+    <Post
+      v-for="post in pageObj"
+      :key="post.id"
+      :post="post"
+      :page="pageNumber"
+    />
   </div>
 </template>
 
@@ -21,11 +19,3 @@ export default {
   props: ['pageObj', 'pageNumber', 'threadId'],
 }
 </script>
-
-<style lang="scss" scoped>
-.post-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-</style>

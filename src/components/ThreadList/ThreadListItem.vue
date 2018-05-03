@@ -5,6 +5,7 @@
       class="thread-list-item"
       :to="routeObj"
     >
+      <span class="icon-hot hot indicator" v-if="isHot"></span>
       <span class="unread indicator" v-if="hasUnread"></span>
       <span class="visited indicator" v-else-if="isVisited"></span>
 
@@ -112,12 +113,15 @@ export default {
     hasUnread() {
       return this.newReply > 0
     },
+    isHot() {
+      return this.thread.iconType.toLowerCase().includes('hot')
+    },
   },
   methods: {
     handlePageSelectClick: () => false,
     handlePageSelect(event) {
       this.$router.push(
-        `/thread/${this.thread.id}/page/${event.target.value}`,
+        `/view/${this.thread.id}/${event.target.value}`,
       )
     },
   },

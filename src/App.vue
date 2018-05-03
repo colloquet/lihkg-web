@@ -36,8 +36,8 @@ export default {
     const isMobileClass = this.isMobile ? 'is-mobile' : ''
     const isHoverableClass = this.isHoverable ? 'is-hoverable' : ''
     return {
-      title: this.officeMode ? 'Google' : 'HKGOLDEN',
-      titleTemplate: this.officeMode ? null : '%s | HKGOLDEN（非官方)',
+      title: this.officeMode ? 'Google' : '香港高登',
+      titleTemplate: this.officeMode ? null : '%s | 香港高登（非官方)',
       htmlAttrs: {
         class: `${nightModeClass} ${isMobileClass} ${isHoverableClass}`,
       },
@@ -146,6 +146,20 @@ a {
 
   .night-mode & {
     color: #3498db;
+  }
+}
+
+blockquote {
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid #ddd;
+  color: #888;
+
+  .night-mode & {
+    border-left-color: #444;
   }
 }
 

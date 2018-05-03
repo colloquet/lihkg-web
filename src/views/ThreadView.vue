@@ -1,27 +1,30 @@
 <template>
-  <div class="threadview-container" v-if="thread.thread_id">
+  <div class="threadview-container" v-if="thread.id">
     <template v-for="(pageObj, pageNumber) in thread.pages">
       <ThreadNavigation
         :key="`${pageNumber}-header`"
-        :thread-id="thread.thread_id"
+        :thread-id="thread.id"
         :page="+pageNumber"
-        :total-page="thread.total_page"
+        :total-page="thread.totalPage"
         @navigate="fetchPage"
       />
 
-      <Page
-        :key="pageNumber"
-        :page-obj="pageObj"
-        :page-number="+pageNumber"
-        :thread-id="thread.thread_id"
-      />
+      <div :key="`page-${pageNumber}`" :id="`page-${pageNumber}`">
+        <Post :key="`${pageNumber}-op`" :post="thread" :page="1" v-if="+pageNumber === 1" />
+        <Post
+          v-for="post in pageObj"
+          :key="post.id"
+          :post="post"
+          :page="pageNumber"
+        />
+      </div>
 
       <ThreadNavigation
         v-if="loadedPages.indexOf(pageNumber) === loadedPages.length - 1"
         :key="`${pageNumber}-footer`"
-        :thread-id="thread.thread_id"
+        :thread-id="thread.id"
         :page="+pageNumber"
-        :total-page="thread.total_page"
+        :total-page="thread.totalPage"
         @navigate="fetchPage"
       />
     </template>
@@ -47,6 +50,7 @@
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 
 import helper from '@/helper'
+import Post from '@/components/Thread/Post'
 import Page from '@/components/Thread/Page'
 import ThreadNavigation from '@/components/Thread/ThreadNavigation'
 import NavigationPlaceholder from '@/components/Thread/NavigationPlaceholder'
@@ -60,6 +64,7 @@ export default {
     }
   },
   components: {
+    Post,
     Page,
     ThreadNavigation,
     NavigationPlaceholder,
@@ -73,12 +78,7 @@ export default {
       thread: state => state.thread.thread,
       isLoading: state => state.thread.isLoading,
     }),
-    ...mapGetters([
-      'loadedPages',
-      'maxPage',
-      'minPage',
-      'hasNextPage',
-    ]),
+    ...mapGetters(['loadedPages', 'maxPage', 'minPage', 'hasNextPage']),
   },
   methods: {
     ...mapActions(['fetchThread']),
@@ -144,7 +144,7 @@ export default {
         page: this.page,
         append: true,
       })
-      if (data.response && data.response.total_page > this.maxPage) {
+      if (data.response && data.response.totalPage > this.maxPage) {
         this.fetchNextPage()
       }
     },
@@ -208,7 +208,7 @@ export default {
     this.setThread({})
   },
   async mounted() {
-    if (!this.thread.thread_id) {
+    if (!this.thread.id) {
       await this.tryFetchThread({
         page: this.page,
       })

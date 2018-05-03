@@ -91,7 +91,10 @@ export default {
             return h(
               'span',
               {
-                style: getInlineStyle(node.attrs.style),
+                style: {
+                  color: node.attrs['data-color'],
+                  fontSize: node.attrs['data-size'],
+                },
               },
               this.renderAST(h, node.children),
             )
@@ -100,7 +103,9 @@ export default {
             return h(
               'div',
               {
-                style: getInlineStyle(node.attrs.style),
+                style: {
+                  textAlign: node.attrs['data-align'],
+                },
               },
               this.renderAST(h, node.children),
             )
@@ -122,9 +127,9 @@ export default {
           }
           case 'img': {
             const src = this.decode(node.attrs.src)
-            if (node.attrs.class && node.attrs.class.indexOf('hkgmoji') >= 0) {
+            if ('data-icons' in node.attrs) {
               return h('icon', {
-                props: { src },
+                props: { src, alt: node.attrs.alt },
               })
             }
 

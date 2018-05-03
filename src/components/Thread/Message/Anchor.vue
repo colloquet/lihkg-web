@@ -9,7 +9,7 @@
     </a>
   </div>
 
-  <LIHKGPreview :thread-id="linkInfo.threadId" :href="href" v-else-if="isLihkg" />
+  <!-- <LIHKGPreview :thread-id="linkInfo.threadId" :href="href" v-else-if="isLihkg" /> -->
 
   <a :href="href" target="_blank" v-else>
     <slot></slot>

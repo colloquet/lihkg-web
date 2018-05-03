@@ -22,7 +22,7 @@ const getters = {
     return Math.min(..._getters.loadedPages)
   },
   hasNextPage(state, _getters) {
-    return _getters.maxPage < state.thread.total_page
+    return _getters.maxPage < state.thread.totalPage
   },
 }
 
@@ -43,13 +43,13 @@ const actions = {
     try {
       const data = await API.fetchThread({ threadId, page, order })
       if (append) {
-        commit(types.APPEND_THREAD, data.response)
+        commit(types.APPEND_THREAD, data.data)
       } else {
-        commit(types.SET_THREAD, data.response)
+        commit(types.SET_THREAD, data.data)
       }
       commit(types.SET_THREAD_PAGE, page)
       if (order === 'reply_time') {
-        commit(types.SET_HISTORY, data.response)
+        commit(types.SET_HISTORY, data.data)
       }
       return data
     } catch (error) {
@@ -105,7 +105,7 @@ const mutations = {
     state.thread = {
       ...thread,
       pages: {
-        [thread.page]: thread.item_data,
+        [thread.currentPage]: thread.replies,
       },
     }
   },
@@ -114,7 +114,7 @@ const mutations = {
       ...thread,
       pages: {
         ...(state.thread.pages || {}),
-        [thread.page]: thread.item_data,
+        [thread.currentPage]: thread.replies,
       },
     }
   },

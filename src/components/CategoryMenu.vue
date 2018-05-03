@@ -11,10 +11,9 @@
             <div
               class="grid-item"
               :key="section.name"
-              v-for="section in fixedCategoryList"
-              :class="{'is-single': section.name === '其他'}"
+              v-for="section in fixedTopicList"
             >
-              <span class="title">{{ section.name || '一般' }}</span>
+              <span class="title">{{ section.name }}</span>
               <ul class="submenu">
                 <li v-for="category in section.cat_list" :key="category.cat_id">
                   <a
@@ -37,13 +36,17 @@
 <script>
 import { mapState, mapMutations } from 'vuex'
 
+import helper from '@/helper'
+
 export default {
   computed: {
     ...mapState({
-      fixedCategoryList: state => state.category.fixedCategoryList,
       showDrawer: state => state.ui.showDrawer,
       activeCategoryId: state => state.category.category.cat_id,
     }),
+    fixedTopicList() {
+      return helper.fixedTopicList
+    },
   },
   methods: {
     ...mapMutations({

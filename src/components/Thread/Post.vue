@@ -1,8 +1,8 @@
 <template>
-  <li ref="container" :id="`post-${post.msg_num}`" class="post" :data-id="post.msg_num" :data-page="post.page">
+  <div ref="container" :id="`post-${post.id}`" class="post" :data-id="post.id" :data-page="page">
     <small class="meta">
-      <span :class="{'color-admin': isAuthor}">#{{ post.msg_num }}</span>
-      <span class="username" v-username="post.user">{{ post.user_nickname }}</span>
+      <span :class="{'color-admin': isAuthor}">#{{ post.index || 0 }}</span>
+      <span class="username" v-username="post.authorGender">{{ post.authorName }}</span>
       <span class="temp-visible-toggle" @click="tempVisible = !tempVisible" v-if="storyMode && +storyMode !== +userId">
         暫時{{ tempVisible ? '隱藏' : '顯示' }}
       </span>
@@ -16,19 +16,19 @@
     </small>
 
     <div class="post-msg" v-show="!storyMode || +storyMode === +userId || tempVisible">
-      <PostQuote :quote="this.post.quote" v-if="this.post.quote" :level="1" />
-      <Message :html="this.post.msg" />
+      <!-- <PostQuote :quote="this.post.quote" v-if="this.post.quote" :level="1" /> -->
+      <Message :html="this.post.content" />
     </div>
 
-    <small class="scores">
+    <!-- <small class="scores">
       <span v-score="likeCount">
         <span class="icon-arrow-up"></span> {{ likeCount }}
       </span>
       <span v-score:dislike="dislikeCount">
         <span class="icon-arrow-down"></span> {{ dislikeCount }}
       </span>
-    </small>
-  </li>
+    </small> -->
+  </div>
 </template>
 
 <script>
@@ -39,7 +39,7 @@ import PostQuote from './PostQuote'
 import Message from './Message/Message'
 
 export default {
-  props: ['post'],
+  props: ['post', 'page'],
   components: {
     PostQuote,
     Message,
@@ -53,26 +53,26 @@ export default {
   computed: {
     ...mapState({
       storyMode: state => state.thread.storyMode,
-      authodId: state => state.thread.thread.user_id,
-      threadLikeCount: state => state.thread.thread.like_count,
-      threadDislikeCount: state => state.thread.thread.dislike_count,
+      authodId: state => state.thread.thread.authorId,
+      threadLikeCount: state => state.thread.thread.marksGood,
+      threadDislikeCount: state => state.thread.thread.marksBad,
     }),
     userId() {
-      return this.post.user.user_id
+      return this.post.authorId
     },
     isAuthor() {
       return +this.authodId === +this.userId
     },
-    likeCount() {
-      return this.post.msg_num === 1 ? this.threadLikeCount : this.post.like_count
-    },
-    dislikeCount() {
-      return this.post.msg_num === 1 ? this.threadDislikeCount : this.post.dislike_count
-    },
+    // likeCount() {
+    //   return this.post.msg_num === 1 ? this.threadLikeCount : this.post.like_count
+    // },
+    // dislikeCount() {
+    //   return this.post.msg_num === 1 ? this.threadDislikeCount : this.post.dislike_count
+    // },
     replyTime() {
       return {
-        relative: helper.getRelativeTime(this.post.reply_time),
-        absolute: helper.getConvertedTime(this.post.reply_time),
+        relative: helper.getRelativeTime(this.post.replyDate || this.post.messageDate / 1000),
+        absolute: helper.getConvertedTime(this.post.replyDate || this.post.messageDate / 1000),
       }
     },
   },
@@ -147,20 +147,6 @@ export default {
   word-break: break-word;
   line-height: 1.5;
   font-size: 1.125rem;
-
-  blockquote {
-    display: inline-block;
-    width: 100%;
-    margin: 0;
-    margin-bottom: 1rem;
-    padding-left: 1rem;
-    border-left: 1px solid #ddd;
-    color: #888;
-
-    .night-mode & {
-      border-left-color: #444;
-    }
-  }
 }
 
 .scores {

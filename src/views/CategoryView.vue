@@ -21,7 +21,7 @@ export default {
   },
   metaInfo() {
     return {
-      title: this.officeMode ? 'Google' : this.category.name || 'LIHKG',
+      title: this.officeMode ? 'Google' : helper.topicsMap[this.category] || '香港高登',
     }
   },
   data() {
@@ -80,7 +80,7 @@ export default {
 
     if (
       this.threadList.length &&
-      +this.$route.params.catId === +this.category.cat_id
+      this.$route.params.catId === this.category
     ) {
       if (this.activeThreadId) {
         const threadItem = document.getElementById(this.activeThreadId)
