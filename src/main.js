@@ -14,7 +14,6 @@ import * as types from '@/store/mutation-types'
 import App from './App'
 import router from './router'
 import store from './store'
-import API from './api'
 import './assets/font.css'
 
 Vue.config.productionTip = false
@@ -25,10 +24,8 @@ Vue.use(Meta)
 Vue.use(headroom)
 Vue.use(VueObserveVisibility)
 
-Vue.directive('username', (el, { value: user }) => {
-  if (+user.level === 999) {
-    el.className += ' color-admin'
-  } else if (user.gender === 'M') {
+Vue.directive('username', (el, { value: gender }) => {
+  if (gender === 1) {
     el.className += ' color-male'
   } else {
     el.className += ' color-female'
@@ -42,30 +39,6 @@ Vue.directive('score', (el, { value: score, arg }) => {
     el.className += ' color-female'
   }
 })
-
-async function fetchIconMap() {
-  const response = await fetch('https://x.lihkg.com/hkgmoji7.json')
-  const hkgmoji = await response.json()
-  const flattenIconMap = hkgmoji.reduce(
-    (set, current) => ({
-      ...set,
-      ...current.icons.reduce(
-        (all, icon) => ({
-          ...all,
-          [icon[1]]: icon[0],
-        }),
-        {},
-      ),
-    }),
-    {},
-  )
-  return flattenIconMap
-}
-
-async function fetchSystemProperty() {
-  const { response } = await API.fetchSystemProperty()
-  return response
-}
 
 window.addEventListener('storage', (event) => {
   if (event.key === 'history') {
@@ -85,20 +58,6 @@ window.addEventListener('storage', (event) => {
 })
 
 helper.initYoutube()
-
-async function init() {
-  const [iconMap, systemProperty] = await Promise.all([fetchIconMap(), fetchSystemProperty()])
-
-  // remove 自選台
-  const fixedCategoryList = systemProperty.fixed_category_list
-  fixedCategoryList[0].cat_list = fixedCategoryList[0].cat_list.filter(cat => +cat.cat_id !== 999)
-
-  store.commit('SET_ICON_MAP', iconMap)
-  store.commit('SET_CATEGORY_LIST', systemProperty.category_list)
-  store.commit('SET_FIXED_CATEGORY_LIST', fixedCategoryList)
-}
-
-init()
 
 /* eslint-disable no-new */
 new Vue({

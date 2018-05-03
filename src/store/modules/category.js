@@ -15,24 +15,31 @@ const initialState = {
 const getters = {}
 
 const actions = {
-  async fetchThreadList({ commit, state, dispatch }, { catId, page = 1, ...query }) {
+  async fetchThreadList({ commit, state, dispatch }, { catId, page = 1 }) {
     if (state.isLoading) return
 
     const append = page > 1
     commit(types.SET_CATEGORY_IS_LOADING, true)
 
     try {
-      const data = await API.fetchThreadList({ catId, page, ...query })
-      commit(types.SET_CATEGORY, data.response.category)
+      const data = await API.fetchThreadList({ catId, page })
+
+      if (!data.data.list.length) {
+        throw data
+      }
+
+      console.log(append)
+
+      commit(types.SET_CATEGORY, data.data.list)
       if (append) {
-        commit(types.APPEND_THREAD_LIST, data.response.items)
+        commit(types.APPEND_THREAD_LIST, data.data.list)
       } else {
-        commit(types.SET_THREAD_LIST, data.response.items)
+        commit(types.SET_THREAD_LIST, data.data.list)
       }
       commit(types.SET_CATEGORY_PAGE, page)
       commit(types.SET_CATEGORY_HAS_MORE, true)
     } catch (error) {
-      if (error.error_code === 100) {
+      if (!error.data.list.length) {
         commit(types.SET_CATEGORY_HAS_MORE, false)
       } else {
         dispatch('handleError', error)
@@ -66,7 +73,7 @@ const mutations = {
     state.threadList = threadList
   },
   [types.APPEND_THREAD_LIST](state, threadList) {
-    state.threadList = helper.uniqBy(state.threadList.concat(threadList), 'thread_id')
+    state.threadList = helper.uniqBy(state.threadList.concat(threadList), 'id')
   },
 }
 

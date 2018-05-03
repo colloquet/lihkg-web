@@ -1,73 +1,72 @@
 <template>
   <li>
     <router-link
-      :id="thread.thread_id"
+      :id="thread.id"
       class="thread-list-item"
       :to="routeObj"
     >
-      <span class="icon-hot hot indicator" v-if="thread.is_hot"></span>
       <span class="unread indicator" v-if="hasUnread"></span>
       <span class="visited indicator" v-else-if="isVisited"></span>
 
       <div class="body">
         <small class="meta">
           <div class="meta-left">
-            <span class="name" v-username="thread.user">
-              {{ thread.user_nickname }}
+            <span class="name" v-username="thread.authorGender">
+              {{ thread.authorName }}
             </span>
 
             <span class="time">{{ lastReplyTime }}</span>
 
             <span class="replies" v-if="!isMobile">
               <span class="icon-message-square"></span>
-              {{ thread.no_of_reply }}
+              {{ thread.totalReplies }}
               <span class="new-reply" v-if="hasUnread">
                 ( +{{ newReply }} )
               </span>
             </span>
 
-            <span class="score" v-score="score">
-              <span class="icon-thumbs-up" v-if="score > -1"></span>
+            <span class="score" v-score="thread.rating">
+              <span class="icon-thumbs-up" v-if="thread.rating > -1"></span>
               <span class="icon-thumbs-down" v-else></span>
-              {{ score }}
+              {{ thread.rating }}
             </span>
           </div>
 
           <div class="meta-right">
             <label class="page-switcher" @click.prevent="handlePageSelectClick">
-              {{ thread.total_page }} 頁 <span class="icon-chevron-down"></span>
+              {{ thread.totalPage }} 頁 <span class="icon-chevron-down"></span>
               <select @change="handlePageSelect" class="hidden-select">
                 <option>選擇頁數</option>
-                <option :value="n" :key="n" v-for="n in thread.total_page">第 {{ n }} 頁</option>
+                <option :value="n" :key="n" v-for="n in thread.totalPage">第 {{ n }} 頁</option>
               </select>
             </label>
           </div>
         </small>
 
         <div class="lower">
-          <div class="lower-left" v-if="!isMobile && +thread.total_page > 1">
+          <div class="lower-left" v-if="!isMobile && +thread.totalPage > 1">
             <span class="title">{{ thread.title }}</span>
 
-            <template v-for="page in +thread.total_page">
+            <template v-for="page in +thread.totalPage">
               <router-link
                 v-if="page <= 6"
                 :key="page"
-                :to="`/thread/${thread.thread_id}/page/${page}`"
+                :to="`/thread/${thread.id}/page/${page}`"
                 class="page-link"
               >{{ page }}</router-link>
 
-              <span :key="page" class="page-link" v-else-if="page > 6 && page === thread.total_page - 2" @click.prevent="handlePageSelectClick">
+              <span :key="page" class="page-link" v-else-if="page > 6 && page === thread.totalPage - 2" @click.prevent="handlePageSelectClick">
                 ...
                 <select @change="handlePageSelect" class="hidden-select">
                   <option>選擇頁數</option>
-                  <option :value="n" :key="n" v-for="n in thread.total_page">第 {{ n }} 頁</option>
+                  <option :value="n" :key="n" v-for="n in thread.totalPage">第 {{ n }} 頁</option>
                 </select>
               </span>
 
               <router-link
-                v-else-if="thread.total_page - page < 2"
+                v-else-if="thread.totalPage - page < 2"
                 :key="page"
-                :to="`/thread/${thread.thread_id}/page/${page}`"
+                :to="`/thread/${thread.id}/page/${page}`"
                 class="page-link"
               >{{ page }}</router-link>
             </template>
@@ -75,10 +74,6 @@
           <div class="lower-left" v-else>
             <span class="title">{{ thread.title }}</span>
           </div>
-
-          <small class="category-label">
-            {{ thread.category.name }}
-          </small>
         </div>
 
       </div>
@@ -101,7 +96,7 @@ export default {
       return {
         name: 'ThreadView',
         params: {
-          threadId: this.thread.thread_id,
+          threadId: this.thread.id,
           page: this.lastReadPage || 1,
         },
         query: this.lastReadPostId
@@ -111,11 +106,8 @@ export default {
           : {},
       }
     },
-    score() {
-      return this.thread.like_count - this.thread.dislike_count
-    },
     lastReplyTime() {
-      return helper.getRelativeTime(this.thread.last_reply_time)
+      return helper.getRelativeTime(this.thread.lastReplyDate / 1000)
     },
     hasUnread() {
       return this.newReply > 0
@@ -125,7 +117,7 @@ export default {
     handlePageSelectClick: () => false,
     handlePageSelect(event) {
       this.$router.push(
-        `/thread/${this.thread.thread_id}/page/${event.target.value}`,
+        `/thread/${this.thread.id}/page/${event.target.value}`,
       )
     },
   },

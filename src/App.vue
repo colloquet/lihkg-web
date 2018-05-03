@@ -36,8 +36,8 @@ export default {
     const isMobileClass = this.isMobile ? 'is-mobile' : ''
     const isHoverableClass = this.isHoverable ? 'is-hoverable' : ''
     return {
-      title: this.officeMode ? 'Google' : 'LIHKG',
-      titleTemplate: this.officeMode ? null : '%s | LIHKG（非官方)',
+      title: this.officeMode ? 'Google' : 'HKGOLDEN',
+      titleTemplate: this.officeMode ? null : '%s | HKGOLDEN（非官方)',
       htmlAttrs: {
         class: `${nightModeClass} ${isMobileClass} ${isHoverableClass}`,
       },

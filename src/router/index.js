@@ -19,14 +19,15 @@ const router = new Router({
     return { x: 0, y: 0 }
   },
   routes: [
-    { path: '/', redirect: '/category/1' },
-    { path: '/index.html', redirect: '/category/1' },
+    { path: '/', redirect: '/topics/BW' },
+    { path: '/index.html', redirect: '/topics/BW' },
+    { path: '/topics/:catId', redirect: '/topics/:catId/1' },
     { path: '/thread/:threadId', redirect: '/thread/:threadId/page/1' },
     { path: '/:threadId', redirect: '/thread/:threadId/page/1' },
     { path: '/t/:threadId', redirect: '/thread/:threadId/page/1' },
     { path: '/t/:threadId/page', redirect: '/thread/:threadId/page/:page' },
     {
-      path: '/category/:catId',
+      path: '/topics/:catId/:page',
       name: 'CategoryView',
       component: CategoryView,
       props: true,

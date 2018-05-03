@@ -6,12 +6,12 @@
     <ul class="thread-list" v-else>
       <ThreadListItem
         v-for="thread in threadList"
-        :key="thread.thread_id"
+        :key="thread.id"
         :thread="thread"
-        :is-visited="thread.thread_id in history"
-        :last-read-page="thread.thread_id in history && history[thread.thread_id].page"
-        :last-read-post-id="thread.thread_id in history && history[thread.thread_id].postId"
-        :new-reply="thread.thread_id in history && thread.no_of_reply - history[thread.thread_id].replies"
+        :is-visited="thread.id in history"
+        :last-read-page="thread.id in history && history[thread.id].page"
+        :last-read-post-id="thread.id in history && history[thread.id].postId"
+        :new-reply="thread.id in history && thread.totalReplies - history[thread.id].replies"
       />
     </ul>
 

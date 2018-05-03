@@ -5,7 +5,7 @@ NProgress.configure({ showSpinner: false })
 export default {
   handleError(store, error) {
     console.log(error)
-    alert(error.error_message || '遇到未知問題')
+    alert(error.error || '遇到未知問題')
   },
   startProgress() {
     NProgress.start()

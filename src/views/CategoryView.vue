@@ -1,7 +1,5 @@
 <template>
   <div class="categoryview-container">
-    <SubCategorySwitcher :list="subCategoryList" v-if="subCategoryList.length > 1" />
-
     <ThreadList
       :thread-list="threadList"
       :is-loading="isLoading"
@@ -15,13 +13,11 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 
 import helper from '@/helper'
 import ThreadList from '../components/ThreadList/ThreadList'
-import SubCategorySwitcher from '../components/SubCategorySwitcher'
 
 export default {
   props: ['catId'],
   components: {
     ThreadList,
-    SubCategorySwitcher,
   },
   metaInfo() {
     return {
@@ -59,7 +55,7 @@ export default {
       window.scrollTo(0, 0)
       this.fetchThreadList({
         catId: this.catId,
-        ...this.$route.query,
+        page: this.$route.params.page,
       })
     },
     handleLoadMore() {
@@ -70,21 +66,12 @@ export default {
     fetchNextPage() {
       this.fetchThreadList({
         catId: this.catId,
-        page: this.page + 1,
-        ...this.$route.query,
-      })
-    },
-    handleHotClick() {
-      helper.trackEvent({
-        eventCategory: 'CategoryView',
-        eventAction: 'click',
-        eventLabel: 'Hot',
+        page: +this.page + 1,
       })
     },
   },
   watch: {
     catId: 'fetchAndScrollTop',
-    '$route.query': 'fetchAndScrollTop',
   },
   mounted() {
     setTimeout(() => {
