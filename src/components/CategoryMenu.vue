@@ -18,7 +18,7 @@
                 <li v-for="category in section.cat_list" :key="category.cat_id">
                   <a
                     :class="{'is-active': category.cat_id === activeCategoryId}"
-                    :href="`/category/${category.cat_id}`"
+                    :href="`/topics/${category.cat_id}`"
                     @click.prevent="handleLinkClick"
                   >
                     {{ category.name }}

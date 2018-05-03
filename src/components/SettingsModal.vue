@@ -9,9 +9,9 @@
         <li>
           自動載入圖片 <Toggle :on="autoLoadImage" @change="handleToggleClick('autoLoadImage')" />
         </li>
-        <li>
+        <!-- <li>
           節省圖片流量 <Toggle :on="imageProxy" @change="handleToggleClick('imageProxy')" />
-        </li>
+        </li> -->
         <li>
           Youtube 預覽 <Toggle :on="youtubePreview" @change="handleToggleClick('youtubePreview')" />
         </li>

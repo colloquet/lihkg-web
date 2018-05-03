@@ -31,9 +31,9 @@ const mutations = {
   [types.SET_HISTORY](state, thread) {
     const history = {
       ...state.history,
-      [thread.thread_id]: {
-        page: thread.page,
-        replies: thread.no_of_reply,
+      [thread.id]: {
+        page: thread.currentPage,
+        replies: thread.totalReplies,
       },
     }
     storage.set('history', history)

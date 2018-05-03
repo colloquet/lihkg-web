@@ -52,7 +52,7 @@
               <router-link
                 v-if="page <= 6"
                 :key="page"
-                :to="`/thread/${thread.id}/page/${page}`"
+                :to="`/view/${thread.id}/${page}`"
                 class="page-link"
               >{{ page }}</router-link>
 

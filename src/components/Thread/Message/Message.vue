@@ -11,22 +11,6 @@ import Pic from './Pic'
 import Icon from './Icon'
 import Anchor from './Anchor'
 
-function getInlineStyle(str) {
-  return str
-    .split(/\s{0,};\s{0,}/)
-    .map(s => {
-      const [attr, value] = s.split(/\s{0,}:\s{0,}/)
-      return [attr.replace(/-([a-z])/g, g => g[1].toUpperCase()), value]
-    })
-    .reduce(
-      (accum, prop) => ({
-        ...accum,
-        [prop[0]]: prop[1],
-      }),
-      {},
-    )
-}
-
 export default {
   props: ['html'],
   components: {
@@ -38,9 +22,6 @@ export default {
     Anchor,
   },
   computed: {
-    ...mapState({
-      imageProxy: state => state.app.imageProxy,
-    }),
     parsedMessage() {
       let message = this.html
       message = linkifyHtml(message)
@@ -135,7 +116,7 @@ export default {
 
             return h('pic', {
               props: {
-                src: this.imageProxy ? `https://i.lihkg.com/540/${src}` : src,
+                src,
                 original: src,
               },
             })
