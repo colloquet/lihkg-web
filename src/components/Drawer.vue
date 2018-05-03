@@ -15,7 +15,7 @@
     >
       <div class="header">
         <span class="brand">
-          LIHKG
+          香港高登
         </span>
         <button class="action" @click="handleSettingsClick">
           <span class="icon-settings"></span>
@@ -232,7 +232,7 @@ export default {
 }
 
 .brand {
-  letter-spacing: 6px;
+  // letter-spacing: 6px;
   font-weight: 100;
 }
 
