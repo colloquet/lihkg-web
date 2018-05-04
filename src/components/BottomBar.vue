@@ -93,7 +93,7 @@ export default {
         eventLabel: 'F5',
       })
       this.setThreadList([])
-      await this.fetchThreadList({ catId: this.category.cat_id })
+      await this.fetchThreadList({ catId: this.category })
       window.scrollTo(0, 0)
     },
     handleSettingsClick() {
