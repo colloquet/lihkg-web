@@ -60,7 +60,7 @@ export default {
   computed: {
     ...mapState({
       isOpen: state => state.ui.showDrawer,
-      activeCategoryId: state => state.category.category.cat_id,
+      activeCategoryId: state => state.category.category,
       isSwipeDisabled: state =>
         state.thread.mediaList !== null || state.thread.mediaIndex !== null,
     }),

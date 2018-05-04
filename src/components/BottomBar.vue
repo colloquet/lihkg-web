@@ -22,12 +22,12 @@
 
       <template v-if="inThreadView">
         <div class="item score">
-          <span class="icon-thumbs-up"></span> <small>{{ thread.like_count || '-' }}</small>
+          <span class="icon-thumbs-up"></span> <small>{{ thread.marksGood || '-' }}</small>
         </div>
         <div class="item score">
-          <span class="icon-thumbs-down"></span> <small>{{ thread.dislike_count || '-' }}</small>
+          <span class="icon-thumbs-down"></span> <small>{{ thread.marksBad || '-' }}</small>
         </div>
-        <div class="item">
+        <!-- <div class="item">
           <button class="action" @click="handleMediaModeClick">
             <span class="icon-image"></span>
           </button>
@@ -40,7 +40,7 @@
           >
             <span class="icon-trending-up"></span>
           </button>
-        </div>
+        </div> -->
         <div class="item">
           <button class="action" @click="handleScrollBottom">
             <span class="icon-chevrons-down"></span>

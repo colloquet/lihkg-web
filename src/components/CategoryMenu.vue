@@ -42,7 +42,7 @@ export default {
   computed: {
     ...mapState({
       showDrawer: state => state.ui.showDrawer,
-      activeCategoryId: state => state.category.category.cat_id,
+      activeCategoryId: state => state.category.category,
     }),
     fixedTopicList() {
       return helper.fixedTopicList
