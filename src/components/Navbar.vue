@@ -49,18 +49,6 @@
               <div class="item score">
                 <span class="icon-thumbs-down"></span> <small>{{ thread.marksBad || '-' }}</small>
               </div>
-              <!-- <button class="action" @click="handleMediaModeClick" v-if="!isMobile" title="圖片模式">
-                <span class="icon-image"></span>
-              </button> -->
-              <!-- <button
-                class="action"
-                :class="{'is-active': $route.query.order === 'score'}"
-                @click="handleHotReplyClick"
-                v-if="!isMobile"
-                title="熱門回覆"
-              >
-                <span class="icon-trending-up"></span>
-              </button> -->
             </template>
 
             <button class="action" @click="handleSettingsClick" v-if="!isMobile" title="設定">
@@ -151,39 +139,6 @@ export default {
         window.history.back()
       } else {
         this.$router.push(`/topics/${this.relatedCatId}`)
-      }
-    },
-    handleMediaModeClick() {
-      helper.trackEvent({
-        eventCategory: 'Navbar',
-        eventAction: 'click',
-        eventLabel: 'Media',
-      })
-      if (this.mediaList) {
-        // if already fetched, show immediately and fetch update in the background
-        this.toggleGallery()
-        this.fetchMediaList({
-          threadId: this.thread.thread_id,
-          openGallery: false,
-          showProgress: false,
-        })
-      } else {
-        this.fetchMediaList({
-          threadId: this.thread.thread_id,
-          openGallery: true,
-        })
-      }
-    },
-    handleHotReplyClick() {
-      helper.trackEvent({
-        eventCategory: 'Navbar',
-        eventAction: 'click',
-        eventLabel: 'Hot Reply',
-      })
-      if (this.$route.query.order === 'score') {
-        this.$router.replace({ query: null })
-      } else {
-        this.$router.replace({ query: { order: 'score' } })
       }
     },
     scrollToTop() {

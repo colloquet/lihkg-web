@@ -38,7 +38,7 @@ export default {
       threadList: state => state.category.threadList,
       page: state => state.category.page,
       isLoading: state => state.category.isLoading,
-      activeThreadId: state => state.thread.thread.thread_id,
+      activeThreadId: state => state.thread.thread.id,
     }),
     subCategoryList() {
       const category = this.categoryList.find(cat => +cat.cat_id === +this.catId)
