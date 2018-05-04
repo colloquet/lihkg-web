@@ -1,4 +1,4 @@
-const API_ROOT = 'https://hkg-api.ireserve.me'
+const API_ROOT = 'https://hkg-api.colloque.io'
 
 const serialize = obj =>
   Object.keys(obj)
