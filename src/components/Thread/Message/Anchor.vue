@@ -9,8 +9,6 @@
     </a>
   </div>
 
-  <!-- <LIHKGPreview :thread-id="linkInfo.threadId" :href="href" v-else-if="isLihkg" /> -->
-
   <a :href="href" target="_blank" v-else>
     <slot></slot>
   </a>
@@ -21,13 +19,11 @@ import { mapState } from 'vuex'
 
 import helper from '@/helper'
 import YoutubePlayer from './YoutubePlayer'
-import LIHKGPreview from './LIHKGPreview'
 
 export default {
   props: ['href'],
   components: {
     YoutubePlayer,
-    LIHKGPreview,
   },
   data() {
     return {
@@ -50,14 +46,6 @@ export default {
       const start = ytMatches && ytMatches[2] ? helper.parseDuration(ytMatches[2].toLowerCase()) : 0
       this.linkInfo = { videoId, start }
       return
-    }
-
-    const lihkgMatches = this.href.match(helper.lihkgRegex)
-    const isLihkg = lihkgMatches && lihkgMatches[1]
-    this.isLihkg = isLihkg
-    if (isLihkg) {
-      const threadId = lihkgMatches && lihkgMatches[1]
-      this.linkInfo = { threadId }
     }
   },
 }

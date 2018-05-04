@@ -6,7 +6,6 @@ import decode from 'entities/lib/decode'
 
 import Message from './Message'
 import Quote from './Quote'
-import Member from './Member'
 import Pic from './Pic'
 import Icon from './Icon'
 import Anchor from './Anchor'
@@ -16,7 +15,6 @@ export default {
   components: {
     Message,
     Quote,
-    Member,
     Pic,
     Icon,
     Anchor,
@@ -90,22 +88,6 @@ export default {
               },
               this.renderAST(h, node.children),
             )
-          case 'sub': {
-            const newNestInfo = {
-              ...nestInfo,
-              sub: nestInfo.sub + 1,
-            }
-            return h(
-              'member',
-              {
-                props: {
-                  level: nestInfo.sub,
-                  isDeep: nestInfo.sub === 4,
-                },
-              },
-              this.renderAST(h, node.children, newNestInfo),
-            )
-          }
           case 'img': {
             const src = this.decode(node.attrs.src)
             if ('data-icons' in node.attrs) {

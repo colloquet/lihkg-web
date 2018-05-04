@@ -10,7 +10,6 @@ export default {
   props: ['src', 'alt'],
   computed: {
     ...mapState({
-      flattenIconMap: state => state.app.flattenIconMap,
       officeMode: state => state.app.officeMode,
     }),
   },

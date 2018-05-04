@@ -27,20 +27,6 @@
         <div class="item score">
           <span class="icon-thumbs-down"></span> <small>{{ thread.marksBad || '-' }}</small>
         </div>
-        <!-- <div class="item">
-          <button class="action" @click="handleMediaModeClick">
-            <span class="icon-image"></span>
-          </button>
-        </div>
-        <div class="item">
-          <button
-            class="action"
-            :class="{'is-active': $route.query.order === 'score'}"
-            @click="handleHotReplyClick"
-          >
-            <span class="icon-trending-up"></span>
-          </button>
-        </div> -->
         <div class="item">
           <button class="action" @click="handleScrollBottom">
             <span class="icon-chevrons-down"></span>
@@ -111,39 +97,6 @@ export default {
         eventLabel: 'Scroll to bottom',
       })
       window.scrollTo(0, document.body.scrollHeight)
-    },
-    handleMediaModeClick() {
-      helper.trackEvent({
-        eventCategory: 'BottomBar',
-        eventAction: 'click',
-        eventLabel: 'Media',
-      })
-      if (this.mediaList) {
-        // if already fetched, show immediately and fetch update in the background
-        this.toggleGallery()
-        this.fetchMediaList({
-          threadId: this.thread.thread_id,
-          openGallery: false,
-          showProgress: false,
-        })
-      } else {
-        this.fetchMediaList({
-          threadId: this.thread.thread_id,
-          openGallery: true,
-        })
-      }
-    },
-    handleHotReplyClick() {
-      helper.trackEvent({
-        eventCategory: 'BottomBar',
-        eventAction: 'click',
-        eventLabel: 'Hot Reply',
-      })
-      if (this.$route.query.order === 'score') {
-        this.$router.replace({ query: null })
-      } else {
-        this.$router.replace({ query: { order: 'score' } })
-      }
     },
   },
 }

@@ -38,7 +38,7 @@ const helper = {
     const secondPerMonth = secondPerDay * 30
     const secondPerYear = secondPerDay * 365
 
-    const elapsed = current - timestamp
+    const elapsed = current - (timestamp / 1000)
 
     if (elapsed < secondPerMinute) {
       return '剛剛'
@@ -55,7 +55,7 @@ const helper = {
     return `${Math.round(elapsed / secondPerYear)} 年前`
   },
   getConvertedTime(timestamp) {
-    const date = new Date(timestamp * 1000)
+    const date = new Date(timestamp)
     const year = date.getFullYear()
     const month = date.getMonth() + 1
     const day = date.getDate()

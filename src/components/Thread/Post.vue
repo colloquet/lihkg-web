@@ -16,18 +16,8 @@
     </small>
 
     <div class="post-msg" v-show="!storyMode || +storyMode === +userId || tempVisible">
-      <!-- <PostQuote :quote="this.post.quote" v-if="this.post.quote" :level="1" /> -->
       <Message :html="this.post.content" />
     </div>
-
-    <!-- <small class="scores">
-      <span v-score="likeCount">
-        <span class="icon-arrow-up"></span> {{ likeCount }}
-      </span>
-      <span v-score:dislike="dislikeCount">
-        <span class="icon-arrow-down"></span> {{ dislikeCount }}
-      </span>
-    </small> -->
   </div>
 </template>
 
@@ -35,13 +25,11 @@
 import { mapState, mapMutations } from 'vuex'
 
 import helper from '@/helper'
-import PostQuote from './PostQuote'
 import Message from './Message/Message'
 
 export default {
   props: ['post', 'page'],
   components: {
-    PostQuote,
     Message,
   },
   data() {
@@ -63,16 +51,10 @@ export default {
     isAuthor() {
       return +this.authodId === +this.userId
     },
-    // likeCount() {
-    //   return this.post.msg_num === 1 ? this.threadLikeCount : this.post.like_count
-    // },
-    // dislikeCount() {
-    //   return this.post.msg_num === 1 ? this.threadDislikeCount : this.post.dislike_count
-    // },
     replyTime() {
       return {
-        relative: helper.getRelativeTime(this.post.replyDate || this.post.messageDate / 1000),
-        absolute: helper.getConvertedTime(this.post.replyDate || this.post.messageDate / 1000),
+        relative: helper.getRelativeTime(this.post.replyDate || this.post.messageDate),
+        absolute: helper.getConvertedTime(this.post.replyDate || this.post.messageDate),
       }
     },
   },

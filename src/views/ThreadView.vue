@@ -51,7 +51,6 @@ import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 
 import helper from '@/helper'
 import Post from '@/components/Thread/Post'
-import Page from '@/components/Thread/Page'
 import ThreadNavigation from '@/components/Thread/ThreadNavigation'
 import NavigationPlaceholder from '@/components/Thread/NavigationPlaceholder'
 import PostPlaceholder from '@/components/Thread/PostPlaceholder'
@@ -65,7 +64,6 @@ export default {
   },
   components: {
     Post,
-    Page,
     ThreadNavigation,
     NavigationPlaceholder,
     PostPlaceholder,

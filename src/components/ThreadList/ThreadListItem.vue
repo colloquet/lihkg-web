@@ -108,7 +108,7 @@ export default {
       }
     },
     lastReplyTime() {
-      return helper.getRelativeTime(this.thread.lastReplyDate / 1000)
+      return helper.getRelativeTime(this.thread.lastReplyDate)
     },
     hasUnread() {
       return this.newReply > 0
