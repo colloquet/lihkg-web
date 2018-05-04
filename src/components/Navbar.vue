@@ -34,7 +34,7 @@
 
           <div class="right">
             <template v-if="inCatView && !isMobile">
-              <a href="https://github.com/colloquet/lihkg-web" target="_blank" rel="noopener"  class="action">
+              <a href="https://github.com/colloquet/lihkg-web/tree/hkg" target="_blank" rel="noopener"  class="action">
                 <span class="icon-github"></span>
               </a>
               <button class="action" @click="handleReloadClick" title="F5">
