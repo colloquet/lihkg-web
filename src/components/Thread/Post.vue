@@ -96,7 +96,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .post {
   padding: 1.5rem 1rem;
   border-bottom: 0.5px solid #f1f1f1;
