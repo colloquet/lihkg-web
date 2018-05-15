@@ -15,6 +15,10 @@ export default {
       type: Number,
       default: 1,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -28,6 +32,13 @@ export default {
     }
   },
   methods: {
+    init() {
+      window.addEventListener('scroll', this.scrollHandler)
+    },
+    destroy() {
+      window.removeEventListener('scroll', this.scrollHandler)
+      this.top = 0
+    },
     checkForUpdate() {
       const offscreenBoundaryTop = -this.topAppBarHeight
       const hasAnyPixelsOffscreen = this.currentAppBarOffsetTop < 0
@@ -76,13 +87,25 @@ export default {
       }
     },
   },
+  watch: {
+    disabled(disabled) {
+      if (disabled) {
+        this.destroy()
+      } else {
+        this.init()
+      }
+    },
+  },
   mounted() {
     this.topAppBarHeight = this.$refs.appBar.clientHeight
-
-    window.addEventListener('scroll', this.scrollHandler)
+    if (!this.disabled) {
+      this.init()
+    }
   },
   beforeDestroy() {
-    window.removeEventListener('scroll', this.scrollHandler)
+    if (!this.disabled) {
+      this.destroy()
+    }
   },
 }
 </script>
