@@ -1,5 +1,5 @@
 <template>
-  <TopAppBar :z-index="3">
+  <TopAppBar :z-index="3" :disabled="!isMobile">
     <div class="navbar" :class="{'has-menu': showDrawer}">
       <div class="container">
         <div class="wrapper">
