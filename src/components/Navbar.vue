@@ -1,5 +1,5 @@
 <template>
-  <TopAppBar>
+  <TopAppBar :z-index="3">
     <div class="navbar" :class="{'has-menu': showDrawer}">
       <div class="container">
         <div class="wrapper">
