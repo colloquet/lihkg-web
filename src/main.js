@@ -2,7 +2,6 @@ import 'babel-polyfill'
 import 'intersection-observer'
 import Vue from 'vue'
 import Meta from 'vue-meta'
-import headroom from 'vue-headroom'
 import VueLazyload from 'vue-lazyload'
 import VueObserveVisibility from 'vue-observe-visibility'
 
@@ -22,7 +21,6 @@ Vue.use(VueLazyload, {
   lazyComponent: true,
 })
 Vue.use(Meta)
-Vue.use(headroom)
 Vue.use(VueObserveVisibility)
 
 Vue.directive('username', (el, { value: user }) => {

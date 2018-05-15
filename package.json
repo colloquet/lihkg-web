@@ -24,7 +24,6 @@
     "sass-loader": "^6.0.7",
     "source-map-explorer": "^1.5.0",
     "vue": "^2.5.16",
-    "vue-headroom": "https://github.com/colloquet/vue-headroom.git",
     "vue-lazyload": "^1.2.2",
     "vue-meta": "^1.5.0",
     "vue-observe-visibility": "^0.3.1",

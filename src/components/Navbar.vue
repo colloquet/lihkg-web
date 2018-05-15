@@ -1,11 +1,5 @@
 <template>
-  <headroom
-    :disabled="!isMobile || tempDisable"
-    :z-index="3"
-    :up-tolerance="10"
-    :down-tolerance="10"
-    :offset="50"
-  >
+  <TopAppBar>
     <div class="navbar" :class="{'has-menu': showDrawer}">
       <div class="container">
         <div class="wrapper">
@@ -70,18 +64,18 @@
         </div>
       </div>
     </div>
-  </headroom>
+  </TopAppBar>
 </template>
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
-import { headroom } from 'vue-headroom'
 
 import helper from '@/helper'
+import TopAppBar from './TopAppBar'
 
 export default {
   components: {
-    headroom,
+    TopAppBar,
   },
   data() {
     return {
