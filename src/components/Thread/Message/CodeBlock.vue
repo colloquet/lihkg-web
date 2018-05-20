@@ -62,6 +62,7 @@ pre {
   padding: 0.5em;
   color: #333333;
   overflow-x: auto;
+  font-size: 1rem;
 
   + br {
     display: none;
