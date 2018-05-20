@@ -205,7 +205,7 @@ $navbar-height: 3rem;
 .navbar {
   display: flex;
   background: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   height: $navbar-height;
   line-height: $navbar-height;
   transition: box-shadow 0.45s ease;

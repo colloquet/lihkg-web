@@ -42,7 +42,7 @@ Vue.directive('score', (el, { value: score, arg }) => {
 })
 
 async function fetchIconMap() {
-  const response = await fetch('https://x.lihkg.com/hkgmoji7.json')
+  const response = await fetch('https://x.lihkg.com/hkgmoji9.json')
   const hkgmoji = await response.json()
   const flattenIconMap = hkgmoji.reduce(
     (set, current) => ({

@@ -256,7 +256,7 @@ export default {
   display: inline-block;
   flex-shrink: 0;
   border-radius: 12px;
-  background: #f5f6f7;
+  background: #eee;
   padding: 0.25rem 0.5rem;
   color: #aaa;
   font-size: 0.75rem;

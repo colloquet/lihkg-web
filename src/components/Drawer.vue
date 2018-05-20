@@ -50,6 +50,17 @@ import helper from '@/helper'
 
 const DRAWER_WIDTH = 200
 
+function isInTag(node, tag) {
+  let parent = node
+  while (parent.parentNode) {
+    if (parent.nodeName.toLowerCase() === tag) {
+      return true
+    }
+    parent = parent.parentNode
+  }
+  return false
+}
+
 export default {
   data() {
     return {
@@ -62,8 +73,7 @@ export default {
       fixedCategoryList: state => state.category.fixedCategoryList,
       isOpen: state => state.ui.showDrawer,
       activeCategoryId: state => state.category.category.cat_id,
-      isSwipeDisabled: state =>
-        state.thread.mediaList !== null || state.thread.mediaIndex !== null,
+      isSwipeDisabled: state => state.thread.mediaList !== null || state.thread.mediaIndex !== null,
     }),
     xPos() {
       return this.isOpen
@@ -95,12 +105,14 @@ export default {
       }, 200)
       this.hideDrawer()
     },
-    handleTouchStart({ touches }) {
+    handleTouchStart(event) {
+      const isScrollingCode =
+        event.target.tagName.toLowerCase() === 'pre' || isInTag(event.target, 'pre')
       // prevent overlap with iOS swipe back gesture
       const startDistance = helper.isIOS() ? 50 : 20
-      if (event.touches[0].pageX < startDistance || this.isSwipeDisabled) return
-      this.downX = touches[0].pageX
-      this.downY = touches[0].pageY
+      if (event.touches[0].pageX < startDistance || this.isSwipeDisabled || isScrollingCode) return
+      this.downX = event.touches[0].pageX
+      this.downY = event.touches[0].pageY
       this.isPressed = true
     },
     handleTouchMove(event) {

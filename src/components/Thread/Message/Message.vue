@@ -10,6 +10,7 @@ import Member from './Member'
 import Pic from './Pic'
 import Icon from './Icon'
 import Anchor from './Anchor'
+import CodeBlock from './CodeBlock'
 
 function getInlineStyle(str) {
   return str
@@ -36,6 +37,7 @@ export default {
     Pic,
     Icon,
     Anchor,
+    CodeBlock,
   },
   computed: {
     ...mapState({
@@ -43,7 +45,14 @@ export default {
     }),
     parsedMessage() {
       let message = this.html
-      message = linkifyHtml(message)
+      message = linkifyHtml(message, {
+        ignoreTags: ['code'],
+        validate: {
+          email() {
+            return false
+          },
+        },
+      })
       message = message.replace(
         /src="\/assets/g,
         'src="https://lihkg.com/assets',
@@ -57,7 +66,7 @@ export default {
     decode(content) {
       return decode.HTML(content)
     },
-    renderAST(h, ast, nestInfo = { quote: 1, sub: 1 }) {
+    renderAST(h, ast, nestInfo = { quote: 1, sub: 1, isBlock: false }) {
       return ast.map(node => {
         if (node.type === 'text') {
           return this.decode(node.content)
@@ -122,6 +131,9 @@ export default {
           }
           case 'img': {
             const src = this.decode(node.attrs.src)
+            const noCache = 'data-no-cache' in node.attrs
+            const useProxy = this.imageProxy && !noCache
+
             if (node.attrs.class && node.attrs.class.indexOf('hkgmoji') >= 0) {
               return h('icon', {
                 props: { src },
@@ -130,7 +142,7 @@ export default {
 
             return h('pic', {
               props: {
-                src: this.imageProxy ? `https://i.lihkg.com/540/${src}` : src,
+                src: useProxy ? `https://i.lihkg.com/540/${src}` : src,
                 original: src,
               },
             })
@@ -143,6 +155,27 @@ export default {
               {
                 props: {
                   href: this.decode(node.attrs.href),
+                },
+              },
+              this.renderAST(h, node.children),
+            )
+          case 'pre': {
+            const newNestInfo = {
+              ...nestInfo,
+              isBlock: true,
+            }
+            return h(
+              'pre',
+              this.renderAST(h, node.children, newNestInfo),
+            )
+          }
+          case 'code':
+            return h(
+              'code-block',
+              {
+                props: {
+                  isBlock: nestInfo.isBlock,
+                  language: node.attrs['data-type'],
                 },
               },
               this.renderAST(h, node.children),
