@@ -63,6 +63,10 @@ pre {
   color: #333333;
   overflow-x: auto;
   font-size: 1rem;
+  text-align: left;
+  word-break: normal;
+  word-wrap: normal;
+  -webkit-overflow-scrolling: touch;
 
   + br {
     display: none;
