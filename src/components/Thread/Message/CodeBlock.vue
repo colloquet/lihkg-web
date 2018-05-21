@@ -1,5 +1,5 @@
 <template>
-  <code ref="block">
+  <code ref="block" :class="{'inline-code': !isBlock}">
     <slot></slot>
   </code>
 </template>
@@ -56,9 +56,21 @@ export default {
 </script>
 
 <style lang="scss">
+.inline-code {
+  display: inline-block;
+  background: #f8f8f8;
+  border-radius: 4px;
+  padding: .2rem .4rem;
+
+  .night-mode & {
+    background: #2b2b2b;
+  }
+}
+
 pre {
   display: block;
   background: #f8f8f8;
+  border-radius: 4px;
   padding: 0.5em;
   color: #333333;
   overflow-x: auto;
@@ -138,7 +150,7 @@ pre {
     overflow-x: auto;
     padding: 0.5em;
     color: #abb2bf;
-    background: #2a2a2a;
+    background: #2b2b2b;
   }
 
   .hljs-comment,
