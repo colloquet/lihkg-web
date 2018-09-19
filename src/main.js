@@ -42,7 +42,7 @@ Vue.directive('score', (el, { value: score, arg }) => {
 })
 
 async function fetchIconMap() {
-  const response = await fetch('https://x.lihkg.com/hkgmoji9.json')
+  const response = await fetch('https://x.lihkg.com/hkgmoji1.json')
   const hkgmoji = await response.json()
   const flattenIconMap = hkgmoji.reduce(
     (set, current) => ({
@@ -70,10 +70,10 @@ window.addEventListener('storage', (event) => {
     store.commit(types.SYNC_HISTORY, JSON.parse(event.newValue))
   }
   if (
-    event.key === 'officeMode' ||
-    event.key === 'staticIcons' ||
-    event.key === 'autoLoadImage' ||
-    event.key === 'nightMode'
+    event.key === 'officeMode'
+    || event.key === 'staticIcons'
+    || event.key === 'autoLoadImage'
+    || event.key === 'nightMode'
   ) {
     store.commit(types.SYNC_SETTINGS, {
       key: event.key,

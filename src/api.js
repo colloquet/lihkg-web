@@ -1,9 +1,8 @@
 const API_ROOT = 'https://lihkg.com/api_v2'
 
-const serialize = obj =>
-  Object.keys(obj)
-    .map(key => `${key}=${obj[key]}`)
-    .join('&')
+const serialize = obj => Object.keys(obj)
+  .map(key => `${key}=${obj[key]}`)
+  .join('&')
 
 const request = async (endpoint, params) => {
   const serializedParams = params ? `?${serialize(params)}` : ''
