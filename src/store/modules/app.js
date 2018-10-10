@@ -12,6 +12,7 @@ const initialState = {
   imageProxy: storage.get('imageProxy') !== false,
   history: storage.get('history') || {},
   flattenIconMap: {},
+  bookmarks: storage.get('bookmarks') || [],
 }
 
 const getters = {}
@@ -65,6 +66,17 @@ const mutations = {
   },
   [types.SET_IS_HOVERABLE](state, status) {
     state.isHoverable = status
+  },
+  [types.ADD_BOOKMARK](state, postId) {
+    state.bookmarks.unshift(postId)
+    storage.set('bookmarks', state.bookmarks)
+  },
+  [types.REMOVE_BOOKMARK](state, postId) {
+    const index = state.bookmarks.indexOf(postId)
+    if (index > -1) {
+      state.bookmarks.splice(index, 1)
+    }
+    storage.set('bookmarks', state.bookmarks)
   },
 }
 

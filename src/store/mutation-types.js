@@ -8,6 +8,8 @@ export const CLEAR_HISTORY = 'CLEAR_HISTORY'
 export const TOGGLE_SETTINGS = 'TOGGLE_SETTINGS'
 export const SET_IS_MOBILE = 'SET_IS_MOBILE'
 export const SET_IS_HOVERABLE = 'SET_IS_HOVERABLE'
+export const ADD_BOOKMARK = 'ADD_BOOKMARK'
+export const REMOVE_BOOKMARK = 'REMOVE_BOOKMARK'
 
 // ui related
 export const TOGGLE_DRAWER = 'TOGGLE_DRAWER'
