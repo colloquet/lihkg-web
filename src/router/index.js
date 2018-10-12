@@ -22,7 +22,6 @@ const router = new Router({
     { path: '/', redirect: '/category/1' },
     { path: '/index.html', redirect: '/category/1' },
     { path: '/thread/:threadId', redirect: '/thread/:threadId/page/1' },
-    { path: '/:threadId', redirect: '/thread/:threadId/page/1' },
     { path: '/t/:threadId', redirect: '/thread/:threadId/page/1' },
     { path: '/t/:threadId/page', redirect: '/thread/:threadId/page/:page' },
     {
@@ -34,6 +33,12 @@ const router = new Router({
     {
       path: '/thread/:threadId/page/:page',
       name: 'ThreadView',
+      component: ThreadView,
+      props: true,
+    },
+    {
+      path: '/bookmarks',
+      name: 'Bookmarks',
       component: ThreadView,
       props: true,
     },

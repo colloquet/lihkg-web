@@ -42,6 +42,23 @@
           </button>
         </div>
         <div class="item">
+          <button class="action" :class="{ 'is-active': isBookmarked }" @click="handleBookmark" title="本地留名">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              :fill="isBookmarked ? '#f6b701' : 'none'"
+              :stroke="isBookmarked ? '#f6b701' : 'currentColor'"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+          </button>
+        </div>
+        <div class="item">
           <button class="action" @click="handleScrollBottom">
             <span class="icon-chevrons-down"></span>
           </button>
@@ -62,12 +79,16 @@ export default {
       thread: state => state.thread.thread,
       category: state => state.category.category,
       mediaList: state => state.thread.mediaList,
+      bookmarks: state => state.app.bookmarks,
     }),
     inThreadView() {
       return this.$route.name === 'ThreadView'
     },
     inCatView() {
       return this.$route.name === 'CategoryView'
+    },
+    isBookmarked() {
+      return this.bookmarks.includes(this.thread.thread_id)
     },
   },
   methods: {
@@ -77,6 +98,8 @@ export default {
       toggleSettingsModal: 'TOGGLE_SETTINGS_MODAL',
       setThreadList: 'SET_THREAD_LIST',
       toggleGallery: 'TOGGLE_GALLERY',
+      addBookmark: 'ADD_BOOKMARK',
+      removeBookmark: 'REMOVE_BOOKMARK',
     }),
     handleDrawerClick() {
       helper.trackEvent({
@@ -145,6 +168,13 @@ export default {
         this.$router.replace({ query: { order: 'score' } })
       }
     },
+    handleBookmark() {
+      if (this.isBookmarked) {
+        this.removeBookmark(this.thread.thread_id)
+      } else {
+        this.addBookmark(this.thread.thread_id)
+      }
+    },
   },
 }
 </script>
@@ -166,7 +196,7 @@ $bottom-bar-height: 3rem;
   z-index: 2;
 
   .night-mode & {
-    background: #1b1b1b;
+    background: #282828;
   }
 }
 
@@ -176,13 +206,14 @@ $bottom-bar-height: 3rem;
 }
 
 .action {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 0;
   border-radius: 0;
   background: transparent;
   padding: 0 15px;
   height: $bottom-bar-height;
-  line-height: $bottom-bar-height;
   color: inherit;
   cursor: pointer;
   text-decoration: none;

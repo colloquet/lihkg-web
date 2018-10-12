@@ -7,6 +7,15 @@
       ></div>
       <div ref="menu" class="menu">
         <div class="container">
+          <div class="navigations">
+            <a
+              href="/bookmarks"
+              class="nav-item"
+              @click.prevent="handleLinkClick"
+            >
+              名已留
+            </a>
+          </div>
           <div class="grid">
             <div
               class="grid-item"
@@ -18,6 +27,7 @@
               <ul class="submenu">
                 <li v-for="category in section.cat_list" :key="category.cat_id">
                   <a
+                    class="nav-item"
                     :class="{'is-active': category.cat_id === activeCategoryId}"
                     :href="`/category/${category.cat_id}`"
                     @click.prevent="handleLinkClick"
@@ -129,6 +139,10 @@ export default {
   padding: 0 1rem;
 }
 
+.navigations {
+
+}
+
 .grid {
   display: flex;
   flex-wrap: wrap;
@@ -184,40 +198,40 @@ export default {
     .is-single & {
       width: 100%;
     }
+  }
+}
 
-    a {
-      position: relative;
-      display: inline-block;
-      border-radius: 4px;
-      padding: 0.25rem;
-      margin-left: -0.25rem;
-      color: inherit;
-      text-decoration: none;
-      font-size: 14px;
+.nav-item {
+  position: relative;
+  display: inline-block;
+  border-radius: 4px;
+  padding: 0.25rem;
+  margin-left: -0.25rem;
+  color: inherit;
+  text-decoration: none;
+  font-size: 14px;
 
-      &.is-active:after {
-        content: '';
-        position: absolute;
-        display: block;
-        background: #1ecd97;
-        bottom: 0;
-        left: 0.25rem;
-        right: 0.25rem;
-        height: 2px;
+  &.is-active:after {
+    content: '';
+    position: absolute;
+    display: block;
+    background: #1ecd97;
+    bottom: 0;
+    left: 0.25rem;
+    right: 0.25rem;
+    height: 2px;
 
-        .night-mode & {
-          background: #42b983;
-        }
-      }
-
-      .is-hoverable &:hover {
-        background: #f5f5f5;
-      }
-
-      .is-hoverable.night-mode &:hover {
-        background: #333;
-      }
+    .night-mode & {
+      background: #42b983;
     }
+  }
+
+  .is-hoverable &:hover {
+    background: #f5f5f5;
+  }
+
+  .is-hoverable.night-mode &:hover {
+    background: #333;
   }
 }
 

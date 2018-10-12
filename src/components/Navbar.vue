@@ -37,7 +37,7 @@
             </template>
 
             <template v-if="inThreadView && !isMobile">
-              <button class="action" :class="{ 'is-active': isBookmarked }" @click="handleBookmark" v-if="!isMobile" title="本地留名">
+              <button class="action bookmark" :class="{ 'is-active': isBookmarked }" @click="handleBookmark" v-if="!isMobile" title="本地留名">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -240,7 +240,7 @@ $navbar-height: 3rem;
   z-index: 3;
 
   .night-mode & {
-    background: #1b1b1b;
+    background: #282828;
   }
 
   &.has-menu {
@@ -255,17 +255,22 @@ $navbar-height: 3rem;
 }
 
 .action {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 0;
   border-radius: 0;
   background: transparent;
   padding: 0 1rem;
   height: $navbar-height;
-  line-height: $navbar-height;
   color: inherit;
   cursor: pointer;
   text-decoration: none;
   outline: 0;
+
+  &.bookmark {
+    display: flex;
+  }
 
   &.is-active {
     color: #1ecd97;
@@ -277,10 +282,18 @@ $navbar-height: 3rem;
 
   .is-hoverable &:hover {
     color: #1ecd97;
+
+    &.bookmark {
+      color: #f6b701;
+    }
   }
 
   .is-hoverable.night-mode &:hover {
     color: #42b983;
+
+    &.bookmark {
+      color: #f6b701;
+    }
   }
 }
 
