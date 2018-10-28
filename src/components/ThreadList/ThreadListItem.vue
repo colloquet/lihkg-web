@@ -220,7 +220,7 @@ export default {
   }
 
   &.visited {
-    color: #aaa;
+    color: #ccc;
   }
 
   &.unread {
@@ -240,7 +240,11 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.5rem;
-    color: #aaa;
+    color: rgba(#000, 0.54);
+
+    .night-mode & {
+      color: rgba(#fff, 0.54);
+    }
   }
 
   .meta-left {
@@ -276,11 +280,12 @@ export default {
   border-radius: 12px;
   background: #eee;
   padding: 0.25rem 0.5rem;
-  color: #aaa;
+  color: rgba(#000, 0.54);
   font-size: 0.75rem;
 
   .night-mode & {
     background: #333;
+    color: rgba(#fff, 0.54);
   }
 }
 
@@ -327,8 +332,12 @@ export default {
   flex-shrink: 0;
   padding: 0.5rem;
   margin: -0.5rem;
-  color: #aaa;
+  color: rgba(#000, 0.54);
   font-size: 14px;
+
+  .night-mode & {
+    color: rgba(#fff, 0.54);
+  }
 
   .is-hoverable &:hover {
     color: #000;

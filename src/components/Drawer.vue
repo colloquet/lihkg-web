@@ -277,7 +277,7 @@ export default {
   display: block;
   padding-left: 1rem;
   margin-bottom: 1rem;
-  color: #aaa;
+  color: rgba(#000, 0.54);
   font-size: 14px;
 
   .night-mode & {

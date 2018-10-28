@@ -158,7 +158,11 @@ export default {
   height: 2.25rem;
   line-height: 2.25rem;
   margin-bottom: -1px;
-  color: #999;
+  color: rgba(#000, 0.54);
+
+  .night-mode & {
+    color: rgba(#fff, 0.54);
+  }
 
   .is-mobile & {
     height: 3rem;
