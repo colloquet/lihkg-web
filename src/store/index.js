@@ -6,6 +6,7 @@ import app from './modules/app'
 import ui from './modules/ui'
 import category from './modules/category'
 import thread from './modules/thread'
+import threadList from './modules/threadList'
 
 Vue.use(Vuex)
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     ui,
     category,
     thread,
+    threadList,
   },
   actions,
   strict: true,

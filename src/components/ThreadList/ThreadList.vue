@@ -15,7 +15,7 @@
       />
     </ul>
 
-    <div v-observe-visibility="onEndReached"></div>
+    <div v-if="hasMore" v-observe-visibility="onEndReached"></div>
 
     <div class="end-of-list">
       <template v-if="hasMore">
@@ -43,7 +43,7 @@ export default {
   computed: {
     ...mapState({
       history: state => state.app.history,
-      hasMore: state => state.category.hasMore,
+      hasMore: state => state.threadList.hasMore,
     }),
     numberOfPlaceholder() {
       return Math.ceil(window.screen.height / placeholderHeight)

@@ -3,7 +3,7 @@
     <div class="navbar" :class="{'has-menu': showDrawer}">
       <div class="container">
         <div class="wrapper">
-          <div class="left">
+          <div class="left" :class="{'in-thread': inThreadView && !isMobile}">
             <button
               class="action"
               :class="{'is-active': showDrawer}"
@@ -22,12 +22,12 @@
           <div class="center">
             <div @click="scrollToTop">
               <span v-if="inThreadView" :title="thread.title">{{ thread.title || 'LIHKG' }}</span>
-              <span v-else>{{ category.name || 'LIHKG' }}</span>
+              <span v-else>{{ threadListTitle }}</span>
             </div>
           </div>
 
           <div class="right">
-            <template v-if="inCatView && !isMobile">
+            <template v-if="!inThreadView && !isMobile">
               <a href="https://github.com/colloquet/lihkg-web" target="_blank" rel="noopener"  class="action">
                 <span class="icon-github"></span>
               </a>
@@ -103,6 +103,7 @@ export default {
       showDrawer: state => state.ui.showDrawer,
       category: state => state.category.category,
       thread: state => state.thread.thread,
+      threadListType: state => state.threadList.threadListType,
       relatedCatId: state => state.thread.thread.cat_id || 1,
       mediaList: state => state.thread.mediaList,
       bookmarks: state => state.app.bookmarks,
@@ -116,9 +117,12 @@ export default {
     isBookmarked() {
       return this.bookmarks.includes(this.thread.thread_id)
     },
+    threadListTitle() {
+      return this.threadListType === 'bookmarks' ? '名已留' : this.category.name || 'LIHKG'
+    },
   },
   methods: {
-    ...mapActions(['fetchThreadList', 'fetchMediaList']),
+    ...mapActions(['fetchThreadList', 'fetchThreadListByIds', 'fetchMediaList']),
     ...mapMutations({
       toggleDrawer: 'TOGGLE_DRAWER',
       toggleSettingsModal: 'TOGGLE_SETTINGS_MODAL',
@@ -134,7 +138,11 @@ export default {
         eventLabel: 'F5',
       })
       this.setThreadList([])
-      await this.fetchThreadList({ catId: this.category.cat_id })
+      if (this.threadListType === 'bookmarks') {
+        await this.fetchThreadListByIds({ threadIds: this.bookmarks })
+      } else if (this.threadListType === 'category') {
+        await this.fetchThreadList({ catId: this.category.cat_id })
+      }
       window.scrollTo(0, 0)
     },
     handleNavMenuClick() {
@@ -159,7 +167,7 @@ export default {
         eventAction: 'click',
         eventLabel: 'Back',
       })
-      if (this.category.cat_id) {
+      if (this.threadListType) {
         window.history.back()
       } else {
         this.$router.push(`/category/${this.relatedCatId}`)
@@ -324,6 +332,10 @@ $navbar-height: 3rem;
 .left {
   display: flex;
   flex: 1 9999 0%;
+
+  &.in-thread {
+    flex-grow: 0;
+  }
 }
 
 .center {
@@ -334,6 +346,11 @@ $navbar-height: 3rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding: 0 1rem;
+
+    .is-mobile & {
+      padding: 0;
+    }
   }
 }
 

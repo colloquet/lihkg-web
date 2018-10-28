@@ -7,19 +7,6 @@
         </button>
       </div>
 
-      <template v-if="inCatView">
-        <div class="item">
-          <button class="action" @click="handleReloadClick">
-            <span class="icon-refresh-ccw"></span>
-          </button>
-        </div>
-        <div class="item">
-          <button class="action" @click="handleSettingsClick">
-            <span class="icon-settings"></span>
-          </button>
-        </div>
-      </template>
-
       <template v-if="inThreadView">
         <div class="item score">
           <span class="icon-thumbs-up"></span> <small>{{ thread.like_count || '-' }}</small>
@@ -64,6 +51,18 @@
           </button>
         </div>
       </template>
+      <template v-else>
+        <div class="item">
+          <button class="action" @click="handleReloadClick">
+            <span class="icon-refresh-ccw"></span>
+          </button>
+        </div>
+        <div class="item">
+          <button class="action" @click="handleSettingsClick">
+            <span class="icon-settings"></span>
+          </button>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -78,6 +77,7 @@ export default {
     ...mapState({
       thread: state => state.thread.thread,
       category: state => state.category.category,
+      threadListType: state => state.threadList.threadListType,
       mediaList: state => state.thread.mediaList,
       bookmarks: state => state.app.bookmarks,
     }),
@@ -92,7 +92,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['fetchThreadList', 'fetchMediaList']),
+    ...mapActions(['fetchThreadList', 'fetchThreadListByIds', 'fetchMediaList']),
     ...mapMutations({
       toggleDrawer: 'TOGGLE_DRAWER',
       toggleSettingsModal: 'TOGGLE_SETTINGS_MODAL',
@@ -111,12 +111,16 @@ export default {
     },
     async handleReloadClick() {
       helper.trackEvent({
-        eventCategory: 'BottomBar',
+        eventCategory: 'Navbar',
         eventAction: 'click',
         eventLabel: 'F5',
       })
       this.setThreadList([])
-      await this.fetchThreadList({ catId: this.category.cat_id })
+      if (this.threadListType === 'bookmarks') {
+        await this.fetchThreadListByIds({ threadIds: this.bookmarks })
+      } else if (this.threadListType === 'category') {
+        await this.fetchThreadList({ catId: this.category.cat_id })
+      }
       window.scrollTo(0, 0)
     },
     handleSettingsClick() {

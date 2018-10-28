@@ -11,8 +11,8 @@ const initialState = {
   youtubePreview: storage.get('youtubePreview') !== false,
   imageProxy: storage.get('imageProxy') !== false,
   history: storage.get('history') || {},
-  flattenIconMap: {},
   bookmarks: storage.get('bookmarks') || [],
+  flattenIconMap: {},
 }
 
 const getters = {}
@@ -54,7 +54,9 @@ const mutations = {
   },
   [types.CLEAR_HISTORY](state) {
     storage.set('history', {})
+    storage.set('bookmarks', [])
     state.history = {}
+    state.bookmarks = []
   },
   [types.TOGGLE_SETTINGS](state, key) {
     const value = !state[key]

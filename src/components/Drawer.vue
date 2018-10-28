@@ -21,6 +21,16 @@
           <span class="icon-settings"></span>
         </button>
       </div>
+      <div class="navigations">
+        <a
+          href="/bookmarks"
+          class="nav-item"
+          :class="{'is-active': threadListType === 'bookmarks'}"
+          @click.prevent="handleLinkClick"
+        >
+          名已留
+        </a>
+      </div>
       <div
         class="section"
         :key="section.name"
@@ -30,6 +40,7 @@
         <ul class="submenu">
           <li v-for="category in section.cat_list" :key="category.cat_id">
             <a
+              class="nav-item"
               :class="{'is-active': category.cat_id === activeCategoryId}"
               :href="`/category/${category.cat_id}`"
               @click.prevent="handleLinkClick"
@@ -73,6 +84,7 @@ export default {
       fixedCategoryList: state => state.category.fixedCategoryList,
       isOpen: state => state.ui.showDrawer,
       activeCategoryId: state => state.category.category.cat_id,
+      threadListType: state => state.threadList.threadListType,
       isSwipeDisabled: state => state.thread.mediaList !== null || state.thread.mediaIndex !== null,
     }),
     xPos() {
@@ -273,6 +285,11 @@ export default {
   }
 }
 
+.navigations {
+  padding-left: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 .submenu {
   display: flex;
   flex-wrap: wrap;
@@ -285,31 +302,31 @@ export default {
     width: 50%;
     margin-bottom: 0.5rem;
     padding-left: 0.5rem;
+  }
+}
 
-    a {
-      position: relative;
-      display: inline-block;
-      border-radius: 4px;
-      padding: 5px;
-      color: inherit;
-      text-decoration: none;
+.nav-item {
+  position: relative;
+  display: inline-block;
+  border-radius: 4px;
+  padding: 5px;
+  color: inherit;
+  text-decoration: none;
 
-      &.is-active {
-        color: #1ecd97;
+  &.is-active {
+    color: #1ecd97;
 
-        .night-mode & {
-          color: #42b983;
-        }
-      }
-
-      .is-hoverable &:hover {
-        background: #f5f5f5;
-      }
-
-      .is-hoverable.night-mode &:hover {
-        background: #333;
-      }
+    .night-mode & {
+      color: #42b983;
     }
+  }
+
+  .is-hoverable &:hover {
+    background: #f5f5f5;
+  }
+
+  .is-hoverable.night-mode &:hover {
+    background: #333;
   }
 }
 

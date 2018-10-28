@@ -1,7 +1,5 @@
 <template>
   <div class="categoryview-container">
-    <SubCategorySwitcher :list="subCategoryList" v-if="subCategoryList.length > 1" />
-
     <ThreadList
       :thread-list="threadList"
       :is-loading="isLoading"
@@ -13,19 +11,15 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 
-import helper from '@/helper'
 import ThreadList from '../components/ThreadList/ThreadList'
-import SubCategorySwitcher from '../components/SubCategorySwitcher'
 
 export default {
-  props: ['catId'],
   components: {
     ThreadList,
-    SubCategorySwitcher,
   },
   metaInfo() {
     return {
-      title: this.officeMode ? 'Google' : this.category.name || 'LIHKG',
+      title: this.officeMode ? 'Google' : '名已留',
     }
   },
   data() {
@@ -35,33 +29,27 @@ export default {
   },
   computed: {
     ...mapState({
+      isMobile: state => state.app.isMobile,
       officeMode: state => state.app.officeMode,
-      category: state => state.category.category,
-      categoryList: state => state.category.categoryList,
       threadList: state => state.threadList.threadList,
       threadListType: state => state.threadList.threadListType,
       page: state => state.threadList.page,
       isLoading: state => state.threadList.isLoading,
       activeThreadId: state => state.thread.thread.thread_id,
+      bookmarks: state => state.app.bookmarks,
     }),
-    subCategoryList() {
-      const category = this.categoryList.find(cat => +cat.cat_id === +this.catId)
-      return category ? category.sub_category : []
-    }
   },
   methods: {
-    ...mapActions(['fetchThreadList']),
+    ...mapActions(['fetchThreadListByIds']),
     ...mapMutations({
+      setCategory: 'SET_CATEGORY',
       setThreadList: 'SET_THREAD_LIST',
       setThreadListType: 'SET_THREAD_LIST_TYPE',
     }),
     fetchAndScrollTop() {
       this.setThreadList([])
       window.scrollTo(0, 0)
-      this.fetchThreadList({
-        catId: this.catId,
-        ...this.$route.query,
-      })
+      this.fetchThreadListByIds({ threadIds: this.bookmarks })
     },
     handleLoadMore() {
       if (this.canLoadMore) {
@@ -69,24 +57,19 @@ export default {
       }
     },
     fetchNextPage() {
-      this.fetchThreadList({
-        catId: this.catId,
-        page: this.page + 1,
-        ...this.$route.query,
-      })
+      this.fetchThreadListByIds({ threadIds: this.bookmarks, page: this.page + 1 })
     },
   },
   watch: {
-    catId: 'fetchAndScrollTop',
-    '$route.query': 'fetchAndScrollTop',
     threadListType(newVal, oldVal) {
-      if (oldVal !== newVal && newVal === 'category') {
+      if (oldVal !== newVal && newVal === 'bookmarks') {
+        this.setCategory({})
         this.fetchAndScrollTop()
       }
     },
   },
   mounted() {
-    this.setThreadListType('category')
+    this.setThreadListType('bookmarks')
 
     setTimeout(() => {
       this.canLoadMore = true
@@ -104,3 +87,4 @@ export default {
   },
 }
 </script>
+

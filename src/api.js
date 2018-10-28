@@ -42,6 +42,9 @@ export default {
 
     return request(`/thread/${type}`, params)
   },
+  fetchThreadListByIds({ threadIds: thread_ids }) {
+    return request('/thread/', { thread_ids: JSON.stringify(thread_ids) })
+  },
   fetchThread({ threadId, page = 1, order = 'reply_time' }) {
     return request(`/thread/${threadId}/page/${page}`, { order })
   },

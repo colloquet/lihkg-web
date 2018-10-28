@@ -11,6 +11,7 @@
             <a
               href="/bookmarks"
               class="nav-item"
+              :class="{'is-active': threadListType === 'bookmarks'}"
               @click.prevent="handleLinkClick"
             >
               名已留
@@ -53,6 +54,7 @@ export default {
       fixedCategoryList: state => state.category.fixedCategoryList,
       showDrawer: state => state.ui.showDrawer,
       activeCategoryId: state => state.category.category.cat_id,
+      threadListType: state => state.threadList.threadListType,
     }),
   },
   methods: {
@@ -140,7 +142,7 @@ export default {
 }
 
 .navigations {
-
+  margin-bottom: 0.5rem;
 }
 
 .grid {

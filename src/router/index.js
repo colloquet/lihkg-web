@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import CategoryView from '@/views/CategoryView'
 import ThreadView from '@/views/ThreadView'
+import BookmarksView from '@/views/BookmarksView'
 
 Vue.use(Router)
 
@@ -39,8 +40,7 @@ const router = new Router({
     {
       path: '/bookmarks',
       name: 'Bookmarks',
-      component: ThreadView,
-      props: true,
+      component: BookmarksView,
     },
   ],
 })
