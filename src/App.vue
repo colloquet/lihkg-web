@@ -44,7 +44,7 @@ export default {
       meta: [
         {
           name: 'theme-color',
-          content: this.nightMode ? '#1b1b1b' : '#ffffff',
+          content: this.nightMode ? '#1e1e1e' : '#ffffff',
         },
       ],
       link: [
