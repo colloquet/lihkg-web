@@ -138,7 +138,7 @@ export default {
   }
 
   .night-mode & {
-    border-bottom-color: #333;
+    border-bottom-color: mix(white, #121212, 14%);
   }
 }
 
@@ -158,10 +158,10 @@ export default {
   height: 2.25rem;
   line-height: 2.25rem;
   margin-bottom: -1px;
-  color: rgba(#000, 0.54);
+  color: rgba(#000, 0.6);
 
   .night-mode & {
-    color: rgba(#fff, 0.54);
+    color: rgba(#fff, 0.6);
   }
 
   .is-mobile & {

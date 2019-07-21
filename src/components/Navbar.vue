@@ -248,7 +248,7 @@ $navbar-height: 3rem;
   z-index: 3;
 
   .night-mode & {
-    background: #282828;
+    background: mix(white, #121212, 5%);
   }
 
   &.has-menu {

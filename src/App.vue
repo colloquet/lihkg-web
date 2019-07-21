@@ -116,9 +116,10 @@ html {
   box-sizing: border-box;
   height: 100%;
   font-size: 16px;
+  color: rgba(#000, 0.87);
 
   &.night-mode {
-    color: rgba(#fff, 0.8);
+    color: rgba(#fff, 0.87);
   }
 }
 
@@ -132,7 +133,7 @@ body {
   min-height: 100%;
 
   .night-mode & {
-    background: #202020;
+    background: #121212;
   }
 }
 
@@ -212,7 +213,7 @@ a {
   background-size: 600% 600%;
 
   .night-mode & {
-    background: linear-gradient(45deg, #222, #333, #222);
+    background: linear-gradient(45deg, mix(white, #121212, 5%), mix(white, #121212, 8%), mix(white, #121212, 5%));
     background-size: 600% 600%;
   }
 }

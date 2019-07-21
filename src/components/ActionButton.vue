@@ -34,7 +34,7 @@ export default {
   }
 
   .is-hoverable.night-mode &:hover {
-    background: #333;
+    background: mix(white, #121212, 8%);
   }
 
   .top,

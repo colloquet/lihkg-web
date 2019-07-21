@@ -35,6 +35,10 @@ export default {
     font-family: sans-serif;
     background: #888;
 
+    .night-mode & {
+      background: mix(white, #121212, 14%);
+    }
+
     &:after,
     &:before {
       display: flex;

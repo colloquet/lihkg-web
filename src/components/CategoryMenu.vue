@@ -130,7 +130,7 @@ export default {
   z-index: 2;
 
   .night-mode & {
-    background: #1b1b1b;
+    background: #121212;
   }
 }
 
@@ -177,11 +177,11 @@ export default {
   display: block;
   margin-bottom: 1rem;
   margin-top: 10px;
-  color: rgba(#000, 0.54);
+  color: rgba(#000, 0.6);
   font-size: 0.875rem;
 
   .night-mode & {
-    color: #888;
+    color: rgba(#fff, 0.38);
   }
 }
 
@@ -233,7 +233,7 @@ export default {
   }
 
   .is-hoverable.night-mode &:hover {
-    background: #333;
+    background: mix(white, #121212, 8%);
   }
 }
 

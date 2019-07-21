@@ -13,7 +13,7 @@
   height: 100px;
   padding: 1.5rem;
   padding-left: 2rem;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 0.5px solid #e6e6e6;
 
   .is-mobile & {
     padding: 1rem;
@@ -22,7 +22,7 @@
   }
 
   .night-mode & {
-    border-bottom-color: #2b2b2b;
+    border-bottom-color: mix(white, #121212, 14%);
   }
 }
 

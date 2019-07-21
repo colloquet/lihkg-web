@@ -166,11 +166,11 @@ export default {
   }
 
   .is-hoverable.night-mode &:hover {
-    background: darken(#202020, 2%);
+    background: mix(white, #121212, 4%);
   }
 
   .night-mode & {
-    border-bottom-color: #333;
+    border-bottom-color: mix(white, #121212, 14%);
   }
 
   .is-mobile & {
@@ -240,10 +240,10 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.5rem;
-    color: rgba(#000, 0.54);
+    color: rgba(#000, 0.6);
 
     .night-mode & {
-      color: rgba(#fff, 0.54);
+      color: rgba(#fff, 0.6);
     }
   }
 
@@ -280,12 +280,12 @@ export default {
   border-radius: 12px;
   background: #eee;
   padding: 0.25rem 0.5rem;
-  color: rgba(#000, 0.54);
+  color: rgba(#000, 0.6);
   font-size: 0.75rem;
 
   .night-mode & {
-    background: #333;
-    color: rgba(#fff, 0.54);
+    background: mix(white, #121212, 7%);
+    color: rgba(#fff, 0.6);
   }
 }
 
@@ -321,7 +321,7 @@ export default {
     background: #e6e6e6;
 
     .night-mode & {
-      background: #404040;
+      background: mix(white, #121212, 12%);
       color: #fff;
     }
   }
@@ -332,11 +332,11 @@ export default {
   flex-shrink: 0;
   padding: 0.5rem;
   margin: -0.5rem;
-  color: rgba(#000, 0.54);
+  color: rgba(#000, 0.6);
   font-size: 14px;
 
   .night-mode & {
-    color: rgba(#fff, 0.54);
+    color: rgba(#fff, 0.6);
   }
 
   .is-hoverable &:hover {

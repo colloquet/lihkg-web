@@ -125,7 +125,7 @@ $navbar-height: 3rem;
   will-change: opacity, transform;
 
   .night-mode & {
-    background: #202020;
+    background: #121212;
   }
 }
 
@@ -143,7 +143,7 @@ $navbar-height: 3rem;
   z-index: 3;
 
   .night-mode & {
-    background: #1b1b1b;
+    background: mix(white, #121212, 5%);
   }
 
   .wrapper {

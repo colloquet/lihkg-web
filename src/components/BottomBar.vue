@@ -200,7 +200,7 @@ $bottom-bar-height: 3rem;
   z-index: 2;
 
   .night-mode & {
-    background: #282828;
+    background: mix(white, #121212, 5%);
   }
 }
 

@@ -113,10 +113,10 @@ export default {
   .meta {
     display: flex;
     align-items: flex-end;
-    color: rgba(#000, 0.54);
+    color: rgba(#000, 0.6);
 
     .night-mode & {
-      color: rgba(#fff, 0.54);
+      color: rgba(#fff, 0.6);
     }
 
     > span {
@@ -173,11 +173,11 @@ export default {
   border-radius: 4px;
   padding: 0.5rem;
   margin-top: 1rem;
-  color: rgba(#000, 0.54);
+  color: rgba(#000, 0.6);
 
   .night-mode & {
-    background: #2b2b2b;
-    color: rgba(#fff, 0.54);
+    background: mix(white, #121212, 7%);
+    color: rgba(#fff, 0.6);
   }
 
   > span:first-child {

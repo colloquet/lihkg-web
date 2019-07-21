@@ -236,7 +236,7 @@ export default {
   will-change: transform;
 
   .night-mode & {
-    background: #222;
+    background: mix(white, #121212, 5%);
   }
 
   ul {
