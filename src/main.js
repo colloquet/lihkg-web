@@ -33,14 +33,6 @@ Vue.directive('username', (el, { value: user }) => {
   }
 })
 
-Vue.directive('score', (el, { value: score, arg }) => {
-  if (+score >= 100) {
-    el.className += arg === 'dislike' ? ' color-female' : ' color-admin'
-  } else if (+score <= -100) {
-    el.className += ' color-female'
-  }
-})
-
 async function fetchIconMap() {
   const response = await fetch('https://x.lihkg.com/hkgmoji2.json')
   const hkgmoji = await response.json()

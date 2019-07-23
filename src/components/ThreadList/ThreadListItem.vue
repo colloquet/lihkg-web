@@ -40,7 +40,7 @@
               </span>
             </span>
 
-            <span class="score" v-score="score">
+            <span class="score">
               <span class="icon-thumbs-up" v-if="score > -1"></span>
               <span class="icon-thumbs-down" v-else></span>
               {{ score }}
@@ -367,7 +367,7 @@ export default {
 
 @keyframes highlight-dark {
   0% {
-    background: #111;
+    background: #1e1e1e;
   }
   to {
     background: transparent;

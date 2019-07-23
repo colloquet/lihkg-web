@@ -51,8 +51,8 @@ export default {
   max-width: 100%;
 
   .night-mode & {
-    background: #2b2b2b;
-    border: 1px solid #444;
+    background: mix(white, #121212, 5%);
+    border: 1px solid mix(white, #121212, 14%);
   }
 
   .is-mobile & {

@@ -21,10 +21,10 @@
     </div>
 
     <small class="scores">
-      <span v-score="likeCount">
+      <span>
         <span class="icon-arrow-up"></span> {{ likeCount }}
       </span>
-      <span v-score:dislike="dislikeCount">
+      <span>
         <span class="icon-arrow-down"></span> {{ dislikeCount }}
       </span>
     </small>
@@ -64,10 +64,10 @@ export default {
       return +this.authodId === +this.userId
     },
     likeCount() {
-      return this.post.msg_num === 1 ? this.threadLikeCount : this.post.like_count
+      return +this.post.msg_num === 1 ? this.threadLikeCount : this.post.like_count
     },
     dislikeCount() {
-      return this.post.msg_num === 1 ? this.threadDislikeCount : this.post.dislike_count
+      return +this.post.msg_num === 1 ? this.threadDislikeCount : this.post.dislike_count
     },
     replyTime() {
       return {
@@ -172,6 +172,7 @@ export default {
   background: #f5f5f5;
   border-radius: 4px;
   padding: 0.5rem;
+  padding-right: 0.6rem;
   margin-top: 1rem;
   color: rgba(#000, 0.6);
 

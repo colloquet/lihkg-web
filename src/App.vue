@@ -162,6 +162,7 @@ a {
   right: 0;
   top: 0;
   width: 100% !important;
+  font-size: 1rem;
 }
 
 .route-container {

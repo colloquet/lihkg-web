@@ -1,5 +1,5 @@
 <template>
-  <lazy-component style="display: inline-block;">
+  <lazy-component style="display: inline-block; vertical-align: bottom">
     <template  v-if="autoLoadImage || showImage">
       <a :href="original" class="link" target="_blank" @click.prevent="handleImageClick">
         <img :src="this.src" class="lazy" :class="{loaded: loaded}" @load="onLoad" @error="onError" />
