@@ -30,6 +30,8 @@
               {{ thread.user_nickname }}
             </span>
 
+            <PTag v-if="thread.user.is_newbie" />
+
             <span class="time">{{ lastReplyTime }}</span>
 
             <span class="replies" v-if="!isMobile">
@@ -104,9 +106,13 @@
 import { mapState } from 'vuex'
 
 import helper from '@/helper'
+import PTag from '../PTag'
 
 export default {
   props: ['thread', 'isVisited', 'lastReadPage', 'lastReadPostId', 'newReply'],
+  components: {
+    PTag,
+  },
   computed: {
     ...mapState({
       isMobile: state => state.app.isMobile,
@@ -249,10 +255,14 @@ export default {
 
   .meta-left {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
 
-    > span:not(:first-of-type) {
-      margin-left: 0.5rem;
+    > span {
+      margin-right: 0.5rem;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
     }
   }
 

@@ -3,6 +3,7 @@
     <small class="meta">
       <span :class="{'color-admin': isAuthor}">#{{ post.msg_num }}</span>
       <span class="username" v-username="post.user">{{ post.user_nickname }}</span>
+      <PTag v-if="post.user.is_newbie" />
       <span class="temp-visible-toggle" @click="tempVisible = !tempVisible" v-if="storyMode && +storyMode !== +userId">
         暫時{{ tempVisible ? '隱藏' : '顯示' }}
       </span>
@@ -37,12 +38,14 @@ import { mapState, mapMutations } from 'vuex'
 import helper from '@/helper'
 import PostQuote from './PostQuote'
 import Message from './Message/Message'
+import PTag from '../PTag'
 
 export default {
   props: ['post'],
   components: {
     PostQuote,
     Message,
+    PTag,
   },
   data() {
     return {

@@ -62,17 +62,4 @@ export default {
     position: relative;
   }
 }
-
-.hidden-select {
-  bottom: 0;
-  left: 0;
-  opacity: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 100% !important;
-  height: 100% !important;
-  appearance: none;
-  cursor: pointer;
-}
 </style>

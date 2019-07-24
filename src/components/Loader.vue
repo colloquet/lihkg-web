@@ -28,6 +28,7 @@ export default {
   text-indent: -9999em;
   will-change: transform;
   animation: load 1.1s infinite linear;
+  margin: 0.5rem 0;
 
   .night-mode & {
     border-top: 3px solid rgba(#fff, 0.2);

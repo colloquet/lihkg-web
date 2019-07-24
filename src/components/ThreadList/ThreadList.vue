@@ -17,11 +17,11 @@
 
     <div v-if="hasMore" v-observe-visibility="onEndReached"></div>
 
-    <div class="end-of-list">
-      <template v-if="hasMore">
-        <Placeholder v-for="n in 2" :key="n" />
-      </template>
-      <span v-else>完</span>
+    <template v-if="hasMore">
+      <Placeholder v-for="n in 2" :key="n" />
+    </template>
+    <div v-else class="end-of-list">
+      <span>完</span>
     </div>
   </div>
 </template>
