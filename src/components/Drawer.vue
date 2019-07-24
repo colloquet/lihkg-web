@@ -143,7 +143,6 @@ export default {
           this.direction === 'x' &&
           ((!this.isOpen && deltaX > 0) || (this.isOpen && deltaX < 0))
         ) {
-          event.preventDefault()
           this.deltaX = deltaX
         } else if (this.direction === 'y') {
           if (this.isOpen && !inDrawer) {

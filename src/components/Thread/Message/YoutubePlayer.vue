@@ -72,10 +72,15 @@ export default {
 
 .yt-spacer {
   position: relative;
-  padding-bottom: 56.25%;
   background-size: cover;
   background-position: center;
+  background-color: #f5f5f5;
+  padding-bottom: 56.25%;
   z-index: 1;
+
+  .night-mode & {
+    background-color: mix(white, #121212, 5%);
+  }
 
   > iframe {
     position: absolute;

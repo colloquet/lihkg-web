@@ -61,12 +61,6 @@ export default {
     ...mapMutations({
       hideDrawer: 'HIDE_DRAWER',
     }),
-    handleClick(event) {
-      if (!this.$refs.menu) return
-      if (!this.$refs.menu.contains(event.target)) {
-        this.hideDrawer()
-      }
-    },
     handleScroll() {
       window.requestAnimationFrame(this.update)
     },
@@ -88,14 +82,9 @@ export default {
     },
   },
   mounted() {
-    const self = this
-    window.requestAnimationFrame(() => {
-      window.addEventListener('click', self.handleClick)
-      window.addEventListener('scroll', self.handleScroll)
-    })
+    window.addEventListener('scroll', this.handleScroll)
   },
   beforeDestroy() {
-    window.removeEventListener('click', this.handleClick)
     window.removeEventListener('scroll', this.handleScroll)
   },
 }

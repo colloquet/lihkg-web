@@ -1,5 +1,5 @@
 <template>
-  <transition name="lightbox">
+  <transition name="lightbox" appear>
     <div class="lightbox" @click.self="handleCloseClick">
       <button class="action close" @click="handleCloseClick">
         <span class="icon-x"></span>

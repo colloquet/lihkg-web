@@ -26,9 +26,8 @@ import BottomBar from './components/BottomBar'
 import Drawer from './components/Drawer'
 import CategoryMenu from './components/CategoryMenu'
 import SettingsModal from './components/SettingsModal'
-
-const Gallery = () => import('./components/Gallery/Gallery')
-const Lightbox = () => import('./components/Lightbox')
+import Gallery from './components/Gallery/Gallery'
+import Lightbox from './components/Lightbox'
 
 export default {
   metaInfo() {

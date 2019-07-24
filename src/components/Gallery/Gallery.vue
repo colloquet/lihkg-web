@@ -1,5 +1,6 @@
 <template>
   <transition
+    appear
     name="gallery"
     @before-enter="onBeforeEnter"
     @after-enter="onAfterEnter"

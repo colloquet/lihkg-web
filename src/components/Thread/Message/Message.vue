@@ -2,7 +2,7 @@
 import { mapState } from 'vuex'
 import parseAST from 'html-parse-stringify/lib/parse'
 import linkifyHtml from 'linkifyjs/html'
-import decode from 'entities/lib/decode'
+import { decodeHTML } from 'entities/lib/decode'
 
 import Message from './Message'
 import Quote from './Quote'
@@ -63,13 +63,10 @@ export default {
     },
   },
   methods: {
-    decode(content) {
-      return decode.HTML(content)
-    },
     renderAST(h, ast, nestInfo = { quote: 1, sub: 1, isBlock: false }) {
       return ast.map(node => {
         if (node.type === 'text') {
-          return this.decode(node.content)
+          return decodeHTML(node.content)
         }
         switch (node.name) {
           case 'blockquote': {
@@ -130,7 +127,7 @@ export default {
             )
           }
           case 'img': {
-            const src = this.decode(node.attrs.src)
+            const src = decodeHTML(node.attrs.src)
             const noCache = 'data-no-cache' in node.attrs
             const useProxy = this.imageProxy && !noCache
 
@@ -154,7 +151,7 @@ export default {
               'anchor',
               {
                 props: {
-                  href: this.decode(node.attrs.href),
+                  href: decodeHTML(node.attrs.href),
                 },
               },
               this.renderAST(h, node.children),

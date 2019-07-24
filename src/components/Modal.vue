@@ -1,5 +1,5 @@
 <template>
-  <transition name="modal">
+  <transition name="modal" appear>
     <div class="modal-mask">
       <div class="modal-wrapper" @click.self="$emit('close')">
         <div class="modal-container">
