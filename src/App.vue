@@ -169,6 +169,7 @@ a {
   width: 100%;
   margin: 0 auto;
   padding-top: 3rem;
+  overflow: hidden;
 }
 
 .color-admin {
