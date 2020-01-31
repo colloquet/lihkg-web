@@ -2,11 +2,16 @@
   <div class="categoryview-container">
     <SubCategorySwitcher :list="subCategoryList" v-if="subCategoryList.length > 1" />
 
-    <ThreadList
+    <!-- <ThreadList
       :thread-list="threadList"
       :is-loading="isLoading"
       @load-more="handleLoadMore"
-    />
+    /> -->
+
+    <div class="alert">
+      由於之前 LIHKG 受到網絡攻擊，佢地已經改左個 API，加左好多防禦措施。所以第三方暫時係用唔到。<br />
+      暫時都冇咩可以做到，希望第時佢會開放申請第三方 API key。
+    </div>
   </div>
 </template>
 
@@ -81,7 +86,7 @@ export default {
     '$route.query': 'fetchAndScrollTop',
     threadListType(newVal, oldVal) {
       if (oldVal !== newVal && newVal === 'category') {
-        this.fetchAndScrollTop()
+        // this.fetchAndScrollTop()
       }
     },
   },
@@ -104,3 +109,18 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.alert {
+  padding: 16px;
+  margin: 16px;
+  border-radius: 4px;
+  border: 1px solid #e8e8e8;
+  line-height: 1.5;
+
+  .night-mode & {
+    border: 1px solid #1e1e1e;
+    background: #1a1a1a;
+  }
+}
+</style>
