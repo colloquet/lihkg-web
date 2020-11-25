@@ -14,7 +14,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "entities": "^2.0.0",
-    "highlight.js": "^9.15.8",
+    "highlight.js": "^10.1.2",
     "html-parse-stringify": "^1.0.3",
     "intersection-observer": "^0.7.0",
     "linkifyjs": "^2.1.8",
