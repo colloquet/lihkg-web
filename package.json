@@ -15,7 +15,7 @@
     "babel-polyfill": "^6.26.0",
     "entities": "^2.0.0",
     "highlight.js": "^9.15.8",
-    "html-parse-stringify": "^1.0.3",
+    "html-parse-stringify": "^2.0.1",
     "intersection-observer": "^0.7.0",
     "linkifyjs": "^2.1.8",
     "lodash": "^4.17.15",
