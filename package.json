@@ -18,7 +18,7 @@
     "html-parse-stringify": "^1.0.3",
     "intersection-observer": "^0.7.0",
     "linkifyjs": "^2.1.8",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "node-sass": "^4.12.0",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
